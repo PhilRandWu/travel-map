@@ -9,7 +9,7 @@ import { useGlobeControls } from '@/components/globe/hooks/useGlobeControls'
 import { useAtmosphereGlow, ATMOSPHERE_COLOR, ATMOSPHERE_ALTITUDE } from '@/components/globe/hooks/useAtmosphereGlow'
 import { useAutoRotate } from '@/components/globe/hooks/useAutoRotate'
 import { useDragClickGuard } from '@/components/globe/hooks/useDragClickGuard'
-import { useTrackLayers } from '@/components/globe/hooks/trackLayers'
+import { useTrackPresentation } from '@/components/globe/hooks/useTrackPresentation'
 import {
   buildCityMarker,
   buildRegionDot,
@@ -44,7 +44,7 @@ interface Props {
   tracks: Tracks
   /** 当前高亮城市（卡片打开或时间轴选中时） */
   selectedCityId: string | null
-  /** 当前选中行程（时间轴或城市卡片） */
+  /** 当前选中的行程（轨迹保持高亮，其余轨迹/城市淡出） */
   selectedTripId: string | null
   /** 城市点击（选中城市，弹出卡片）；null 表示取消 */
   onSelectCity: (cityId: string | null) => void
@@ -130,17 +130,6 @@ export default function TravelGlobe({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCity?.city.id])
 
-  // 选中行程（卡片或轨迹点击）→ 飞到大圆中点，保持轨迹在视野内
-  useEffect(() => {
-    if (!selectedTripId) return
-    const target =
-      [...tracks.flights, ...tracks.trains].find((t) => t.trip.id === selectedTripId)
-    if (!target) return
-    lastInteractRef.current = performance.now()
-    flyTo(target.midLat, target.midLng, 1.6)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTripId, tracks])
-
   // 点击地球任意位置 → 离线反查地名
   const handleGlobeClick = async (coords: { lat: number; lng: number }) => {
     const { lat, lng } = coords
@@ -178,10 +167,18 @@ export default function TravelGlobe({
     }
   }
 
+  const { trackProps, activeCityIds } = useTrackPresentation({
+    tracks,
+    selectedTripId,
+    lastInteractRef,
+    onSelectTripRef,
+  })
+
   const { markers, handleSelectCity, handleHoverCity } = useGlobeMarkers({
     litCities,
     zoomedIn,
     selectedCityId,
+    activeCityIds,
     region,
     onSelectCityRef,
     cityHoveringRef,
@@ -189,23 +186,6 @@ export default function TravelGlobe({
   })
 
   const polygons = region?.boundary ? [region.boundary] : []
-
-  // 轨迹 hover：整条提亮（dash 加密），其余轨迹淡出（PLAN T3.3）
-  const [hoverTripId, setHoverTripId] = useState<string | null>(null)
-  const activeTripId = hoverTripId ?? selectedTripId
-  const hoverTrip = (id: string | null) => {
-    setHoverTripId((prev) => (prev === id ? prev : id))
-  }
-  const handleSelectTrip = (tripId: string) => {
-    lastInteractRef.current = performance.now()
-    onSelectTripRef.current(tripId)
-  }
-  const trackLayers = useTrackLayers({
-    tracks,
-    activeTripId,
-    onHover: hoverTrip,
-    onSelect: handleSelectTrip,
-  })
 
   return (
     <div ref={wrapperRef} className="absolute inset-0">
@@ -232,8 +212,7 @@ export default function TravelGlobe({
             }
           }}
           onGlobeClick={handleGlobeClick}
-          // 飞机弧线 + 高铁折线（PLAN T3.1–T3.3，详见 trackLayers.ts）
-          {...trackLayers}
+          {...trackProps}
           // 选中区域多边形高亮
           polygonsData={polygons}
           polygonCapColor={() => 'rgba(251, 191, 36, 0.28)'}

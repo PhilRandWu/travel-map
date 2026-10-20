@@ -44,9 +44,14 @@ export interface Tracks {
 /** 同航线去重键：不分方向（A→B 与 B→A 视为同一走廊） */
 const corridorKey = (a: string, b: string) => [a, b].sort().join('|')
 
+/** 高铁重复走廊的侧向车道间距（度） */
+const TRAIN_LANE_DEG = 0.16
+const DEG = Math.PI / 180
+
 export function buildTracks(data: TravelData): Tracks {
   const cityMap = resolveCities(data)
-  const corridorCount = new Map<string, number>()
+  const flightCorridorCount = new Map<string, number>()
+  const trainCorridorCount = new Map<string, number>()
   const flights: FlightArc[] = []
   const trains: TrainPath[] = []
 
@@ -59,8 +64,8 @@ export function buildTracks(data: TravelData): Tracks {
 
     if (t.type === 'flight') {
       const key = corridorKey(t.from, t.to)
-      const dup = corridorCount.get(key) ?? 0
-      corridorCount.set(key, dup + 1)
+      const dup = flightCorridorCount.get(key) ?? 0
+      flightCorridorCount.set(key, dup + 1)
       // 同走廊第 2、3… 条弧顶逐次抬高 18%，肉眼可分辨是两条航线
       const altitude = flightArcAltitude(haversineKm(from, to)) * (1 + dup * 0.18)
       const mid = greatCirclePoints(from, to, 2)[1]
@@ -79,9 +84,13 @@ export function buildTracks(data: TravelData): Tracks {
       const seq = [t.from, ...t.waypoints, t.to].map((id) => cityMap.get(id))
       if (seq.some((c) => !c)) continue
       const cities = seq as City[]
+      const key = corridorKey(t.from, t.to)
+      const dup = trainCorridorCount.get(key) ?? 0
+      trainCorridorCount.set(key, dup + 1)
+      const laneOffset = trainLaneOffset(dup)
       const points: [number, number][] = []
       for (let i = 1; i < cities.length; i++) {
-        const seg = greatCirclePoints(cities[i - 1], cities[i], 32)
+        const seg = offsetTrainSegment(cities[i - 1], cities[i], laneOffset)
         points.push(...(i === 1 ? seg : seg.slice(1)))
       }
       const midPoint = points[Math.floor(points.length / 2)]
@@ -89,4 +98,38 @@ export function buildTracks(data: TravelData): Tracks {
     }
   }
   return { flights, trains }
+}
+
+/** 第 1 条走中线，之后按右、左、右…递增偏移，往返方向也视为同一走廊 */
+function trainLaneOffset(dup: number): number {
+  if (dup === 0) return 0
+  const lane = Math.ceil(dup / 2)
+  return (dup % 2 === 1 ? lane : -lane) * TRAIN_LANE_DEG
+}
+
+/**
+ * 大圆分段采样后，将中间点沿局部垂线侧移。
+ * 两端保持原坐标，确保线路仍精确连接城市与 waypoint。
+ */
+function offsetTrainSegment(from: City, to: City, offsetDeg: number): [number, number][] {
+  const points = greatCirclePoints(from, to, 32)
+  if (offsetDeg === 0 || points.length <= 2) return points
+
+  const dLat = to.lat - from.lat
+  const dLng = (((to.lng - from.lng + 540) % 360) - 180)
+  const length = Math.hypot(dLat, dLng)
+  if (length === 0) return points
+
+  return points.map((point, index) => {
+    if (index === 0 || index === points.length - 1) return point
+    const t = index / (points.length - 1)
+    const distance = Math.sin(Math.PI * t) * offsetDeg
+    const lat = point[0] + (-dLng / length) * distance
+    const lngScale = Math.max(0.2, Math.cos(point[0] * DEG))
+    const lng = point[1] + (dLat / length) * distance / lngScale
+    return [
+      Math.max(-89.999, Math.min(89.999, lat)),
+      ((lng + 540) % 360) - 180,
+    ]
+  })
 }

@@ -63,6 +63,31 @@ describe('buildTracks', () => {
     expect(flights[2].altitude).toBeCloseTo(flights[0].altitude * 1.36)
   })
 
+  it('同走廊多条高铁折线侧向错开，同时保留端点与经停点', () => {
+    const { trains } = buildTracks(
+      withTrips([
+        { id: 't1', date: '2025-05-03', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'] },
+        { id: 't2', date: '2025-05-05', type: 'train', from: 'shanghai', to: 'beijing', waypoints: ['jiaxing'] },
+        { id: 't3', date: '2025-06-01', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'] },
+      ]),
+    )
+    expect(trains).toHaveLength(3)
+
+    const sample = (track: (typeof trains)[number]) => track.points[16]
+    expect(sample(trains[1])).not.toEqual(sample(trains[0]))
+    expect(sample(trains[2])).not.toEqual(sample(trains[0]))
+    expect(sample(trains[2])).not.toEqual(sample(trains[1]))
+
+    const jiaxing: [number, number] = [30.7522, 120.7555]
+    for (const track of trains) {
+      const from = base.cities.find((city) => city.id === track.trip.from)!
+      const to = base.cities.find((city) => city.id === track.trip.to)!
+      expect(track.points[0]).toEqual([from.lat, from.lng])
+      expect(track.points.at(-1)).toEqual([to.lat, to.lng])
+      expect(track.points).toContainEqual(jiaxing)
+    }
+  })
+
   it('引用缺失城市的行程被跳过', () => {
     const { flights, trains } = buildTracks(
       withTrips([

@@ -15,6 +15,7 @@ interface Options {
   litCities: LitCity[]
   zoomedIn: boolean
   selectedCityId: string | null
+  activeCityIds: ReadonlySet<string> | null
   region: RegionPoint | null
   onSelectCityRef: RefObject<(cityId: string | null) => void>
   cityHoveringRef: RefObject<boolean>
@@ -26,6 +27,7 @@ export function useGlobeMarkers({
   litCities,
   zoomedIn,
   selectedCityId,
+  activeCityIds,
   region,
   onSelectCityRef,
   cityHoveringRef,
@@ -37,13 +39,14 @@ export function useGlobeMarkers({
       ...toCityMarkerDatum(lit, {
         labelVisible: zoomedIn,
         selected: lit.city.id === selectedCityId,
+        dimmed: activeCityIds !== null && !activeCityIds.has(lit.city.id),
       }),
     }))
     if (region) {
       list.push({ kind: 'region', lat: region.lat, lng: region.lng, ocean: region.ocean })
     }
     return list
-  }, [litCities, zoomedIn, selectedCityId, region])
+  }, [litCities, zoomedIn, selectedCityId, activeCityIds, region])
 
   const handleSelectCity = (id: string) => {
     lastInteractRef.current = performance.now()
