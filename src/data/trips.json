@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "owner": "旅行者",
+    "homeCity": "beijing",
+    "version": 1
+  },
+  "cities": [
+    { "id": "beijing", "name": "北京", "lat": 39.9042, "lng": 116.4074, "province": "北京", "country": "中国" },
+    { "id": "hangzhou", "name": "杭州", "lat": 30.2741, "lng": 120.1551, "province": "浙江", "country": "中国" },
+    { "id": "shanghai", "name": "上海", "lat": 31.2304, "lng": 121.4737, "province": "上海", "country": "中国" },
+    { "id": "jiaxing", "name": "嘉兴", "lat": 30.7522, "lng": 120.7555, "province": "浙江", "country": "中国" },
+    { "id": "chengdu", "name": "成都", "lat": 30.5728, "lng": 104.0668, "province": "四川", "country": "中国" }
+  ],
+  "trips": [
+    {
+      "id": "t001",
+      "date": "2025-05-01",
+      "type": "flight",
+      "from": "beijing",
+      "to": "hangzhou",
+      "waypoints": [],
+      "note": "CA1234"
+    },
+    {
+      "id": "t002",
+      "date": "2025-05-03",
+      "type": "train",
+      "from": "hangzhou",
+      "to": "shanghai",
+      "waypoints": ["jiaxing"],
+      "note": "G7558"
+    },
+    {
+      "id": "t003",
+      "date": "2025-05-05",
+      "type": "flight",
+      "from": "shanghai",
+      "to": "beijing",
+      "waypoints": [],
+      "note": "MU5101"
+    },
+    {
+      "id": "t004",
+      "date": "2025-06-10",
+      "type": "flight",
+      "from": "beijing",
+      "to": "chengdu",
+      "waypoints": [],
+      "note": "3U8887"
+    },
+    {
+      "id": "t005",
+      "date": "2025-06-13",
+      "type": "flight",
+      "from": "chengdu",
+      "to": "beijing",
+      "waypoints": [],
+      "note": "CA4193"
+    }
+  ],
+  "visits": [
+    {
+      "id": "v001",
+      "city": "hangzhou",
+      "arriveDate": "2025-05-01",
+      "leaveDate": "2025-05-03",
+      "note": "五一西湖行",
+      "photos": [
+        { "file": "01.svg", "caption": "断桥" },
+        { "file": "02.svg", "caption": "西湖暮色" },
+        { "file": "03.svg", "caption": "" }
+      ]
+    },
+    {
+      "id": "v002",
+      "city": "shanghai",
+      "arriveDate": "2025-05-03",
+      "leaveDate": "2025-05-05",
+      "note": "外滩与武康路",
+      "photos": [
+        { "file": "01.svg", "caption": "外滩夜景" },
+        { "file": "02.svg", "caption": "" }
+      ]
+    },
+    {
+      "id": "v003",
+      "city": "chengdu",
+      "arriveDate": "2025-06-10",
+      "leaveDate": "2025-06-13",
+      "note": "端午成都逛吃",
+      "photos": [
+        { "file": "01.svg", "caption": "宽窄巷子" },
+        { "file": "02.svg", "caption": "火锅" },
+        { "file": "03.svg", "caption": "大熊猫基地" }
+      ]
+    },
+    {
+      "id": "v004",
+      "city": "beijing",
+      "arriveDate": "2025-05-05",
+      "leaveDate": "2025-06-09",
+      "note": "五一后回到北京",
+      "photos": [
+        { "file": "01.svg", "caption": "" }
+      ]
+    },
+    {
+      "id": "v005",
+      "city": "beijing",
+      "arriveDate": "2025-06-13",
+      "leaveDate": "2025-06-16",
+      "note": "端午后回到北京",
+      "photos": [
+        { "file": "01.svg", "caption": "仲夏的胡同" }
+      ]
+    }
+  ]
+}
