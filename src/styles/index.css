@@ -1,5 +1,21 @@
 @import 'tailwindcss';
 
+/* 星点缓慢闪烁：基础亮度由内联 --rg-star-o 给出（各星亮度不一） */
+@keyframes rg-twinkle {
+  0%,
+  100% {
+    opacity: var(--rg-star-o, 1);
+  }
+  50% {
+    opacity: calc(var(--rg-star-o, 1) * 0.18);
+  }
+}
+.rg-twinkle {
+  animation-name: rg-twinkle;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
 /* 点击定位光点的扩散脉冲 */
 @keyframes rg-ping {
   0% {
@@ -25,5 +41,44 @@
   to {
     opacity: 1;
     transform: translate(-50%, 0);
+  }
+}
+
+/* 城市卡片入场：从左侧轻轻浮入 */
+.rg-card-in {
+  animation: rg-card-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes rg-card-in {
+  from {
+    opacity: 0;
+    transform: translateX(-12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 卡片内滚动条：细、低调 */
+.rg-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+}
+.rg-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.rg-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+}
+.rg-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-twinkle,
+  .rg-card-in,
+  .rg-hud {
+    animation: none;
   }
 }
