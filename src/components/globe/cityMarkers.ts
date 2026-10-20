@@ -13,6 +13,7 @@ export interface CityMarkerDatum {
   visitCount: number
   labelVisible: boolean
   selected: boolean
+  dimmed: boolean
 }
 
 export interface RegionMarkerDatum {
@@ -34,8 +35,10 @@ interface CityHandlers {
  */
 export function buildCityMarker(d: CityMarkerDatum, handlers: CityHandlers): HTMLElement {
   const el = document.createElement('div')
+  el.className = 'rg-city-marker'
+  el.dataset.cityId = d.id
   el.style.cssText =
-    'position:relative;width:0;height:0;transform:translate(-50%,-50%);font-family:inherit;'
+    `position:relative;width:0;height:0;transform:translate(-50%,-50%);font-family:inherit;opacity:${d.dimmed ? 0.24 : 1};transition:opacity .18s ease;`
 
   const size = (d.selected ? 13 : 9) + Math.min(d.visitCount - 1, 3) * 1.6
   const core = d.selected ? '#67e8f9' : '#fcd34d'
@@ -112,7 +115,7 @@ export function buildRegionDot(d: RegionMarkerDatum): HTMLElement {
 
 export function toCityMarkerDatum(
   lit: LitCity,
-  opts: { labelVisible: boolean; selected: boolean },
+  opts: { labelVisible: boolean; selected: boolean; dimmed: boolean },
 ): CityMarkerDatum {
   return {
     id: lit.city.id,
@@ -122,5 +125,6 @@ export function toCityMarkerDatum(
     visitCount: lit.visitCount,
     labelVisible: opts.labelVisible,
     selected: opts.selected,
+    dimmed: opts.dimmed,
   }
 }

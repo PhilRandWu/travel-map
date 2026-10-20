@@ -19,8 +19,6 @@ interface RegionIndex {
   boxes: (number[] | null)[]
 }
 
-type AnyCoords = number | AnyCoords[]
-
 let chinaIndex: Promise<RegionIndex> | null = null
 let worldIndex: Promise<RegionIndex> | null = null
 
@@ -30,31 +28,65 @@ async function loadIndex(url: string, objectKey: string): Promise<RegionIndex> {
   const topo = (await res.json()) as { objects: TopoObject }
   const fc = feature(topo as never, topo.objects[objectKey] as never) as unknown as GeoJSON.FeatureCollection
   const features = fc.features
-  const boxes = features.map((f) => bboxOf(f.geometry))
+  const boxes = features.map((f) => geometryBBox(f.geometry))
   return { features, boxes }
 }
 
-/** 计算几何包围盒；跨 180° 经线的几何返回 null（放弃预筛，直接精确判断） */
-function bboxOf(geometry: GeoJSON.Geometry): number[] | null {
-  let minLng = 181,
-    minLat = 91,
-    maxLng = -181,
-    maxLat = -91
-  const walk = (coords: AnyCoords) => {
-    if (typeof coords === 'number' || typeof coords[0] !== 'number') {
-      if (typeof coords !== 'number') (coords as AnyCoords[]).forEach(walk)
-      return
-    }
-    const [lng, lat] = coords as number[]
-    if (lng < minLng) minLng = lng
-    if (lng > maxLng) maxLng = lng
-    if (lat < minLat) minLat = lat
-    if (lat > maxLat) maxLat = lat
-  }
-  walk((geometry as GeoJSON.Polygon).coordinates as unknown as AnyCoords)
+/** GeoJSON 坐标为 [lng, lat, ...]（可能带高程） */
+type LngLat = GeoJSON.Position
+
+/**
+ * 计算几何包围盒；跨 180° 经线的几何返回 null（放弃预筛，直接精确判断）。
+ * 按 GeoJSON type 显式分派，GeometryCollection 递归合并子几何。
+ */
+export function geometryBBox(geometry: GeoJSON.Geometry): number[] | null {
+  const box = accumulateBBox(geometry)
+  if (!box) return null
   // 经度跨度 >180° 说明是跨 180° 经线被切碎的几何（如俄罗斯），整体 bbox 无意义
-  if (maxLng - minLng > 180) return null
-  return [minLng, minLat, maxLng, maxLat]
+  if (box[2] - box[0] > 180) return null
+  return box
+}
+
+function accumulateBBox(geometry: GeoJSON.Geometry): number[] | null {
+  const box = [181, 91, -181, -91]
+  const addPoint = ([lng, lat]: LngLat) => {
+    if (lng < box[0]) box[0] = lng
+    if (lat < box[1]) box[1] = lat
+    if (lng > box[2]) box[2] = lng
+    if (lat > box[3]) box[3] = lat
+  }
+  const addLine = (line: LngLat[]) => line.forEach(addPoint)
+  const addPolygon = (rings: LngLat[][]) => rings.forEach(addLine)
+
+  switch (geometry.type) {
+    case 'Point':
+      addPoint(geometry.coordinates)
+      break
+    case 'MultiPoint':
+    case 'LineString':
+      addLine(geometry.coordinates)
+      break
+    case 'MultiLineString':
+    case 'Polygon':
+      addPolygon(geometry.coordinates)
+      break
+    case 'MultiPolygon':
+      geometry.coordinates.forEach(addPolygon)
+      break
+    case 'GeometryCollection': {
+      const boxes = geometry.geometries.map(accumulateBBox)
+      if (boxes.every((b) => b === null)) return null
+      for (const b of boxes) {
+        if (!b) continue
+        addPoint([b[0], b[1]])
+        addPoint([b[2], b[3]])
+      }
+      return box
+    }
+    default:
+      return null
+  }
+  return box[0] === 181 ? null : box
 }
 
 export type RegionKind = 'city' | 'municipality' | 'country'

@@ -1,0 +1,61 @@
+import { useMemo, type RefObject } from 'react'
+import type { LitCity } from '@/lib/derive'
+import {
+  toCityMarkerDatum,
+  type GlobeMarker,
+} from '@/components/globe/cityMarkers'
+
+interface RegionPoint {
+  lat: number
+  lng: number
+  ocean?: boolean
+}
+
+interface Options {
+  litCities: LitCity[]
+  zoomedIn: boolean
+  selectedCityId: string | null
+  activeCityIds: ReadonlySet<string> | null
+  region: RegionPoint | null
+  onSelectCityRef: RefObject<(cityId: string | null) => void>
+  cityHoveringRef: RefObject<boolean>
+  lastInteractRef: RefObject<number>
+}
+
+/** 城市点 + 反查定位点共用一个 html 层；名称显隐/选中态变化时才重建 */
+export function useGlobeMarkers({
+  litCities,
+  zoomedIn,
+  selectedCityId,
+  activeCityIds,
+  region,
+  onSelectCityRef,
+  cityHoveringRef,
+  lastInteractRef,
+}: Options) {
+  const markers = useMemo<GlobeMarker[]>(() => {
+    const list: GlobeMarker[] = litCities.map((lit) => ({
+      kind: 'city',
+      ...toCityMarkerDatum(lit, {
+        labelVisible: zoomedIn,
+        selected: lit.city.id === selectedCityId,
+        dimmed: activeCityIds !== null && !activeCityIds.has(lit.city.id),
+      }),
+    }))
+    if (region) {
+      list.push({ kind: 'region', lat: region.lat, lng: region.lng, ocean: region.ocean })
+    }
+    return list
+  }, [litCities, zoomedIn, selectedCityId, activeCityIds, region])
+
+  const handleSelectCity = (id: string) => {
+    lastInteractRef.current = performance.now()
+    onSelectCityRef.current(id)
+  }
+  const handleHoverCity = (id: string | null) => {
+    // 仅驱动大气辉光，不 setState（避免 hover 时重建标记）
+    cityHoveringRef.current = id !== null
+  }
+
+  return { markers, handleSelectCity, handleHoverCity }
+}

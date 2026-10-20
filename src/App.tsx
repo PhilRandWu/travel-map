@@ -1,10 +1,16 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import Starfield from '@/components/globe/Starfield'
-import TravelGlobe, { type PickedRegion } from '@/components/globe/TravelGlobe'
+import type { PickedRegion } from '@/components/globe/TravelGlobe'
 import CityCard from '@/components/city/CityCard'
 import { useTravelData } from '@/hooks/useTravelData'
 import { preloadGeoData } from '@/lib/geoLookup'
+import { buildTracks, type Tracks } from '@/lib/tracks'
 import type { Selection } from '@/types'
+
+const EMPTY_TRACKS: Tracks = { flights: [], trains: [] }
+
+// three.js + globe.gl 体积大，拆成异步 chunk：星空与 UI 先出，地球随后加载
+const TravelGlobe = lazy(() => import('@/components/globe/TravelGlobe'))
 
 /**
  * 布局骨架（T0.3）：
@@ -17,6 +23,7 @@ import type { Selection } from '@/types'
  */
 export default function App() {
   const { data, litCities } = useTravelData()
+  const tracks = useMemo(() => (data ? buildTracks(data) : EMPTY_TRACKS), [data])
   const [selection, setSelection] = useState<Selection>({ kind: 'none' })
   const [cardCityId, setCardCityId] = useState<string | null>(null)
   const [region, setRegion] = useState<PickedRegion | null>(null)
@@ -37,6 +44,14 @@ export default function App() {
     if (cityId) setRegion(null)
   }
 
+  const handleSelectTrip = (tripId: string) => {
+    // 轨迹点击：选中 trip 并聚焦其出发城市卡片，保持上下文
+    const trip = data?.trips.find((t) => t.id === tripId)
+    setSelection({ kind: 'trip', tripId })
+    setRegion(null)
+    if (trip) setCardCityId(trip.from)
+  }
+
   const handlePickRegion = (next: PickedRegion | null) => {
     setRegion(next)
     // 点击空白区域时收起城市卡片，反查 HUD 与卡片互斥
@@ -54,13 +69,18 @@ export default function App() {
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black font-sans text-white select-none">
       <Starfield />
-      <TravelGlobe
-        litCities={litCities}
-        selectedCityId={cardCityId}
-        onSelectCity={handleSelectCity}
-        region={region}
-        onPick={handlePickRegion}
-      />
+      <Suspense fallback={null}>
+        <TravelGlobe
+          litCities={litCities}
+          tracks={tracks}
+          selectedCityId={cardCityId}
+          selectedTripId={selection.kind === 'trip' ? selection.tripId : null}
+          onSelectCity={handleSelectCity}
+          onSelectTrip={handleSelectTrip}
+          region={region}
+          onPick={handlePickRegion}
+        />
+      </Suspense>
 
       {/* 悬浮 UI 层 */}
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between">

@@ -1,0 +1,37 @@
+import { useEffect, type RefObject } from 'react'
+import type { GlobeMethods } from 'react-globe.gl'
+
+/** 自转角速度（度 / ms） */
+const ROTATE_SPEED = 0.006
+
+interface Options {
+  /** 闲置多久后恢复自转（ms） */
+  resumeAfterIdle: number
+  draggingRef: RefObject<boolean>
+  selectedCityIdRef: RefObject<string | null>
+  lastInteractRef: RefObject<number>
+}
+
+/** 自动自转：拖拽中/选中城市时暂停，闲置一段时间后恢复 */
+export function useAutoRotate(
+  globeRef: RefObject<GlobeMethods | undefined>,
+  { resumeAfterIdle, draggingRef, selectedCityIdRef, lastInteractRef }: Options,
+) {
+  useEffect(() => {
+    let raf = 0
+    let last = performance.now()
+    const tick = (now: number) => {
+      const dt = now - last
+      last = now
+      const globe = globeRef.current
+      const idle = now - lastInteractRef.current > resumeAfterIdle
+      if (globe && idle && !draggingRef.current && !selectedCityIdRef.current) {
+        const pov = globe.pointOfView()
+        globe.pointOfView({ ...pov, lng: pov.lng + dt * ROTATE_SPEED }, 0)
+      }
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [globeRef, resumeAfterIdle, draggingRef, selectedCityIdRef, lastInteractRef])
+}
