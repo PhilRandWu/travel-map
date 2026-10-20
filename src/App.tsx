@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import Starfield from '@/components/globe/Starfield'
-import TravelGlobe from '@/components/globe/TravelGlobe'
+import TravelGlobe, { type PickedRegion } from '@/components/globe/TravelGlobe'
+import { preloadGeoData } from '@/lib/geoLookup'
 
 /**
  * 布局骨架（T0.3）：
@@ -8,10 +10,22 @@ import TravelGlobe from '@/components/globe/TravelGlobe'
  * 悬浮层使用 pointer-events-none，交互子元素自行 pointer-events-auto。
  */
 export default function App() {
+  const [region, setRegion] = useState<PickedRegion | null>(null)
+
+  // 浏览器空闲时预取边界数据，消除首次点击的反查延迟
+  useEffect(() => {
+    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback
+    if (idle) idle(() => preloadGeoData())
+    else {
+      const t = setTimeout(preloadGeoData, 2500)
+      return () => clearTimeout(t)
+    }
+  }, [])
+
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black font-sans text-white select-none">
       <Starfield />
-      <TravelGlobe />
+      <TravelGlobe region={region} onPick={setRegion} />
 
       {/* 悬浮 UI 层 */}
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between">
@@ -41,6 +55,13 @@ export default function App() {
           </div>
         </footer>
       </div>
+
+      {/* 首次引导 */}
+      {!region && (
+        <div className="pointer-events-none absolute bottom-32 left-1/2 -translate-x-1/2 animate-pulse rounded-full border border-white/10 bg-black/40 px-5 py-2 text-xs tracking-[0.2em] text-white/55 backdrop-blur-md">
+          点击地球任意位置，查看这里是哪里
+        </div>
+      )}
     </div>
   )
 }

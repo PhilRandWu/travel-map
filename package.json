@@ -7,10 +7,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:geo": "node scripts/build-geo.mjs"
   },
   "packageManager": "pnpm@10.34.3",
   "devDependencies": {
+    "@mapbox/geojson-rewind": "^0.5.2",
     "@tailwindcss/vite": "^4.3.3",
     "@types/d3-geo": "^3.1.1",
     "@types/node": "^26.6.5",
