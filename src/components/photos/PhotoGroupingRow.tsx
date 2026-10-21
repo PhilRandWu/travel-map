@@ -91,7 +91,7 @@ export default function PhotoGroupingRow({
             value={row.targetVisitId}
             onChange={(event) => onChangeVisit(event.target.value)}
             aria-label={`${row.file.name} 的目标到访`}
-            className="min-w-0 flex-1 cursor-pointer rounded-lg border border-white/10 bg-[#0a1020] px-2 py-1.5 text-[10px] text-white/65 outline-none transition focus:border-cyan-200/35"
+            className="min-w-0 flex-1 cursor-pointer rounded-lg border border-white/10 bg-[#0a1020] px-2 py-1.5 text-[10px] text-white/65 transition focus:border-cyan-200/35"
           >
             <option value="">不归组</option>
             {visits.map((visit) => (

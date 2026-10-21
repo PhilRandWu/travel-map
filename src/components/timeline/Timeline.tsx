@@ -74,7 +74,11 @@ export default function Timeline({
     const node = nodeRefs.current.get(activeIndex)
     if (!scroller || !node) return
     const left = node.offsetLeft - (scroller.clientWidth - node.offsetWidth) / 2
-    scroller.scrollTo({ left: Math.max(0, left), behavior: 'smooth' })
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    scroller.scrollTo({
+      left: Math.max(0, left),
+      behavior: reducedMotion ? 'auto' : 'smooth',
+    })
   }, [activeIndex])
 
   // 地球轨迹、城市卡片等外部入口改变 Selection 时，终止正在进行的回放。

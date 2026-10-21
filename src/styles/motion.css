@@ -1,0 +1,202 @@
+:root {
+  color-scheme: dark;
+  --rg-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --rg-ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --rg-duration-fast: 180ms;
+  --rg-duration-base: 320ms;
+  --rg-duration-slow: 720ms;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background: #02030a;
+}
+
+button,
+[role='button'],
+input[type='range'] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(button, [role='button'], a, input, select, textarea):focus-visible {
+  outline: 2px solid rgb(165 243 252 / 0.78);
+  outline-offset: 3px;
+}
+
+/* App 入场：标题、主图区和时间轴按叙事顺序错峰浮现 */
+.rg-app-reveal {
+  animation: rg-app-reveal var(--rg-duration-slow) var(--rg-ease-out) both;
+}
+@keyframes rg-app-reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 卡片内部条目错峰上浮 */
+.rg-stagger-item {
+  animation: rg-stagger-item 420ms var(--rg-ease-out) both;
+  animation-delay: calc(70ms + var(--rg-index, 0) * 42ms);
+}
+@keyframes rg-stagger-item {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 7px, 0) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 时间轴节点：入场错峰 + 明确过渡属性 */
+.rg-film-node {
+  transition:
+    transform 300ms var(--rg-ease-out),
+    border-color 300ms ease,
+    background-color 300ms ease,
+    box-shadow 300ms ease;
+  animation: rg-film-node-in 480ms var(--rg-ease-out) both;
+  animation-delay: calc(var(--rg-index, 0) * 34ms);
+}
+
+.rg-film-node::before {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 28%,
+    rgb(165 243 252 / 0.08) 48%,
+    transparent 68%
+  );
+  content: '';
+  opacity: 0;
+  transform: translateX(-42%);
+  transition:
+    opacity 300ms ease,
+    transform 620ms var(--rg-ease-soft);
+  pointer-events: none;
+}
+
+.rg-film-node[aria-pressed='true']::before,
+.rg-film-node:hover::before {
+  opacity: 1;
+  transform: translateX(42%);
+}
+
+@keyframes rg-film-node-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+}
+
+/* Lightbox：遮罩、相机和照片分层过渡 */
+.rg-lightbox {
+  animation: rg-lightbox-in 220ms ease-out both;
+}
+.rg-lightbox-photo {
+  animation: rg-lightbox-photo-in 340ms var(--rg-ease-out) both;
+}
+.rg-lightbox-out {
+  animation: rg-lightbox-out 180ms ease-in both;
+}
+.rg-lightbox-photo-out {
+  animation: rg-lightbox-photo-out 180ms ease-in both;
+}
+
+@keyframes rg-lightbox-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rg-lightbox-photo-in {
+  from {
+    opacity: 0;
+    transform: scale(0.965) translateY(8px);
+  }
+}
+
+@keyframes rg-lightbox-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes rg-lightbox-photo-out {
+  to {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+/* 浮层退场 */
+.rg-panel-out {
+  animation: rg-panel-out 160ms ease-in both;
+  pointer-events: none;
+}
+@keyframes rg-panel-out {
+  to {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.985);
+  }
+}
+
+/* 城市点脉冲改为可统一下降级的 class */
+.rg-ping-ring {
+  animation: rg-ping 1.8s ease-out infinite;
+}
+.rg-ping-ring-delayed {
+  animation-delay: 0.9s;
+}
+.rg-region-ping {
+  animation: rg-ping 1.1s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-app-reveal,
+  .rg-stagger-item,
+  .rg-film-node,
+  .rg-lightbox,
+  .rg-lightbox-photo,
+  .rg-loader-out,
+  .rg-panel-out,
+  .rg-hint,
+  .rg-locating,
+  .rg-loader-ring,
+  .rg-loader-orbit,
+  .rg-loader-core,
+  .rg-loader-dot,
+  .rg-ping-ring,
+  .rg-region-ping {
+    animation: none;
+  }
+
+  .rg-locating::after {
+    animation: none;
+  }
+
+  .rg-film-node::before {
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

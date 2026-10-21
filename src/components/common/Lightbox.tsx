@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 export interface LightboxPhoto {
   url: string
@@ -21,23 +21,34 @@ interface Props {
  */
 export default function Lightbox({ photos, index, onClose, onIndexChange }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null)
+  const closeTimerRef = useRef<number | null>(null)
+  const [closing, setClosing] = useState(false)
   const photo = photos[index]
   const total = photos.length
 
-  const go = (delta: number) => {
+  const go = useCallback((delta: number) => {
     if (total <= 1) return
     onIndexChange((index + delta + total) % total)
-  }
+  }, [index, onIndexChange, total])
+
+  const requestClose = useCallback(() => {
+    if (closing) return
+    setClosing(true)
+    closeTimerRef.current = window.setTimeout(onClose, 180)
+  }, [closing, onClose])
 
   useEffect(() => {
     closeRef.current?.focus()
+    return () => {
+      if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current)
+    }
   }, [])
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
-        onClose()
+        requestClose()
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault()
         go(-1)
@@ -48,7 +59,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }: Prop
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  })
+  }, [go, requestClose])
 
   if (!photo) return null
 
@@ -57,8 +68,10 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }: Prop
       role="dialog"
       aria-modal="true"
       aria-label={photo.caption || '照片浏览'}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 p-6 backdrop-blur-sm"
-      onClick={onClose}
+      className={`rg-lightbox fixed inset-0 z-50 flex flex-col items-center justify-center overscroll-contain bg-black/80 p-3 backdrop-blur-sm sm:p-6 ${
+        closing ? 'rg-lightbox-out' : ''
+      }`}
+      onClick={requestClose}
     >
       <div
         className="relative flex max-h-full max-w-5xl flex-col items-center"
@@ -68,10 +81,18 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }: Prop
           key={photo.url}
           src={photo.url}
           alt={photo.caption || '旅行照片'}
-          className="max-h-[76vh] max-w-[86vw] rounded-xl object-contain shadow-[0_20px_80px_rgba(0,0,0,.6)]"
+          width={1200}
+          height={800}
+          decoding="async"
+          className={`rg-lightbox-photo max-h-[76vh] max-w-[86vw] rounded-xl object-contain shadow-[0_20px_80px_rgba(0,0,0,.6)] ${
+            closing ? 'rg-lightbox-photo-out' : ''
+          }`}
         />
 
-        <div className="mt-4 flex min-h-10 flex-col items-center gap-1 text-center">
+        <div
+          aria-live="polite"
+          className="mt-4 flex min-h-10 flex-col items-center gap-1 text-center"
+        >
           {photo.caption && (
             <p className="text-sm tracking-wide text-white/90">{photo.caption}</p>
           )}
@@ -89,7 +110,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }: Prop
           ref={closeRef}
           type="button"
           aria-label="关闭"
-          onClick={onClose}
+          onClick={requestClose}
           className="absolute -right-2 -top-2 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-black/60 text-lg text-white/75 backdrop-blur-md transition hover:border-white/30 hover:text-white"
         >
           ×

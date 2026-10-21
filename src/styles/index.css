@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import './loading.css';
+@import './motion.css';
 
 /* 星点缓慢闪烁：基础亮度由内联 --rg-star-o 给出（各星亮度不一） */
 @keyframes rg-twinkle {

@@ -17,6 +17,8 @@ export default function GlobeFeedback({
       {region && (
         <div
           key={`${region.lat.toFixed(2)},${region.lng.toFixed(2)}`}
+          role="status"
+          aria-live="polite"
           className="rg-hud pointer-events-auto absolute left-1/2 top-20 -translate-x-1/2"
         >
           <div className="flex items-center gap-3 rounded-2xl border border-white/14 bg-[rgba(8,11,22,.72)] px-5 py-2.5 shadow-[0_4px_24px_rgba(0,0,0,.45)] backdrop-blur-md">
@@ -43,7 +45,7 @@ export default function GlobeFeedback({
 
       {/* 反查进行中的即时反馈（数据已预取，通常只是一瞬） */}
       {locating && (
-        <div className="pointer-events-none absolute left-1/2 top-36 -translate-x-1/2 animate-pulse rounded-full border border-white/15 bg-black/50 px-4 py-1.5 text-xs tracking-widest text-white/70 backdrop-blur-md">
+        <div className="rg-locating pointer-events-none" role="status" aria-live="polite">
           定位中…
         </div>
       )}

@@ -1,4 +1,4 @@
-import type { Ref } from 'react'
+import type { CSSProperties, Ref } from 'react'
 
 export interface TimelineItem {
   date: string
@@ -35,7 +35,8 @@ export default function TimelineNode({
       aria-pressed={active}
       aria-label={`${item.date} ${item.headline}`}
       onClick={onSelect}
-      className={`rg-film-node group relative flex h-[76px] w-[184px] shrink-0 snap-center items-center gap-2.5 overflow-hidden rounded-lg border px-3 text-left transition-all duration-300 ${
+      style={{ '--rg-index': index } as CSSProperties}
+      className={`rg-film-node group relative flex h-[76px] w-[184px] shrink-0 snap-center items-center gap-2.5 overflow-hidden rounded-lg border px-3 text-left ${
         active
           ? 'scale-[1.04] border-cyan-300/55 bg-cyan-300/12 shadow-[0_0_24px_rgba(103,232,249,.14)]'
           : 'border-white/10 bg-[rgba(7,11,22,.76)] hover:-translate-y-0.5 hover:border-white/22 hover:bg-[rgba(15,22,38,.9)]'
@@ -52,7 +53,10 @@ export default function TimelineNode({
           <img
             src={item.thumbnailUrl}
             alt={item.thumbnailAlt ?? ''}
+            width={44}
+            height={44}
             loading="lazy"
+            decoding="async"
             draggable={false}
             className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
           />

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import Starfield from '@/components/globe/Starfield'
+import GlobeLoader from '@/components/common/GlobeLoader'
 import type { PickedRegion } from '@/components/globe/pickedRegion'
 import CityCard from '@/components/city/CityCard'
 import HeroPhoto from '@/components/hero/HeroPhoto'
@@ -38,6 +39,7 @@ export default function App() {
   // 选择行程时递增，让同一条轨迹也能重新播放载具动效
   const [tripPlaybackSignal, setTripPlaybackSignal] = useState(0)
   const [replayRuntime, setReplayRuntime] = useState<ReplayRuntime | null>(null)
+  const [globeReady, setGlobeReady] = useState(false)
 
   const focusPoint = useMemo(() => {
     if (!data || selection.kind !== 'trip') return null
@@ -115,45 +117,62 @@ export default function App() {
   }, [])
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-black font-sans text-white select-none">
+    <div className="relative h-[100svh] w-screen overflow-hidden bg-black font-sans text-white select-none">
       <Starfield />
-      <Suspense fallback={null}>
-        <TravelGlobe
-          litCities={litCities}
-          tracks={tracks}
-          selectedCityId={cardCityId}
-          selectedTripId={selection.kind === 'trip' ? selection.tripId : null}
-          focusPoint={focusPoint}
-          tripPlaybackSignal={tripPlaybackSignal}
-          replayRuntime={replayRuntime}
-          resetSignal={resetSignal}
-          onSelectCity={handleSelectCity}
-          onSelectTrip={handleSelectTrip}
-          region={region}
-          onPick={handlePickRegion}
-        />
-      </Suspense>
+      <main
+        id="travel-map-main"
+        aria-label="旅行足迹地图"
+        className="absolute inset-0"
+      >
+        <Suspense fallback={null}>
+          <TravelGlobe
+            litCities={litCities}
+            tracks={tracks}
+            selectedCityId={cardCityId}
+            selectedTripId={selection.kind === 'trip' ? selection.tripId : null}
+            focusPoint={focusPoint}
+            tripPlaybackSignal={tripPlaybackSignal}
+            replayRuntime={replayRuntime}
+            resetSignal={resetSignal}
+            onReady={() => setGlobeReady(true)}
+            onSelectCity={handleSelectCity}
+            onSelectTrip={handleSelectTrip}
+            region={region}
+            onPick={handlePickRegion}
+          />
+        </Suspense>
+      </main>
+      <GlobeLoader ready={globeReady} />
 
       {/* 悬浮 UI 层 */}
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between">
         {/* 顶栏：标题 | 统计 · 模式切换 */}
-        <header className="flex items-center justify-between px-6 py-4">
-          <h1 className="text-sm font-medium tracking-[0.3em] text-white/80">
+        <header
+          className="rg-app-reveal flex items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4"
+          style={{ animationDelay: '100ms' }}
+        >
+          <h1 className="whitespace-nowrap text-xs font-medium tracking-[0.18em] text-white/80 sm:text-sm sm:tracking-[0.3em]">
             我的旅行足迹
           </h1>
-          <div className="flex items-center gap-3 text-xs text-white/50">
+          <div className="flex items-center gap-2 text-xs text-white/50 sm:gap-3">
             {data && <PhotoGrouping data={data} />}
             <StatsPanel stats={stats} />
           </div>
         </header>
 
         {/* 主图区占位（阶段 4 填充） */}
-        <div className="flex flex-1 items-start justify-end px-6 py-2">
+        <div
+          className="rg-app-reveal flex flex-1 items-start justify-end px-4 py-2 sm:px-6"
+          style={{ animationDelay: '220ms' }}
+        >
           {data && <HeroPhoto data={data} selection={selection} onExpand={resetToOverview} />}
         </div>
 
         {/* 时间轴胶片条占位（阶段 4 填充） */}
-        <footer className="px-6 pb-5">
+        <footer
+          className="rg-app-reveal px-3 pb-3 sm:px-6 sm:pb-5"
+          style={{ animationDelay: '320ms' }}
+        >
           {data && (
             <Timeline
               data={data}
@@ -169,7 +188,7 @@ export default function App() {
 
       {/* 城市卡片：地球左侧，不遮挡主视区 */}
       {data && cardCityId && (
-        <div className="pointer-events-none absolute bottom-40 left-0 top-0 z-20 flex items-center px-6">
+        <div className="pointer-events-none absolute bottom-40 left-0 top-0 z-20 flex items-center px-3 sm:px-6">
           <CityCard
             data={data}
             cityId={cardCityId}
@@ -182,7 +201,7 @@ export default function App() {
 
       {/* 全局模式引导 */}
       {!region && !cardCityId && selection.kind === 'none' && (
-        <div className="pointer-events-none absolute bottom-32 left-1/2 -translate-x-1/2 animate-pulse rounded-full border border-white/10 bg-black/40 px-5 py-2 text-xs tracking-[0.2em] text-white/55 backdrop-blur-md">
+        <div className="rg-hint pointer-events-none absolute bottom-48 left-1/2 max-w-[calc(100vw-2rem)] whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-5 py-2 text-center text-xs tracking-[0.2em] text-white/55 backdrop-blur-md">
           点击地球任意位置，查看这里是哪里
         </div>
       )}

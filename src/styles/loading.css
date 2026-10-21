@@ -1,0 +1,183 @@
+/* 地球加载占位 */
+.rg-loader-orb {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 34% 30%, rgb(103 232 249 / 0.2), transparent 26%),
+    radial-gradient(circle at 62% 70%, rgb(37 99 235 / 0.22), transparent 42%),
+    radial-gradient(circle at 46% 44%, #17294f 0%, #081226 56%, #020611 100%);
+  box-shadow:
+    inset -12px -10px 24px rgb(0 0 0 / 0.62),
+    inset 7px 5px 16px rgb(125 211 252 / 0.08),
+    0 0 42px rgb(56 189 248 / 0.14);
+}
+
+.rg-loader-ring,
+.rg-loader-orbit {
+  position: absolute;
+  inset: -9px;
+  border-radius: 999px;
+  border: 1px solid rgb(125 211 252 / 0.24);
+}
+
+.rg-loader-ring {
+  border-left-color: rgb(165 243 252 / 0.78);
+  border-top-color: rgb(147 197 253 / 0.52);
+  animation: rg-loader-spin 2.4s linear infinite;
+}
+
+.rg-loader-orbit {
+  inset: -18px;
+  border-style: dashed;
+  border-color: rgb(255 255 255 / 0.12);
+  animation: rg-loader-spin 7s linear infinite reverse;
+}
+
+.rg-loader-core {
+  position: absolute;
+  top: 47%;
+  left: 47%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #a5f3fc;
+  box-shadow: 0 0 12px 3px rgb(103 232 249 / 0.65);
+  animation: rg-loader-pulse 1.6s ease-in-out infinite;
+}
+
+.rg-loader-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgb(165 243 252 / 0.62);
+  animation: rg-loader-dot 1.2s ease-in-out infinite;
+}
+
+.rg-loader-dot:nth-child(2) {
+  animation-delay: 140ms;
+}
+
+.rg-loader-dot:nth-child(3) {
+  animation-delay: 280ms;
+}
+
+.rg-loader-out {
+  animation: rg-loader-out 420ms var(--rg-ease-out) both;
+}
+
+@keyframes rg-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rg-loader-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes rg-loader-dot {
+  0%,
+  100% {
+    opacity: 0.24;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes rg-loader-out {
+  to {
+    opacity: 0;
+    transform: scale(1.018);
+  }
+}
+
+/* 地名反查中的扫描反馈 */
+.rg-locating {
+  position: absolute;
+  top: 8.5rem;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 999px;
+  background: rgb(5 8 17 / 0.6);
+  color: rgb(255 255 255 / 0.68);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  transform: translateX(-50%);
+  backdrop-filter: blur(10px);
+  animation: rg-locating-in 220ms var(--rg-ease-out) both;
+}
+
+.rg-locating::before {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #a5f3fc;
+  content: '';
+  box-shadow: 0 0 10px rgb(103 232 249 / 0.55);
+}
+
+.rg-locating::after {
+  position: absolute;
+  top: 50%;
+  left: 17px;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border: 1px solid rgb(103 232 249 / 0.65);
+  border-radius: 999px;
+  content: '';
+  animation: rg-locating-scan 1.3s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes rg-locating-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -5px);
+  }
+}
+
+@keyframes rg-locating-scan {
+  from {
+    opacity: 0.7;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.8);
+  }
+}
+
+/* 底部引导：缓慢漂浮，不再使用通用 pulse */
+.rg-hint {
+  transform: translateX(-50%);
+  animation: rg-hint 4.8s ease-in-out infinite;
+}
+@keyframes rg-hint {
+  0%,
+  100% {
+    opacity: 0.62;
+    transform: translate(-50%, 0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translate(-50%, -4px);
+  }
+}

@@ -128,7 +128,7 @@ export default function PhotoGroupingDialog({ data, onClose }: Props) {
           </button>
         </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4 rg-scroll">
+        <div className="rg-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-4">
           <div
             data-photo-dropzone
             onDragEnter={(event) => {
@@ -192,12 +192,23 @@ export default function PhotoGroupingDialog({ data, onClose }: Props) {
           </div>
 
           {photos.scanning && (
-            <div className="mt-3">
+            <div
+              role="status"
+              aria-live="polite"
+              className="mt-3"
+            >
               <div className="mb-1 flex justify-between text-[9px] text-white/35">
                 <span>正在读取 EXIF</span>
                 <span>{Math.round(photos.progress * 100)}%</span>
               </div>
-              <div className="h-1 overflow-hidden rounded-full bg-white/8">
+              <div
+                role="progressbar"
+                aria-label="照片 EXIF 读取进度"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(photos.progress * 100)}
+                className="h-1 overflow-hidden rounded-full bg-white/8"
+              >
                 <div
                   className="h-full rounded-full bg-cyan-300/70 transition-[width]"
                   style={{ width: `${photos.progress * 100}%` }}
@@ -207,7 +218,11 @@ export default function PhotoGroupingDialog({ data, onClose }: Props) {
           )}
 
           {photos.notice && !photos.scanning && (
-            <p className="mt-3 rounded-lg border border-white/8 bg-white/3 px-3 py-2 text-[10px] text-white/42">
+            <p
+              role="status"
+              aria-live="polite"
+              className="mt-3 rounded-lg border border-white/8 bg-white/3 px-3 py-2 text-[10px] text-white/42"
+            >
               {photos.notice}
             </p>
           )}

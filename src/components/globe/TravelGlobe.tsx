@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Globe, { type GlobeMethods } from 'react-globe.gl'
 import { reverseGeocode, formatLatLng, type GeoHit } from '@/lib/geoLookup'
-import type { LitCity } from '@/lib/derive'
-import type { Tracks } from '@/lib/tracks'
-import type { ReplayRuntime } from '@/lib/replay'
+import type { TravelGlobeProps } from '@/components/globe/TravelGlobe.types'
 import { useGlobeMarkers } from '@/components/globe/hooks/useGlobeMarkers'
 import { useContainerSize } from '@/components/globe/hooks/useContainerSize'
 import { useGlobeControls } from '@/components/globe/hooks/useGlobeControls'
@@ -14,46 +12,17 @@ import { useTrackPresentation } from '@/components/globe/hooks/useTrackPresentat
 import { useVehiclePlayback } from '@/components/globe/hooks/useVehiclePlayback'
 import VehicleOverlay from '@/components/globe/VehicleOverlay'
 import GlobeFeedback from '@/components/globe/GlobeFeedback'
-import type { PickedRegion } from '@/components/globe/pickedRegion'
 import {
   buildCityMarker,
   buildRegionDot,
   type GlobeMarker,
 } from '@/components/globe/cityMarkers'
-
-/** 初始相机：斜俯视东亚 */
-const INITIAL_POV = { lat: 28, lng: 108, altitude: 2.3 }
-/** 闲置多久后恢复自转（ms） */
-const RESUME_AFTER_IDLE = 10_000
-/** 相机飞行时长（ms） */
-const FLIGHT_MS = 800
-/** 相机高度低于该值时显示城市名称（再远只留点，避免密集） */
-const LABEL_ALT_THRESHOLD = 2.6
-interface Props {
-  /** 已点亮城市（由 trips.json 推导） */
-  litCities: LitCity[]
-  /** 行程轨迹（由 trips.json 推导） */
-  tracks: Tracks
-  /** 当前高亮城市（卡片打开或时间轴选中时） */
-  selectedCityId: string | null
-  /** 当前选中的行程（轨迹保持高亮，其余轨迹/城市淡出） */
-  selectedTripId: string | null
-  /** 行程选中时的轨迹取景点；visit/city 由 selectedCityId 聚焦 */
-  focusPoint: { lat: number; lng: number } | null
-  /** 每次选择行程递增，用于重复播放同一条轨迹的载具动效 */
-  tripPlaybackSignal: number
-  /** 时间轴回放状态；非 idle 时轨迹按已发生范围显隐 */
-  replayRuntime: ReplayRuntime | null
-  /** 返回总览时的复位信号 */
-  resetSignal: number
-  /** 城市点击（选中城市，弹出卡片）；null 表示取消 */
-  onSelectCity: (cityId: string | null) => void
-  /** 轨迹点击（选中 trip） */
-  onSelectTrip: (tripId: string) => void
-  /** 反查区域（点击空白处） */
-  region: PickedRegion | null
-  onPick: (region: PickedRegion | null) => void
-}
+import {
+  FLIGHT_MS,
+  INITIAL_POV,
+  LABEL_ALT_THRESHOLD,
+  RESUME_AFTER_IDLE,
+} from '@/components/globe/globeConfig'
 
 export default function TravelGlobe({
   litCities,
@@ -64,11 +33,12 @@ export default function TravelGlobe({
   tripPlaybackSignal,
   replayRuntime,
   resetSignal,
+  onReady,
   onSelectCity,
   onSelectTrip,
   region,
   onPick,
-}: Props) {
+}: TravelGlobeProps) {
   const globeRef = useRef<GlobeMethods | undefined>(undefined)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const onPickRef = useRef(onPick)
@@ -252,6 +222,7 @@ export default function TravelGlobe({
           atmosphereAltitude={ATMOSPHERE_ALTITUDE}
           onGlobeReady={() => {
             globeRef.current?.pointOfView(INITIAL_POV, 0)
+            onReady?.()
             // 仅 dev：?pick=lat,lng 自动反查，便于调试/截图
             if (import.meta.env.DEV) {
               const m = new URLSearchParams(window.location.search).get('pick')

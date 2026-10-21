@@ -96,13 +96,17 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
   }
 
   return (
-    <div className="rg-hero-in pointer-events-auto w-[302px] overflow-hidden rounded-xl border border-white/12 bg-[rgba(5,8,17,.74)] shadow-[0_20px_70px_rgba(0,0,0,.5)] backdrop-blur-xl">
+    <div className="rg-hero-in pointer-events-auto w-[min(302px,calc(100vw-2rem))] overflow-hidden rounded-xl border border-white/12 bg-[rgba(5,8,17,.74)] shadow-[0_20px_70px_rgba(0,0,0,.5)] backdrop-blur-xl">
       <div className="relative">
         {content.photo ? (
           <img
             key={content.photo.motionKey}
             src={content.photo.url}
             alt={content.photo.alt ?? ''}
+            width={302}
+            height={132}
+            decoding="async"
+            fetchPriority="high"
             className="rg-ken-burns h-[132px] w-full object-cover"
           />
         ) : (

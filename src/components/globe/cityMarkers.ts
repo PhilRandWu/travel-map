@@ -64,10 +64,10 @@ export function buildCityMarker(d: CityMarkerDatum, handlers: CityHandlers): HTM
       display:flex;align-items:center;justify-content:center;cursor:pointer;">
       <span style="position:absolute;left:50%;top:50%;width:${size}px;height:${size}px;
         margin:${-size / 2}px 0 0 ${-size / 2}px;border-radius:50%;
-        border:1.5px solid ${core};animation:rg-ping 1.8s ease-out infinite;"></span>
+        border:1.5px solid ${core};" class="rg-ping-ring"></span>
       <span style="position:absolute;left:50%;top:50%;width:${size}px;height:${size}px;
         margin:${-size / 2}px 0 0 ${-size / 2}px;border-radius:50%;
-        border:1.5px solid ${core};animation:rg-ping 1.8s ease-out .9s infinite;"></span>
+        border:1.5px solid ${core};" class="rg-ping-ring rg-ping-ring-delayed"></span>
       ${d.selected ? `
       <span style="position:absolute;left:50%;top:50%;width:${size + 10}px;height:${size + 10}px;
         margin:${-(size + 10) / 2}px 0 0 ${-(size + 10) / 2}px;border-radius:50%;
@@ -107,7 +107,7 @@ export function buildRegionDot(d: RegionMarkerDatum): HTMLElement {
   const color = d.ocean ? 'rgba(56,189,248,.95)' : 'rgba(252,211,77,.95)'
   el.style.cssText = 'transform:translate(-50%,-50%);width:12px;height:12px;pointer-events:none;'
   el.innerHTML = `
-    <span style="position:absolute;inset:0;border-radius:50%;border:1.5px solid ${color};animation:rg-ping 1.1s ease-out infinite;"></span>
+    <span class="rg-region-ping" style="position:absolute;inset:0;border-radius:50%;border:1.5px solid ${color};"></span>
     <span style="position:absolute;inset:3px;border-radius:50%;background:${color};box-shadow:0 0 8px 2px ${color};"></span>
   `
   return el

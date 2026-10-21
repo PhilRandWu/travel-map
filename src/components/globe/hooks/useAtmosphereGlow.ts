@@ -63,7 +63,7 @@ export function useAtmosphereGlow(
         raf = requestAnimationFrame(tick)
         return
       }
-      if (material && baseColor) {
+      if (material && baseColor && !document.hidden) {
         const target = hovering || cityHoveringRef.current ? 1 : 0
         if (Math.abs(wake - target) > 0.0005) wake += (target - wake) * WAKE_LERP
 

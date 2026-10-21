@@ -21,11 +21,18 @@ export function useAutoRotate(
     let raf = 0
     let last = performance.now()
     const tick = (now: number) => {
-      const dt = now - last
+      // 页面隐藏/标签页节流后，避免恢复时一次补上过大的角度
+      const dt = Math.min(now - last, 64)
       last = now
       const globe = globeRef.current
       const idle = now - lastInteractRef.current > resumeAfterIdle
-      if (globe && idle && !draggingRef.current && !selectedCityIdRef.current) {
+      if (
+        !document.hidden
+        && globe
+        && idle
+        && !draggingRef.current
+        && !selectedCityIdRef.current
+      ) {
         const pov = globe.pointOfView()
         globe.pointOfView({ ...pov, lng: pov.lng + dt * ROTATE_SPEED }, 0)
       }

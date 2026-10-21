@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import type { Selection, TravelData } from '@/types'
 import { resolveCities } from '@/lib/cities'
 import { getCityTrips, getCityVisits, photoThumbUrl, photoUrl } from '@/lib/derive'
@@ -59,7 +59,7 @@ export default function CityCard({
 
   return (
     <>
-      <aside className="rg-card-in pointer-events-auto flex max-h-[min(calc(100vh-12rem),660px)] w-[344px] flex-col overflow-hidden rounded-2xl border border-white/12 bg-[rgba(8,11,22,.78)] shadow-[0_18px_60px_rgba(0,0,0,.55)] backdrop-blur-xl">
+      <aside className="rg-card-in pointer-events-auto flex max-h-[min(calc(100svh-12rem),660px)] w-[min(344px,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-2xl border border-white/12 bg-[rgba(8,11,22,.78)] shadow-[0_18px_60px_rgba(0,0,0,.55)] backdrop-blur-xl">
         {/* 头部 */}
         <div className="flex items-start justify-between gap-3 border-b border-white/8 px-4 py-3.5">
           <div>
@@ -96,7 +96,8 @@ export default function CityCard({
               return (
                 <div
                   key={v.id}
-                  className="rounded-xl border border-white/8 bg-white/[.03] p-3"
+                  className="rg-stagger-item rounded-xl border border-white/8 bg-white/[.03] p-3"
+                  style={{ '--rg-index': i } as CSSProperties}
                 >
                   <div className="flex items-baseline justify-between gap-2">
                     <span className="text-xs tracking-wide text-white/75">
@@ -124,7 +125,10 @@ export default function CityCard({
                           <img
                             src={photoThumbUrl(v.id, p.file)}
                             alt={p.caption || '旅行照片'}
+                            width={96}
+                            height={72}
                             loading="lazy"
+                            decoding="async"
                             className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                           />
                         </button>
@@ -141,7 +145,7 @@ export default function CityCard({
             <>
               <SectionTitle className="mt-4">相关行程</SectionTitle>
               <div className="space-y-1.5">
-                {trips.map((t) => {
+                {trips.map((t, index) => {
                   const route = [t.from, ...t.waypoints, t.to]
                     .map((id) => cities.get(id)?.name ?? id)
                     .join(' → ')
@@ -151,7 +155,8 @@ export default function CityCard({
                       key={t.id}
                       type="button"
                       onClick={() => onSelectTrip(t.id)}
-                      className={`flex w-full cursor-pointer items-center gap-2.5 rounded-xl border px-2.5 py-2 text-left transition ${
+                      style={{ '--rg-index': index } as CSSProperties}
+                      className={`rg-stagger-item flex w-full cursor-pointer items-center gap-2.5 rounded-xl border px-2.5 py-2 text-left transition ${
                         selected
                           ? 'border-cyan-300/40 bg-cyan-300/10'
                           : 'border-white/8 bg-white/[.03] hover:bg-white/[.07]'
