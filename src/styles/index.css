@@ -105,8 +105,8 @@
   top: 0;
   left: 0;
   display: grid;
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
   place-items: center;
   transform: translate(-50%, -50%) rotate(var(--rg-vehicle-angle, 0deg));
   transform-origin: center;
@@ -115,8 +115,13 @@
 .rg-vehicle-icon {
   position: relative;
   z-index: 1;
-  width: 32px;
-  height: 32px;
+  display: block;
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 4px rgb(0 0 0 / 0.38));
+  pointer-events: none;
+  user-select: none;
 }
 
 .rg-vehicle-halo {
@@ -144,7 +149,7 @@
 
 .rg-vehicle-label {
   position: absolute;
-  top: 27px;
+  top: 31px;
   left: 0;
   max-width: min(240px, 60vw);
   overflow: hidden;
@@ -161,6 +166,44 @@
   white-space: nowrap;
   transform: translateX(-50%);
   backdrop-filter: blur(8px);
+}
+
+/* 回放进度条：细线 + 青色已播放段 */
+.rg-replay-range {
+  width: 100%;
+  height: 3px;
+  appearance: none;
+  border-radius: 999px;
+  outline: none;
+  background: linear-gradient(
+    90deg,
+    rgb(103 232 249 / 0.82) 0 var(--rg-replay-progress),
+    rgb(255 255 255 / 0.13) var(--rg-replay-progress) 100%
+  );
+  cursor: pointer;
+}
+
+.rg-replay-range::-webkit-slider-thumb {
+  width: 10px;
+  height: 10px;
+  appearance: none;
+  border: 1px solid rgb(207 250 254 / 0.8);
+  border-radius: 999px;
+  background: #a5f3fc;
+  box-shadow: 0 0 8px rgb(103 232 249 / 0.7);
+}
+
+.rg-replay-range::-moz-range-thumb {
+  width: 9px;
+  height: 9px;
+  border: 1px solid rgb(207 250 254 / 0.8);
+  border-radius: 999px;
+  background: #a5f3fc;
+  box-shadow: 0 0 8px rgb(103 232 249 / 0.7);
+}
+
+.rg-replay-range:focus-visible {
+  box-shadow: 0 0 0 2px rgb(103 232 249 / 0.2);
 }
 
 /* 卡片内滚动条：细、低调 */

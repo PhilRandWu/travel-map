@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="flight-body" x1="21" y1="48" x2="108" y2="82" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".28" stop-color="#EAF8FF"/>
+      <stop offset=".68" stop-color="#B7D8EF"/>
+      <stop offset="1" stop-color="#6D9CC5"/>
+    </linearGradient>
+    <linearGradient id="flight-wing" x1="38" y1="16" x2="78" y2="68" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7FDFF"/>
+      <stop offset=".48" stop-color="#C6E3F5"/>
+      <stop offset="1" stop-color="#6C9BC3"/>
+    </linearGradient>
+    <linearGradient id="flight-wing-lower" x1="39" y1="112" x2="79" y2="63" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5B8DB8"/>
+      <stop offset=".5" stop-color="#AFCFE7"/>
+      <stop offset="1" stop-color="#F4FCFF"/>
+    </linearGradient>
+    <linearGradient id="flight-engine" x1="54" y1="43" x2="77" y2="54" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DDEFFB"/>
+      <stop offset=".45" stop-color="#7AA9CF"/>
+      <stop offset="1" stop-color="#315B7F"/>
+    </linearGradient>
+    <radialGradient id="flight-glass" cx="0" cy="0" r="1" gradientTransform="translate(101 59) rotate(90) scale(17 28)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8CF2FF"/>
+      <stop offset=".36" stop-color="#2B9FD6"/>
+      <stop offset="1" stop-color="#083D66"/>
+    </radialGradient>
+    <linearGradient id="flight-tail" x1="7" y1="32" x2="32" y2="57" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DBF2FF"/>
+      <stop offset=".58" stop-color="#7FB2D8"/>
+      <stop offset="1" stop-color="#3D6F97"/>
+    </linearGradient>
+    <filter id="flight-shadow" x="-32%" y="-25%" width="164%" height="170%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3.2" result="blur"/>
+      <feOffset dy="5" result="offset"/>
+      <feColorMatrix in="offset" type="matrix" values="0 0 0 0 0.02 0 0 0 0 0.08 0 0 0 0 0.15 0 0 0 .46 0" result="shadow"/>
+      <feMerge>
+        <feMergeNode in="shadow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="flight-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="2.3" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#flight-shadow)">
+    <path d="M64 51 40 17c-2-3 1-7 5-6l11 4c4 1 7 4 8 8l12 28Z" fill="url(#flight-wing)" stroke="#E9F8FF" stroke-opacity=".62" stroke-width="1.1"/>
+    <path d="M64 77 40 111c-2 3 1 7 5 6l11-4c4-1 7-4 8-8l12-28Z" fill="url(#flight-wing-lower)" stroke="#6D9EC7" stroke-opacity=".48" stroke-width="1.1"/>
+    <path d="M22 54 8 36c-2-3 1-6 4-5l13 5c3 1 5 4 5 7l1 11Z" fill="url(#flight-tail)" stroke="#E7F7FF" stroke-opacity=".55"/>
+    <path d="M22 74 8 92c-2 3 1 6 4 5l13-5c3-1 5-4 5-7l1-11Z" fill="#4E7FA8" stroke="#A9D0EA" stroke-opacity=".42"/>
+
+    <path d="M10 61c8-7 23-10 37-10h44c14 0 26 6 31 13-5 7-17 13-31 13H47c-14 0-29-3-37-10l4-3Z" fill="url(#flight-body)" stroke="#557F9F" stroke-opacity=".72" stroke-width="1.2"/>
+    <path d="M21 57c18-4 48-4 68-2 11 1 21 4 29 9-8 1-17 1-25 0-25-3-51-3-72 0-3 0-5-3 0-7Z" fill="#FFFFFF" fill-opacity=".42"/>
+    <path d="M43 68h43" stroke="#74B8E1" stroke-width="3.2" stroke-linecap="round" stroke-opacity=".62"/>
+    <path d="M92 54c10 1 20 5 28 10-8 6-18 9-28 10 3-7 3-13 0-20Z" fill="url(#flight-glass)" stroke="#A7F5FF" stroke-opacity=".9" stroke-width="1.4"/>
+    <path d="M97 57c7 1 14 4 18 7-4 1-9 1-13 0-2-3-3-5-5-7Z" fill="#D7FBFF" fill-opacity=".48"/>
+
+    <g fill="#0A3C60" stroke="#A9F2FF" stroke-opacity=".68" stroke-width=".75">
+      <rect x="48" y="61.5" width="6" height="5" rx="2.5"/>
+      <rect x="58" y="61.5" width="6" height="5" rx="2.5"/>
+      <rect x="68" y="61.5" width="6" height="5" rx="2.5"/>
+      <rect x="78" y="61.5" width="6" height="5" rx="2.5"/>
+    </g>
+
+    <path d="M56 47c4-6 15-7 21-1l-3 6H58Z" fill="url(#flight-engine)" stroke="#DDF5FF" stroke-opacity=".58"/>
+    <path d="M56 81c4 6 15 7 21 1l-3-6H58Z" fill="#4B7EA7" stroke="#A8CEE6" stroke-opacity=".45"/>
+    <circle cx="69" cy="49" r="3.4" fill="#163F61" stroke="#A7E9FF" stroke-opacity=".6"/>
+    <circle cx="69" cy="79" r="3.4" fill="#173E5E" stroke="#86B9D9" stroke-opacity=".45"/>
+
+    <path d="m15 61 7 3-7 3" fill="#1E6D9A" opacity=".72"/>
+    <circle cx="119" cy="64" r="2.1" fill="#D7FBFF" filter="url(#flight-glow)"/>
+  </g>
+</svg>

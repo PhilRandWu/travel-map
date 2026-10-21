@@ -13,6 +13,10 @@ interface Props {
 
 const HOLD_MS = 260
 const FADE_MS = 360
+const VEHICLE_ICONS = {
+  flight: '/vehicle-icons/flight-3d.svg',
+  train: '/vehicle-icons/train-3d.svg',
+} as const
 
 function isPointVisible(
   globe: GlobeMethods,
@@ -43,6 +47,13 @@ function screenPoint(
 export default function VehicleOverlay({ playback, globeRef }: Props) {
   const hostRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    for (const source of Object.values(VEHICLE_ICONS)) {
+      const image = new window.Image()
+      image.src = source
+    }
+  }, [])
 
   useEffect(() => {
     const globe = globeRef.current
@@ -137,8 +148,8 @@ export default function VehicleOverlay({ playback, globeRef }: Props) {
         <div
           className={`rg-vehicle-glyph ${
             isFlight
-              ? 'text-cyan-100 drop-shadow-[0_0_8px_rgba(165,216,255,.9)]'
-              : 'text-amber-200 drop-shadow-[0_0_8px_rgba(251,191,36,.85)]'
+              ? 'drop-shadow-[0_2px_8px_rgba(103,232,249,.5)]'
+              : 'drop-shadow-[0_2px_8px_rgba(251,191,36,.42)]'
           }`}
         >
           <span
@@ -148,44 +159,16 @@ export default function VehicleOverlay({ playback, globeRef }: Props) {
                 : 'bg-amber-300/30 shadow-[0_0_22px_10px_rgba(251,191,36,.2)]'
             }`}
           />
-          <VehicleGlyph type={playback.type} />
+          <img
+            src={VEHICLE_ICONS[playback.type]}
+            alt=""
+            draggable={false}
+            data-vehicle-icon
+            className="rg-vehicle-icon"
+          />
         </div>
         <span className="rg-vehicle-label">{playback.label}</span>
       </div>
     </div>
-  )
-}
-
-function VehicleGlyph({ type }: { type: VehiclePlayback['type'] }) {
-  if (type === 'flight') {
-    return (
-      <svg viewBox="0 0 64 64" className="rg-vehicle-icon" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M58 32a4 4 0 0 0-4-4H37.8L27.6 9.2A4.1 4.1 0 0 0 24.1 7h-3.2l4.8 19.1H14.9l-3.6-5.4A3 3 0 0 0 8.8 19H6l2.7 12.7L6 44.7h2.8c1 0 1.9-.5 2.5-1.4l3.6-5.4h10.8L20.9 57h3.2c1.5 0 2.8-.8 3.5-2.2l10.2-17.8H54a4 4 0 0 0 4-4Z"
-        />
-      </svg>
-    )
-  }
-
-  return (
-    <svg viewBox="0 0 64 64" className="rg-vehicle-icon" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M11 15h33a6 6 0 0 1 6 6v20H17a6 6 0 0 1-6-6V15Zm39 4 8 7v15h-8V19Z"
-      />
-      <rect x="17" y="21" width="11" height="9" rx="2" fill="#07101f" opacity=".82" />
-      <rect x="32" y="21" width="11" height="9" rx="2" fill="#07101f" opacity=".82" />
-      <circle cx="23" cy="43" r="4" fill="#07101f" />
-      <circle cx="46" cy="43" r="4" fill="#07101f" />
-      <path
-        d="M9 51h51M12 57h45"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="3"
-        opacity=".75"
-      />
-    </svg>
   )
 }

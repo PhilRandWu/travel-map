@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="train-body" x1="17" y1="29" x2="106" y2="84" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".3" stop-color="#F2F7FA"/>
+      <stop offset=".66" stop-color="#CBD7DE"/>
+      <stop offset="1" stop-color="#81949F"/>
+    </linearGradient>
+    <linearGradient id="train-skirt" x1="21" y1="66" x2="111" y2="82" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#344B59"/>
+      <stop offset=".56" stop-color="#1E303B"/>
+      <stop offset="1" stop-color="#0C1820"/>
+    </linearGradient>
+    <linearGradient id="train-gold" x1="19" y1="61" x2="117" y2="72" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE69A"/>
+      <stop offset=".46" stop-color="#F6B948"/>
+      <stop offset="1" stop-color="#B87518"/>
+    </linearGradient>
+    <linearGradient id="train-glass" x1="95" y1="33" x2="118" y2="57" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#66D9ED"/>
+      <stop offset=".32" stop-color="#1B6D8B"/>
+      <stop offset="1" stop-color="#071C2B"/>
+    </linearGradient>
+    <linearGradient id="train-window" x1="30" y1="37" x2="30" y2="53" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4DC0D9"/>
+      <stop offset=".35" stop-color="#15516B"/>
+      <stop offset="1" stop-color="#071C2A"/>
+    </linearGradient>
+    <linearGradient id="train-rail" x1="17" y1="94" x2="114" y2="103" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5C7380"/>
+      <stop offset=".54" stop-color="#C4D1D7"/>
+      <stop offset="1" stop-color="#657985"/>
+    </linearGradient>
+    <filter id="train-shadow" x="-30%" y="-22%" width="160%" height="165%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+      <feOffset dy="5" result="offset"/>
+      <feColorMatrix in="offset" type="matrix" values="0 0 0 0 0.01 0 0 0 0 0.05 0 0 0 0 0.08 0 0 0 .5 0" result="shadow"/>
+      <feMerge>
+        <feMergeNode in="shadow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="train-light" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="2.3" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#train-shadow)">
+    <path d="M11 45c5-10 17-16 34-16h38c19 0 34 11 42 30l4 19H54c-24 0-40-7-47-21l4-12Z" fill="url(#train-body)" stroke="#637985" stroke-opacity=".78" stroke-width="1.2"/>
+    <path d="M19 34c11-5 23-7 36-7h30c12 0 23 3 32 10-8 1-17 1-25 0-24-2-48-2-73 1Z" fill="#FFFFFF" fill-opacity=".58"/>
+
+    <g fill="url(#train-window)" stroke="#86E3F2" stroke-opacity=".42" stroke-width=".8">
+      <path d="M29 36h16c3 0 5 2 5 5v10c0 2-2 4-4 4H29c-2 0-4-2-4-4V42c0-3 2-6 4-6Z"/>
+      <path d="M56 36h16c3 0 5 3 5 6v9c0 2-2 4-4 4H56c-2 0-4-2-4-4v-9c0-3 2-6 4-6Z"/>
+      <path d="M82 36h15c3 0 5 3 5 6v5c0 2-2 4-4 4H82c-2 0-4-2-4-4v-5c0-3 2-6 4-6Z"/>
+    </g>
+    <g fill="#B9F7FF" fill-opacity=".46">
+      <path d="M31 40h11l-9 10h-2c-1 0-2-1-2-2v-5c0-1 1-3 2-3Z"/>
+      <path d="M58 40h10l-9 10h-3c-1 0-2-1-2-2v-5c0-1 1-3 4-3Z"/>
+      <path d="M84 40h9l-8 5h-3c-1 0-2-1-2-2v-1c0-1 2-2 4-2Z"/>
+    </g>
+
+    <path d="M92 34c11 2 22 12 30 27l4 9h-18c-3-13-8-26-16-36Z" fill="url(#train-glass)" stroke="#B9F6FF" stroke-opacity=".75" stroke-width="1.2"/>
+    <path d="M99 38c8 5 15 13 20 24l-10-2c-3-9-6-16-10-22Z" fill="#D3FBFF" fill-opacity=".35"/>
+    <path d="M14 61h92c8 0 13 1 17 4v7H17c-5 0-9-3-9-6 0-2 2-5 6-5Z" fill="url(#train-gold)"/>
+    <path d="M17 68h103l4 7H53c-19 0-33-2-43-7Z" fill="url(#train-skirt)" stroke="#4F626D" stroke-opacity=".55"/>
+    <path d="M17 70h101" stroke="#F7D274" stroke-opacity=".7" stroke-width="1.2"/>
+
+    <g fill="#0C1A22" stroke="#546F7C" stroke-width="1.2">
+      <circle cx="32" cy="82" r="6"/>
+      <circle cx="55" cy="82" r="6"/>
+      <circle cx="84" cy="82" r="6"/>
+      <circle cx="107" cy="82" r="6"/>
+    </g>
+    <g fill="#A9B6BD">
+      <circle cx="32" cy="82" r="2.2"/>
+      <circle cx="55" cy="82" r="2.2"/>
+      <circle cx="84" cy="82" r="2.2"/>
+      <circle cx="107" cy="82" r="2.2"/>
+    </g>
+
+    <path d="M12 94h106M17 102h96" fill="none" stroke="url(#train-rail)" stroke-linecap="round" stroke-width="3"/>
+    <g stroke="#E7C26D" stroke-width="2" stroke-linecap="round" opacity=".82">
+      <path d="m22 94 7-9M45 94l7-9M70 94l7-9M95 94l7-9M113 94l5-7"/>
+    </g>
+
+    <ellipse cx="115" cy="58" rx="3.2" ry="2.2" fill="#FFF4B6" filter="url(#train-light)"/>
+    <path d="M13 52c2-6 9-11 19-13" fill="none" stroke="#F6FBFD" stroke-opacity=".72" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

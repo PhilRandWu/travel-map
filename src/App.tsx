@@ -151,6 +151,7 @@ export default function App() {
               nodes={timeline}
               selection={selection}
               onSelect={handleSelectTimelineNode}
+              onFinishPlayback={resetToOverview}
             />
           )}
         </footer>
@@ -158,7 +159,7 @@ export default function App() {
 
       {/* 城市卡片：地球左侧，不遮挡主视区 */}
       {data && cardCityId && (
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-20 flex items-center px-6">
+        <div className="pointer-events-none absolute bottom-40 left-0 top-0 z-20 flex items-center px-6">
           <CityCard
             data={data}
             cityId={cardCityId}

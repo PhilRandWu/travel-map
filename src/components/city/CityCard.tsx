@@ -59,7 +59,7 @@ export default function CityCard({
 
   return (
     <>
-      <aside className="rg-card-in pointer-events-auto flex max-h-[min(74vh,660px)] w-[344px] flex-col overflow-hidden rounded-2xl border border-white/12 bg-[rgba(8,11,22,.78)] shadow-[0_18px_60px_rgba(0,0,0,.55)] backdrop-blur-xl">
+      <aside className="rg-card-in pointer-events-auto flex max-h-[min(calc(100vh-12rem),660px)] w-[344px] flex-col overflow-hidden rounded-2xl border border-white/12 bg-[rgba(8,11,22,.78)] shadow-[0_18px_60px_rgba(0,0,0,.55)] backdrop-blur-xl">
         {/* 头部 */}
         <div className="flex items-start justify-between gap-3 border-b border-white/8 px-4 py-3.5">
           <div>
