@@ -3,11 +3,11 @@ import type { TimelineNode } from '@/lib/derive'
 import {
   getReplayProgress,
   seekReplayPlan,
+  type PlaybackStatus,
   type ReplayPlan,
+  type ReplayPosition,
   type ReplaySpeed,
 } from '@/lib/replay'
-
-export type PlaybackStatus = 'idle' | 'playing' | 'paused'
 
 interface Options {
   plan: ReplayPlan
@@ -32,6 +32,7 @@ export function useTimelinePlayback({
   const [speed, setSpeed] = useState<ReplaySpeed>(1)
   const [progress, setProgress] = useState(0)
   const [activeIndex, setActiveIndex] = useState(-1)
+  const [seekRevision, setSeekRevision] = useState(0)
 
   const planRef = useRef(plan)
   const statusRef = useRef(status)
@@ -88,6 +89,7 @@ export function useTimelinePlayback({
     applyPosition(position)
     callbacksRef.current.onActivate(currentPlan.steps[position.index].node)
     frameTimeRef.current = performance.now()
+    setSeekRevision((revision) => revision + 1)
     if (statusRef.current === 'idle') setStatus('paused')
   }, [applyPosition])
 
@@ -158,12 +160,19 @@ export function useTimelinePlayback({
     }
   }, [status])
 
+  const getPosition = useCallback(
+    (): ReplayPosition => ({ ...positionRef.current }),
+    [],
+  )
+
   return {
     status,
     speed,
     progress,
     activeIndex,
+    seekRevision,
     isPlaying: status === 'playing',
+    getPosition,
     toggle,
     stop,
     seek,

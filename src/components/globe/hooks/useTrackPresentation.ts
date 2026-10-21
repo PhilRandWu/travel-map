@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState, type RefObject } from 'react'
 import type { GlobeProps } from 'react-globe.gl'
 import { getTripCityIds } from '@/lib/derive'
 import type { Tracks } from '@/lib/tracks'
+import { getReplayTrackState, type ReplayRuntime } from '@/lib/replay'
 
 const FLIGHT_COLOR = 'rgba(165, 216, 255, 0.85)'
 const FLIGHT_COLOR_DIM = 'rgba(165, 216, 255, 0.16)'
@@ -41,6 +42,7 @@ type TrackProps = Pick<
 interface Options {
   tracks: Tracks
   selectedTripId: string | null
+  replayRuntime: ReplayRuntime | null
   lastInteractRef: RefObject<number>
   onSelectTripRef: RefObject<(tripId: string) => void>
 }
@@ -52,6 +54,7 @@ const asTrain = (obj: object) => obj as Tracks['trains'][number]
 export function useTrackPresentation({
   tracks,
   selectedTripId,
+  replayRuntime,
   lastInteractRef,
   onSelectTripRef,
 }: Options) {
@@ -60,7 +63,39 @@ export function useTrackPresentation({
     setHoverTripId((prev) => (prev === id ? prev : id))
   }, [])
 
-  const activeTripId = hoverTripId ?? selectedTripId
+  const replaying =
+    replayRuntime !== null
+    && replayRuntime.status !== 'idle'
+    && replayRuntime.activeIndex >= 0
+  const replayTrackState = useMemo(
+    () => (
+      replaying
+        ? getReplayTrackState(replayRuntime.plan, replayRuntime.activeIndex)
+        : null
+    ),
+    [replayRuntime?.activeIndex, replayRuntime?.plan, replaying],
+  )
+  const visibleFlights = useMemo(
+    () => (
+      replayTrackState
+        ? tracks.flights.filter((track) =>
+            replayTrackState.completedTripIds.has(track.trip.id))
+        : tracks.flights
+    ),
+    [replayTrackState, tracks.flights],
+  )
+  const visibleTrains = useMemo(
+    () => (
+      replayTrackState
+        ? tracks.trains.filter((track) =>
+            replayTrackState.completedTripIds.has(track.trip.id))
+        : tracks.trains
+    ),
+    [replayTrackState, tracks.trains],
+  )
+
+  // 回放时已完成轨迹保持常亮；当前行程由载具生长动画绘制。
+  const activeTripId = replaying ? null : hoverTripId ?? selectedTripId
   const activeTrip = useMemo(() => {
     if (!activeTripId) return null
     return (
@@ -85,7 +120,7 @@ export function useTrackPresentation({
   const trackProps = useMemo<TrackProps>(
     () => ({
       // 飞机：高空虚线大圆弧；hover/选中时提亮，其余轨迹淡出。
-      arcsData: tracks.flights,
+      arcsData: visibleFlights,
       arcStartLat: (d) => asFlight(d).startLat,
       arcStartLng: (d) => asFlight(d).startLng,
       arcEndLat: (d) => asFlight(d).endLat,
@@ -105,7 +140,7 @@ export function useTrackPresentation({
       onArcClick: (d: object) => selectTrip(asFlight(d).trip.id),
 
       // 高铁：贴地暖色实线折线。
-      pathsData: tracks.trains,
+      pathsData: visibleTrains,
       pathPoints: (d) => asTrain(d).points,
       pathPointLat: (p) => (p as [number, number])[0],
       pathPointLng: (p) => (p as [number, number])[1],
@@ -120,8 +155,15 @@ export function useTrackPresentation({
       onPathHover: (d: object | null) => hoverTrip(d ? asTrain(d).trip.id : null),
       onPathClick: (d: object) => selectTrip(asTrain(d).trip.id),
     }),
-    [activeTripId, hoverTrip, selectTrip, tracks],
+    [activeTripId, hoverTrip, selectTrip, visibleFlights, visibleTrains],
   )
 
-  return { trackProps, activeCityIds }
+  return {
+    trackProps,
+    activeCityIds,
+    visibleTrackCounts: {
+      flights: visibleFlights.length,
+      trains: visibleTrains.length,
+    },
+  }
 }

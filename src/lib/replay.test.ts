@@ -3,6 +3,8 @@ import data from '@/data/trips.json'
 import { buildTimelineNodes } from '@/lib/derive'
 import {
   buildReplayPlan,
+  getReplayStepProgress,
+  getReplayTrackState,
   getReplayProgress,
   seekReplayPlan,
 } from '@/lib/replay'
@@ -41,5 +43,50 @@ describe('replay seeking', () => {
     const position = seekReplayPlan(plan, 0.42)!
     expect(getReplayProgress(plan, position.index, position.elapsedMs))
       .toBeCloseTo(0.42, 8)
+  })
+})
+
+describe('replay track visibility', () => {
+  it('当前行程只展示此前已完成行程，当前轨迹交给生长动画', () => {
+    const secondTripIndex = plan.steps.findIndex(
+      (step, index) => index > 0 && step.node.kind === 'trip',
+    )
+    const state = getReplayTrackState(plan, secondTripIndex)
+    const currentTripId = plan.steps[secondTripIndex].node.refId
+    const completedTrips = plan.steps
+      .slice(0, secondTripIndex)
+      .filter((step) => step.node.kind === 'trip')
+
+    expect(state.currentTripId).toBe(currentTripId)
+    expect(state.completedTripIds).toEqual(
+      new Set(completedTrips.map((step) => step.node.refId)),
+    )
+    expect(state.completedTripIds.has(currentTripId)).toBe(false)
+    expect(
+      plan.steps.slice(secondTripIndex + 1)
+        .some((step) => state.completedTripIds.has(step.node.refId)),
+    ).toBe(false)
+  })
+
+  it('停在到访节点时，此前行程全部保留', () => {
+    const visitIndex = plan.steps.findIndex((step) => step.node.kind === 'visit')
+    const state = getReplayTrackState(plan, visitIndex)
+    const completedTrips = plan.steps
+      .slice(0, visitIndex)
+      .filter((step) => step.node.kind === 'trip')
+
+    expect(state.currentTripId).toBeNull()
+    expect(state.completedTripIds).toEqual(
+      new Set(completedTrips.map((step) => step.node.refId)),
+    )
+  })
+})
+
+describe('replay step progress', () => {
+  it('把节点内耗时换算为 0–1 进度', () => {
+    const step = plan.steps[0]
+    expect(getReplayStepProgress(plan, 0, 0)).toBe(0)
+    expect(getReplayStepProgress(plan, 0, step.durationMs / 2)).toBeCloseTo(0.5)
+    expect(getReplayStepProgress(plan, 0, step.durationMs * 2)).toBe(1)
   })
 })

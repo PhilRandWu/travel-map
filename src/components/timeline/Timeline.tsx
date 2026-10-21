@@ -6,7 +6,7 @@ import {
   getTimelineSelectionIndex,
   selectionMatchesTimelineNode,
 } from '@/lib/selection'
-import { buildReplayPlan } from '@/lib/replay'
+import { buildReplayPlan, type ReplayRuntime } from '@/lib/replay'
 import TimelineNode from '@/components/timeline/TimelineNode'
 import TimelineControls from '@/components/timeline/TimelineControls'
 import { useTimelinePlayback } from '@/components/timeline/hooks/useTimelinePlayback'
@@ -18,6 +18,7 @@ interface Props {
   selection: Selection
   onSelect: (node: TimelineNodeModel) => void
   onFinishPlayback: () => void
+  onPlaybackRuntimeChange: (runtime: ReplayRuntime) => void
 }
 
 export default function Timeline({
@@ -26,6 +27,7 @@ export default function Timeline({
   selection,
   onSelect,
   onFinishPlayback,
+  onPlaybackRuntimeChange,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const nodeRefs = useRef(new Map<number, HTMLButtonElement>())
@@ -48,6 +50,23 @@ export default function Timeline({
     },
     onFinish: onFinishPlayback,
   })
+
+  useEffect(() => {
+    onPlaybackRuntimeChange({
+      status: playback.status,
+      activeIndex: playback.activeIndex,
+      seekRevision: playback.seekRevision,
+      plan: replayPlan,
+      getPosition: playback.getPosition,
+    })
+  }, [
+    onPlaybackRuntimeChange,
+    playback.activeIndex,
+    playback.getPosition,
+    playback.seekRevision,
+    playback.status,
+    replayPlan,
+  ])
 
   useEffect(() => {
     if (activeIndex < 0) return

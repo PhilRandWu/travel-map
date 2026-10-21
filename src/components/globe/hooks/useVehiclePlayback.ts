@@ -5,6 +5,7 @@ import { buildVehicleRoute, type VehicleRoute } from '@/lib/vehicle'
 export interface VehiclePlayback {
   /** 每次点击生成新 key，即使重复选择同一条行程也会重新播放 */
   key: number
+  tripId: string
   type: VehicleRoute['type']
   route: VehicleRoute
   label: string
@@ -32,6 +33,7 @@ export function useVehiclePlayback({
     const route = buildVehicleRoute(track)
     return {
       key: playbackSignal,
+      tripId: track.trip.id,
       type: route.type,
       route,
       label: track.label,
