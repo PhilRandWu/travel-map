@@ -3,6 +3,7 @@ import Starfield from '@/components/globe/Starfield'
 import type { PickedRegion } from '@/components/globe/pickedRegion'
 import CityCard from '@/components/city/CityCard'
 import HeroPhoto from '@/components/hero/HeroPhoto'
+import PhotoGrouping from '@/components/photos/PhotoGrouping'
 import StatsPanel from '@/components/stats/StatsPanel'
 import Timeline from '@/components/timeline/Timeline'
 import { useTravelData } from '@/hooks/useTravelData'
@@ -141,6 +142,7 @@ export default function App() {
             我的旅行足迹
           </h1>
           <div className="flex items-center gap-3 text-xs text-white/50">
+            {data && <PhotoGrouping data={data} />}
             <StatsPanel stats={stats} />
           </div>
         </header>

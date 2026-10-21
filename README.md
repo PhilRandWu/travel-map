@@ -80,3 +80,13 @@ public/photos/v006/02.jpg
 ```
 
 在对应 `visit.photos` 中填写文件名与可选 caption。开发模式下会校验照片文件是否存在；原图只在 Lightbox 打开时加载。
+
+### 使用 EXIF 自动归组
+
+页面右上角的「照片归组」支持拖入照片或整个文件夹：
+
+1. 浏览器只读取本地照片首段的拍摄时间，不会上传文件；
+2. 拍摄日期落在到访区间内时精确匹配，相差 1 天时标为待确认；
+3. 可逐张改选目标到访或取消导出；
+4. 确认后下载 `trips.exif-grouped.json`，用它替换 `src/data/trips.json`；
+5. 按列表中显示的 `public/photos/<visit-id>/<file>` 路径复制照片，再执行 `pnpm test` 验证。
