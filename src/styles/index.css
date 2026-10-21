@@ -89,6 +89,80 @@
   }
 }
 
+/* 行程载具：位置由 JS 逐帧写入，图标朝向由 CSS 变量控制 */
+.rg-vehicle-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.rg-vehicle-glyph {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  transform: translate(-50%, -50%) rotate(var(--rg-vehicle-angle, 0deg));
+  transform-origin: center;
+}
+
+.rg-vehicle-icon {
+  position: relative;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+}
+
+.rg-vehicle-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  animation: rg-vehicle-pulse 0.9s ease-in-out infinite;
+}
+
+@keyframes rg-vehicle-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.22);
+  }
+}
+
+.rg-vehicle-label {
+  position: absolute;
+  top: 27px;
+  left: 0;
+  max-width: min(240px, 60vw);
+  overflow: hidden;
+  padding: 4px 8px;
+  border: 1px solid rgb(255 255 255 / 0.13);
+  border-radius: 999px;
+  background: rgb(5 8 17 / 0.76);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.3);
+  color: rgb(255 255 255 / 0.72);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  backdrop-filter: blur(8px);
+}
+
 /* 卡片内滚动条：细、低调 */
 .rg-scroll {
   scrollbar-width: thin;
@@ -111,6 +185,10 @@
   .rg-hud,
   .rg-hero-in,
   .rg-stats-in {
+    animation: none;
+  }
+
+  .rg-vehicle-halo {
     animation: none;
   }
 }

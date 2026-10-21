@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import Starfield from '@/components/globe/Starfield'
-import type { PickedRegion } from '@/components/globe/TravelGlobe'
+import type { PickedRegion } from '@/components/globe/pickedRegion'
 import CityCard from '@/components/city/CityCard'
 import HeroPhoto from '@/components/hero/HeroPhoto'
 import StatsPanel from '@/components/stats/StatsPanel'
@@ -33,6 +33,8 @@ export default function App() {
   const [region, setRegion] = useState<PickedRegion | null>(null)
   // 递增信号让地球在“回到总览”时强制复位，即使 POV 已经接近初始值
   const [resetSignal, setResetSignal] = useState(0)
+  // 选择行程时递增，让同一条轨迹也能重新播放载具动效
+  const [tripPlaybackSignal, setTripPlaybackSignal] = useState(0)
 
   const focusPoint = useMemo(() => {
     if (!data || selection.kind !== 'trip') return null
@@ -66,6 +68,7 @@ export default function App() {
     // 轨迹点击：选中 trip 并聚焦其出发城市卡片，保持上下文
     const trip = data?.trips.find((t) => t.id === tripId)
     setSelection({ kind: 'trip', tripId })
+    setTripPlaybackSignal((signal) => signal + 1)
     setRegion(null)
     if (trip) setCardCityId(trip.from)
   }
@@ -80,8 +83,7 @@ export default function App() {
     }
     const trip = findTrip(data, node.refId)
     if (!trip) return
-    setSelection({ kind: 'trip', tripId: trip.id })
-    setCardCityId(trip.from)
+    handleSelectTrip(trip.id)
   }
 
   const resetToOverview = () => {
@@ -115,6 +117,7 @@ export default function App() {
           selectedCityId={cardCityId}
           selectedTripId={selection.kind === 'trip' ? selection.tripId : null}
           focusPoint={focusPoint}
+          tripPlaybackSignal={tripPlaybackSignal}
           resetSignal={resetSignal}
           onSelectCity={handleSelectCity}
           onSelectTrip={handleSelectTrip}
@@ -160,7 +163,7 @@ export default function App() {
             data={data}
             cityId={cardCityId}
             selection={selection}
-            onSelectTrip={(tripId) => setSelection({ kind: 'trip', tripId })}
+            onSelectTrip={handleSelectTrip}
             onClose={handleCloseCard}
           />
         </div>
