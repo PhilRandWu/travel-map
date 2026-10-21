@@ -3,6 +3,7 @@ import Globe, { type GlobeMethods } from 'react-globe.gl'
 import { reverseGeocode, formatLatLng, type GeoHit } from '@/lib/geoLookup'
 import type { LitCity } from '@/lib/derive'
 import type { Tracks } from '@/lib/tracks'
+import type { ReplayRuntime } from '@/lib/replay'
 import { useGlobeMarkers } from '@/components/globe/hooks/useGlobeMarkers'
 import { useContainerSize } from '@/components/globe/hooks/useContainerSize'
 import { useGlobeControls } from '@/components/globe/hooks/useGlobeControls'
@@ -41,6 +42,8 @@ interface Props {
   focusPoint: { lat: number; lng: number } | null
   /** 每次选择行程递增，用于重复播放同一条轨迹的载具动效 */
   tripPlaybackSignal: number
+  /** 时间轴回放状态；非 idle 时轨迹按已发生范围显隐 */
+  replayRuntime: ReplayRuntime | null
   /** 返回总览时的复位信号 */
   resetSignal: number
   /** 城市点击（选中城市，弹出卡片）；null 表示取消 */
@@ -59,6 +62,7 @@ export default function TravelGlobe({
   selectedTripId,
   focusPoint,
   tripPlaybackSignal,
+  replayRuntime,
   resetSignal,
   onSelectCity,
   onSelectTrip,
@@ -192,9 +196,10 @@ export default function TravelGlobe({
     }
   }
 
-  const { trackProps, activeCityIds } = useTrackPresentation({
+  const { trackProps, activeCityIds, visibleTrackCounts } = useTrackPresentation({
     tracks,
     selectedTripId,
+    replayRuntime,
     lastInteractRef,
     onSelectTripRef,
   })
@@ -228,7 +233,12 @@ export default function TravelGlobe({
   const polygons = region?.boundary ? [region.boundary] : []
 
   return (
-    <div ref={wrapperRef} className="absolute inset-0">
+    <div
+      ref={wrapperRef}
+      data-visible-flight-tracks={visibleTrackCounts.flights}
+      data-visible-train-tracks={visibleTrackCounts.trains}
+      className="absolute inset-0"
+    >
       {size.width > 0 && (
         <Globe
           ref={globeRef}
@@ -276,7 +286,11 @@ export default function TravelGlobe({
         />
       )}
 
-      <VehicleOverlay playback={vehiclePlayback} globeRef={globeRef} />
+      <VehicleOverlay
+        playback={vehiclePlayback}
+        replayRuntime={replayRuntime}
+        globeRef={globeRef}
+      />
       <GlobeFeedback
         region={region}
         locating={locating}

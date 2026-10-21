@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import Starfield from '@/components/globe/Starfield'
 import type { PickedRegion } from '@/components/globe/pickedRegion'
 import CityCard from '@/components/city/CityCard'
@@ -9,6 +9,7 @@ import { useTravelData } from '@/hooks/useTravelData'
 import { preloadGeoData } from '@/lib/geoLookup'
 import { findTrip, type TimelineNode } from '@/lib/derive'
 import { buildTracks, type Tracks } from '@/lib/tracks'
+import type { ReplayRuntime } from '@/lib/replay'
 import type { Selection } from '@/types'
 
 const EMPTY_TRACKS: Tracks = { flights: [], trains: [] }
@@ -35,6 +36,7 @@ export default function App() {
   const [resetSignal, setResetSignal] = useState(0)
   // 选择行程时递增，让同一条轨迹也能重新播放载具动效
   const [tripPlaybackSignal, setTripPlaybackSignal] = useState(0)
+  const [replayRuntime, setReplayRuntime] = useState<ReplayRuntime | null>(null)
 
   const focusPoint = useMemo(() => {
     if (!data || selection.kind !== 'trip') return null
@@ -107,6 +109,10 @@ export default function App() {
     setSelection({ kind: 'none' })
   }
 
+  const handlePlaybackRuntimeChange = useCallback((runtime: ReplayRuntime) => {
+    setReplayRuntime(runtime)
+  }, [])
+
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black font-sans text-white select-none">
       <Starfield />
@@ -118,6 +124,7 @@ export default function App() {
           selectedTripId={selection.kind === 'trip' ? selection.tripId : null}
           focusPoint={focusPoint}
           tripPlaybackSignal={tripPlaybackSignal}
+          replayRuntime={replayRuntime}
           resetSignal={resetSignal}
           onSelectCity={handleSelectCity}
           onSelectTrip={handleSelectTrip}
@@ -152,6 +159,7 @@ export default function App() {
               selection={selection}
               onSelect={handleSelectTimelineNode}
               onFinishPlayback={resetToOverview}
+              onPlaybackRuntimeChange={handlePlaybackRuntimeChange}
             />
           )}
         </footer>

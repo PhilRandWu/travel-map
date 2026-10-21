@@ -1,6 +1,9 @@
 import { useState, type CSSProperties } from 'react'
-import { REPLAY_SPEEDS, type ReplaySpeed } from '@/lib/replay'
-import type { PlaybackStatus } from '@/components/timeline/hooks/useTimelinePlayback'
+import {
+  REPLAY_SPEEDS,
+  type PlaybackStatus,
+  type ReplaySpeed,
+} from '@/lib/replay'
 
 interface Props {
   status: PlaybackStatus
