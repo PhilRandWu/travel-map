@@ -74,6 +74,27 @@
   }
 }
 
+/* 主图 Ken Burns：单次缓慢推近，低幅度位移避免切换眩晕 */
+.rg-ken-burns {
+  transform-origin: 52% 46%;
+  backface-visibility: hidden;
+  animation: rg-ken-burns 10s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  will-change: transform, opacity;
+}
+@keyframes rg-ken-burns {
+  0% {
+    opacity: 0.68;
+    transform: scale(1.035) translate3d(0, 0, 0);
+  }
+  5% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.115) translate3d(-1.2%, -0.8%, 0);
+  }
+}
+
 /* 统计浮层入场 */
 .rg-stats-in {
   animation: rg-stats-in 0.18s ease-out;
@@ -227,6 +248,7 @@
   .rg-card-in,
   .rg-hud,
   .rg-hero-in,
+  .rg-ken-burns,
   .rg-stats-in {
     animation: none;
   }

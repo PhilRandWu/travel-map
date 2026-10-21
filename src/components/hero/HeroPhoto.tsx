@@ -24,7 +24,7 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
     title: string
     meta: string
     note?: string
-    photo?: { url: string; alt?: string }
+    photo?: { url: string; alt?: string; motionKey: string }
   } | null = null
 
   if (selection.kind === 'visit') {
@@ -37,7 +37,11 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
         meta: fmtRange(visit.arriveDate, visit.leaveDate),
         note: visit.note,
         photo: photo
-          ? { url: photoThumbUrl(visit.id, photo.file), alt: photo.caption || city?.name }
+          ? {
+              url: photoThumbUrl(visit.id, photo.file),
+              alt: photo.caption || city?.name,
+              motionKey: `visit:${visit.id}:${photo.file}`,
+            }
           : undefined,
       }
     }
@@ -60,6 +64,7 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
           ? {
               url: photoThumbUrl(arriveVisit.id, visitPhoto.file),
               alt: visitPhoto.caption || departCity?.name,
+              motionKey: `trip:${trip.id}:${arriveVisit.id}:${visitPhoto.file}`,
             }
           : undefined,
       }
@@ -95,9 +100,10 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
       <div className="relative">
         {content.photo ? (
           <img
+            key={content.photo.motionKey}
             src={content.photo.url}
             alt={content.photo.alt ?? ''}
-            className="h-[132px] w-full object-cover"
+            className="rg-ken-burns h-[132px] w-full object-cover"
           />
         ) : (
           <div className="flex h-[132px] w-full items-center justify-center bg-gradient-to-br from-[#101a2e] via-[#08101f] to-[#1d2a41] text-2xl text-white/35">
