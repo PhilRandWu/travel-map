@@ -59,6 +59,36 @@
   }
 }
 
+/* 主图区入场：从右侧轻轻浮入 */
+.rg-hero-in {
+  animation: rg-hero-in 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes rg-hero-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 统计浮层入场 */
+.rg-stats-in {
+  animation: rg-stats-in 0.18s ease-out;
+}
+@keyframes rg-stats-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* 卡片内滚动条：细、低调 */
 .rg-scroll {
   scrollbar-width: thin;
@@ -78,7 +108,9 @@
 @media (prefers-reduced-motion: reduce) {
   .rg-twinkle,
   .rg-card-in,
-  .rg-hud {
+  .rg-hud,
+  .rg-hero-in,
+  .rg-stats-in {
     animation: none;
   }
 }

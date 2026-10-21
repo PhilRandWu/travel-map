@@ -25,6 +25,12 @@ export interface FlightArc {
   midLng: number
   /** tooltip 文案：日期 · 起 → 终 · 备注 */
   label: string
+  /** 出发城市坐标，供行程聚焦与时间轴联动 */
+  fromLat: number
+  fromLng: number
+  /** 到达城市坐标，供行程聚焦与时间轴联动 */
+  toLat: number
+  toLng: number
 }
 
 export interface TrainPath {
@@ -34,6 +40,10 @@ export interface TrainPath {
   midLat: number
   midLng: number
   label: string
+  fromLat: number
+  fromLng: number
+  toLat: number
+  toLng: number
 }
 
 export interface Tracks {
@@ -75,6 +85,10 @@ export function buildTracks(data: TravelData): Tracks {
         startLng: from.lng,
         endLat: to.lat,
         endLng: to.lng,
+        fromLat: from.lat,
+        fromLng: from.lng,
+        toLat: to.lat,
+        toLng: to.lng,
         altitude,
         midLat: mid[0],
         midLng: mid[1],
@@ -94,7 +108,17 @@ export function buildTracks(data: TravelData): Tracks {
         points.push(...(i === 1 ? seg : seg.slice(1)))
       }
       const midPoint = points[Math.floor(points.length / 2)]
-      trains.push({ trip: t, points, midLat: midPoint[0], midLng: midPoint[1], label })
+      trains.push({
+        trip: t,
+        points,
+        midLat: midPoint[0],
+        midLng: midPoint[1],
+        label,
+        fromLat: from.lat,
+        fromLng: from.lng,
+        toLat: to.lat,
+        toLng: to.lng,
+      })
     }
   }
   return { flights, trains }
