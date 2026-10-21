@@ -2,8 +2,12 @@ import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import Starfield from '@/components/globe/Starfield'
 import type { PickedRegion } from '@/components/globe/TravelGlobe'
 import CityCard from '@/components/city/CityCard'
+import HeroPhoto from '@/components/hero/HeroPhoto'
+import StatsPanel from '@/components/stats/StatsPanel'
+import Timeline from '@/components/timeline/Timeline'
 import { useTravelData } from '@/hooks/useTravelData'
 import { preloadGeoData } from '@/lib/geoLookup'
+import { findTrip, type TimelineNode } from '@/lib/derive'
 import { buildTracks, type Tracks } from '@/lib/tracks'
 import type { Selection } from '@/types'
 
@@ -22,11 +26,25 @@ const TravelGlobe = lazy(() => import('@/components/globe/TravelGlobe'))
  * 便于卡片内点行程时切换到 trip 而不丢失城市上下文。
  */
 export default function App() {
-  const { data, litCities } = useTravelData()
+  const { data, litCities, timeline, stats } = useTravelData()
   const tracks = useMemo(() => (data ? buildTracks(data) : EMPTY_TRACKS), [data])
   const [selection, setSelection] = useState<Selection>({ kind: 'none' })
   const [cardCityId, setCardCityId] = useState<string | null>(null)
   const [region, setRegion] = useState<PickedRegion | null>(null)
+  // 递增信号让地球在“回到总览”时强制复位，即使 POV 已经接近初始值
+  const [resetSignal, setResetSignal] = useState(0)
+
+  const focusPoint = useMemo(() => {
+    if (!data || selection.kind !== 'trip') return null
+    const track = [...tracks.flights, ...tracks.trains].find(
+      (item) => item.trip.id === selection.tripId,
+    )
+    if (!track) return null
+    return {
+      lat: (track.fromLat + track.toLat) / 2,
+      lng: (track.fromLng + track.toLng) / 2,
+    }
+  }, [selection, tracks])
 
   // 浏览器空闲时预取边界数据，消除首次点击的反查延迟
   useEffect(() => {
@@ -52,6 +70,27 @@ export default function App() {
     if (trip) setCardCityId(trip.from)
   }
 
+  const handleSelectTimelineNode = (node: TimelineNode) => {
+    if (!data) return
+    setRegion(null)
+    if (node.kind === 'visit') {
+      setSelection({ kind: 'visit', visitId: node.refId })
+      setCardCityId(node.cityId)
+      return
+    }
+    const trip = findTrip(data, node.refId)
+    if (!trip) return
+    setSelection({ kind: 'trip', tripId: trip.id })
+    setCardCityId(trip.from)
+  }
+
+  const resetToOverview = () => {
+    setSelection({ kind: 'none' })
+    setCardCityId(null)
+    setRegion(null)
+    setResetSignal((signal) => signal + 1)
+  }
+
   const handlePickRegion = (next: PickedRegion | null) => {
     setRegion(next)
     // 点击空白区域时收起城市卡片，反查 HUD 与卡片互斥
@@ -75,6 +114,8 @@ export default function App() {
           tracks={tracks}
           selectedCityId={cardCityId}
           selectedTripId={selection.kind === 'trip' ? selection.tripId : null}
+          focusPoint={focusPoint}
+          resetSignal={resetSignal}
           onSelectCity={handleSelectCity}
           onSelectTrip={handleSelectTrip}
           region={region}
@@ -90,24 +131,25 @@ export default function App() {
             我的旅行足迹
           </h1>
           <div className="flex items-center gap-3 text-xs text-white/50">
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 backdrop-blur-md">
-              统计
-            </span>
+            <StatsPanel stats={stats} />
           </div>
         </header>
 
         {/* 主图区占位（阶段 4 填充） */}
         <div className="flex flex-1 items-start justify-end px-6 py-2">
-          <div className="pointer-events-none h-36 w-64 rounded-2xl border border-dashed border-white/15 bg-white/3 backdrop-blur-md">
-            <span className="sr-only">主图区</span>
-          </div>
+          {data && <HeroPhoto data={data} selection={selection} onExpand={resetToOverview} />}
         </div>
 
         {/* 时间轴胶片条占位（阶段 4 填充） */}
         <footer className="px-6 pb-5">
-          <div className="mx-auto h-20 max-w-4xl rounded-2xl border border-dashed border-white/15 bg-white/3 backdrop-blur-md">
-            <span className="sr-only">时间轴</span>
-          </div>
+          {data && (
+            <Timeline
+              data={data}
+              nodes={timeline}
+              selection={selection}
+              onSelect={handleSelectTimelineNode}
+            />
+          )}
         </footer>
       </div>
 
@@ -124,8 +166,8 @@ export default function App() {
         </div>
       )}
 
-      {/* 首次引导 */}
-      {!region && !cardCityId && (
+      {/* 全局模式引导 */}
+      {!region && !cardCityId && selection.kind === 'none' && (
         <div className="pointer-events-none absolute bottom-32 left-1/2 -translate-x-1/2 animate-pulse rounded-full border border-white/10 bg-black/40 px-5 py-2 text-xs tracking-[0.2em] text-white/55 backdrop-blur-md">
           点击地球任意位置，查看这里是哪里
         </div>

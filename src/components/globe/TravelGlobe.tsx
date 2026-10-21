@@ -46,6 +46,10 @@ interface Props {
   selectedCityId: string | null
   /** 当前选中的行程（轨迹保持高亮，其余轨迹/城市淡出） */
   selectedTripId: string | null
+  /** 行程选中时的轨迹取景点；visit/city 由 selectedCityId 聚焦 */
+  focusPoint: { lat: number; lng: number } | null
+  /** 返回总览时的复位信号 */
+  resetSignal: number
   /** 城市点击（选中城市，弹出卡片）；null 表示取消 */
   onSelectCity: (cityId: string | null) => void
   /** 轨迹点击（选中 trip） */
@@ -60,6 +64,8 @@ export default function TravelGlobe({
   tracks,
   selectedCityId,
   selectedTripId,
+  focusPoint,
+  resetSignal,
   onSelectCity,
   onSelectTrip,
   region,
@@ -82,6 +88,8 @@ export default function TravelGlobe({
   // 选中城市时暂停自转，避免相机刚聚焦就漂走
   const selectedCityIdRef = useRef(selectedCityId)
   selectedCityIdRef.current = selectedCityId
+  const selectionRef = useRef<'city' | 'none' | 'trip'>('none')
+  selectionRef.current = selectedTripId ? 'trip' : selectedCityId ? 'city' : 'none'
   // 鼠标悬停在城市发光点上（同样唤醒大气辉光）
   const cityHoveringRef = useRef(false)
   const lastInteractRef = useRef(-Infinity)
@@ -130,6 +138,29 @@ export default function TravelGlobe({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCity?.city.id])
 
+  // 行程选中 → 取景轨迹中点；保持原高度即可看到整条弧线
+  const focusPointRef = useRef(focusPoint)
+  focusPointRef.current = focusPoint
+  useEffect(() => {
+    const point = focusPointRef.current
+    if (!point) return
+    lastInteractRef.current = performance.now()
+    flyTo(point.lat, point.lng, 2.3)
+    // flyTo 只依赖 focusPoint 的坐标
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusPoint?.lat, focusPoint?.lng])
+
+  // 全局模式：强制回到初始斜俯视，并短暂暂停自转，避免立刻漂走
+  useEffect(() => {
+    if (resetSignal === 0) return
+    const globe = globeRef.current
+    if (!globe) return
+    lastInteractRef.current = performance.now()
+    globe.pointOfView(INITIAL_POV, FLIGHT_MS)
+    // resetSignal 仅作为“再次点总览也要复位”的触发器
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetSignal])
+
   // 点击地球任意位置 → 离线反查地名
   const handleGlobeClick = async (coords: { lat: number; lng: number }) => {
     const { lat, lng } = coords
@@ -174,6 +205,15 @@ export default function TravelGlobe({
     onSelectTripRef,
   })
 
+  // 地球空白点击在已有选中的场景中就是“退出到全局模式”
+  const handleGlobeClickWithSelection = (coords: { lat: number; lng: number }) => {
+    if (selectionRef.current !== 'none') {
+      onPickRef.current(null)
+      return
+    }
+    void handleGlobeClick(coords)
+  }
+
   const { markers, handleSelectCity, handleHoverCity } = useGlobeMarkers({
     litCities,
     zoomedIn,
@@ -211,7 +251,7 @@ export default function TravelGlobe({
               }
             }
           }}
-          onGlobeClick={handleGlobeClick}
+          onGlobeClick={handleGlobeClickWithSelection}
           {...trackProps}
           // 选中区域多边形高亮
           polygonsData={polygons}
