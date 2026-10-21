@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Selection, TravelData } from '@/types'
-import { findTrip, findVisit, photoUrl } from '@/lib/derive'
+import { findTrip, findVisit, photoThumbUrl } from '@/lib/derive'
 import { resolveCities } from '@/lib/cities'
 
 interface Props {
@@ -37,7 +37,7 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
         meta: fmtRange(visit.arriveDate, visit.leaveDate),
         note: visit.note,
         photo: photo
-          ? { url: photoUrl(visit.id, photo.file), alt: photo.caption || city?.name }
+          ? { url: photoThumbUrl(visit.id, photo.file), alt: photo.caption || city?.name }
           : undefined,
       }
     }
@@ -58,7 +58,7 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
         note: trip.note || arriveVisit?.note,
         photo: visitPhoto
           ? {
-              url: photoUrl(arriveVisit.id, visitPhoto.file),
+              url: photoThumbUrl(arriveVisit.id, visitPhoto.file),
               alt: visitPhoto.caption || departCity?.name,
             }
           : undefined,

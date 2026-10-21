@@ -1,6 +1,6 @@
 import type { TravelData } from '@/types'
 import type { TimelineNode as TimelineNodeModel } from '@/lib/derive'
-import { findTrip, findVisit, photoUrl } from '@/lib/derive'
+import { findTrip, findVisit, photoThumbUrl } from '@/lib/derive'
 import { resolveCities } from '@/lib/cities'
 import type { TimelineItem } from '@/components/timeline/TimelineNode'
 
@@ -26,7 +26,7 @@ function buildTimelineItem(data: TravelData, node: TimelineNodeModel): TimelineI
       detail: visit?.note || (visit ? `${visit.arriveDate} 到访` : ''),
       meta: fmtDate(node.date),
       icon: 'visit',
-      thumbnailUrl: visit && photo ? photoUrl(visit.id, photo.file) : undefined,
+      thumbnailUrl: visit && photo ? photoThumbUrl(visit.id, photo.file) : undefined,
       thumbnailAlt: photo?.caption || city?.name,
     }
   }

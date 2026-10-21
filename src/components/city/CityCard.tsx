@@ -1,7 +1,7 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import type { Selection, TravelData } from '@/types'
 import { resolveCities } from '@/lib/cities'
-import { getCityTrips, getCityVisits, photoUrl } from '@/lib/derive'
+import { getCityTrips, getCityVisits, photoThumbUrl, photoUrl } from '@/lib/derive'
 import Lightbox, { type LightboxPhoto } from '@/components/common/Lightbox'
 
 interface Props {
@@ -122,7 +122,7 @@ export default function CityCard({
                           className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-lg border border-white/10 bg-white/5"
                         >
                           <img
-                            src={photoUrl(v.id, p.file)}
+                            src={photoThumbUrl(v.id, p.file)}
                             alt={p.caption || '旅行照片'}
                             loading="lazy"
                             className="h-full w-full object-cover transition duration-300 group-hover:scale-105"

@@ -161,3 +161,8 @@ export function findTrip(data: TravelData, tripId: string): Trip | undefined {
 export function photoUrl(visitId: string, file: string): string {
   return `${import.meta.env.BASE_URL}photos/${visitId}/${file}`
 }
+
+/** 构建期生成的缩略图 URL：/thumbs/<visit-id>/<file>.webp */
+export function photoThumbUrl(visitId: string, file: string): string {
+  return `${import.meta.env.BASE_URL}thumbs/${visitId}/${file}.webp`
+}

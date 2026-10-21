@@ -81,6 +81,14 @@ public/photos/v006/02.jpg
 
 在对应 `visit.photos` 中填写文件名与可选 caption。开发模式下会校验照片文件是否存在；原图只在 Lightbox 打开时加载。
 
+时间轴、城市卡片和主图区使用构建期生成的 WebP 缩略图：
+
+```bash
+pnpm build:thumbs
+```
+
+`pnpm dev` 与 `pnpm build` 会自动执行该步骤，产物写入 `public/thumbs/<visit-id>/<文件名>.webp`。生成目录已加入 `.gitignore`，每次构建会先清理再重建；缺失或无法转换的照片会以明确错误中止构建。
+
 ### 使用 EXIF 自动归组
 
 页面右上角的「照片归组」支持拖入照片或整个文件夹：
