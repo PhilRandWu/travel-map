@@ -5,6 +5,7 @@
 
 /** 交通方式：✈️ 飞机 / 🚄 高铁 */
 export type TransportType = 'flight' | 'train'
+export type JourneyTheme = 'amber' | 'cyan' | 'sage' | 'rose'
 
 /** 城市坐标与行政区划 */
 export interface City {
@@ -23,6 +24,29 @@ export interface City {
 export interface Photo {
   file: string
   caption?: string
+  takenAt?: string
+  featured?: boolean
+  focalPoint?: {
+    x: number
+    y: number
+  }
+}
+
+export interface JourneyCoverPhoto {
+  visitId: string
+  file: string
+}
+
+/** 一段拥有独立日期范围、主题与照片封面的旅行。 */
+export interface Journey {
+  id: string
+  title: string
+  startDate: string
+  endDate: string
+  epigraph?: string
+  summary?: string
+  theme: JourneyTheme
+  coverPhotos: JourneyCoverPhoto[]
 }
 
 /**
@@ -32,6 +56,7 @@ export interface Photo {
  */
 export interface Trip {
   id: string
+  journeyId: string
   /** 出行日期 YYYY-MM-DD */
   date: string
   type: TransportType
@@ -46,6 +71,7 @@ export interface Trip {
 /** 一次城市到访（一个日期区间 + 照片） */
 export interface Visit {
   id: string
+  journeyId: string
   /** 到访城市 id */
   city: string
   arriveDate: string
@@ -58,15 +84,20 @@ export interface TravelMeta {
   owner: string
   /** 常居城市 id */
   homeCity: string
-  version: number
+  version: 2
 }
 
 export interface TravelData {
   meta: TravelMeta
   cities: City[]
+  journeys: Journey[]
   trips: Trip[]
   visits: Visit[]
 }
+
+export type JourneyScope =
+  | { kind: 'archive' }
+  | { kind: 'journey'; journeyId: string }
 
 /** 时间轴节点类型：到访 / 行程 */
 export type TimelineNodeKind = 'visit' | 'trip'

@@ -60,6 +60,50 @@ input[type='range'] {
   }
 }
 
+/* 旅行档案卡片：像一张从暗房里浮出的照片 */
+.rg-journey-card {
+  animation: rg-journey-card-in 620ms var(--rg-ease-out) both;
+  animation-delay: calc(120ms + var(--rg-index, 0) * 90ms);
+}
+
+@keyframes rg-journey-card-in {
+  from {
+    opacity: 0;
+    transform: translate3d(18px, 8px, 0) rotate(0.35deg) scale(0.975);
+  }
+}
+
+.rg-drawer-in {
+  animation: rg-drawer-in 420ms var(--rg-ease-out) both;
+}
+
+@keyframes rg-drawer-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.985);
+  }
+}
+
+.rg-archive-row {
+  animation: rg-stagger-item 420ms var(--rg-ease-out) both;
+  animation-delay: calc(var(--rg-index, 0) * 60ms);
+}
+
+.rg-archive-row:hover {
+  transform: translateX(3px);
+}
+
+.rg-passport {
+  animation: rg-passport-in 520ms var(--rg-ease-out) both;
+}
+
+@keyframes rg-passport-in {
+  from {
+    opacity: 0;
+    transform: translate3d(14px, 0, 0) scale(0.985);
+  }
+}
+
 /* 时间轴节点：入场错峰 + 明确过渡属性 */
 .rg-film-node {
   transition:
@@ -169,6 +213,10 @@ input[type='range'] {
 @media (prefers-reduced-motion: reduce) {
   .rg-app-reveal,
   .rg-stagger-item,
+  .rg-journey-card,
+  .rg-drawer-in,
+  .rg-archive-row,
+  .rg-passport,
   .rg-film-node,
   .rg-lightbox,
   .rg-lightbox-photo,

@@ -4,9 +4,10 @@ import { usePresence } from '@/components/common/usePresence'
 
 interface Props {
   stats: TravelStats | null
+  context?: string
 }
 
-export default function StatsPanel({ stats }: Props) {
+export default function StatsPanel({ stats, context }: Props) {
   const [open, setOpen] = useState(false)
   const { mounted, closing } = usePresence(open, 160)
 
@@ -43,12 +44,15 @@ export default function StatsPanel({ stats }: Props) {
         <div
           id="travel-stats"
           role="dialog"
-          aria-label="旅行统计"
+          aria-label={context ? `${context}统计` : '旅行统计'}
           aria-hidden={closing || undefined}
           className={`pointer-events-auto absolute right-0 top-10 z-40 w-60 rounded-xl border border-white/12 bg-[rgba(5,8,17,.86)] p-4 shadow-[0_18px_60px_rgba(0,0,0,.55)] backdrop-blur-xl ${
             closing ? 'rg-panel-out' : 'rg-stats-in'
           }`}
         >
+          <p className="mb-2 font-mono text-[9px] tracking-[0.18em] text-white/30">
+            {context ? `CURRENT JOURNEY / ${context}` : 'ALL JOURNEYS'}
+          </p>
           <div className="grid grid-cols-2 gap-2">
             <Metric index={0} value={stats ? `${stats.cityCount}` : '—'} label="城市" />
             <Metric

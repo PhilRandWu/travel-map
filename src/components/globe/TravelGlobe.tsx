@@ -14,6 +14,7 @@ import VehicleOverlay from '@/components/globe/VehicleOverlay'
 import GlobeFeedback from '@/components/globe/GlobeFeedback'
 import {
   buildCityMarker,
+  buildHomeMarker,
   buildRegionDot,
   type GlobeMarker,
 } from '@/components/globe/cityMarkers'
@@ -26,7 +27,9 @@ import {
 
 export default function TravelGlobe({
   litCities,
+  homeCity,
   tracks,
+  stardustTracks,
   selectedCityId,
   selectedTripId,
   focusPoint,
@@ -168,6 +171,7 @@ export default function TravelGlobe({
 
   const { trackProps, activeCityIds, visibleTrackCounts } = useTrackPresentation({
     tracks,
+    stardustTracks,
     selectedTripId,
     replayRuntime,
     lastInteractRef,
@@ -191,6 +195,7 @@ export default function TravelGlobe({
 
   const { markers, handleSelectCity, handleHoverCity } = useGlobeMarkers({
     litCities,
+    homeCity,
     zoomedIn,
     selectedCityId,
     activeCityIds,
@@ -207,6 +212,7 @@ export default function TravelGlobe({
       ref={wrapperRef}
       data-visible-flight-tracks={visibleTrackCounts.flights}
       data-visible-train-tracks={visibleTrackCounts.trains}
+      data-visible-stardust-tracks={visibleTrackCounts.stardust}
       className="absolute inset-0"
     >
       {size.width > 0 && (
@@ -249,7 +255,9 @@ export default function TravelGlobe({
             const m = d as GlobeMarker
             return m.kind === 'city'
               ? buildCityMarker(m, { onSelect: handleSelectCity, onHover: handleHoverCity })
-              : buildRegionDot(m)
+              : m.kind === 'home'
+                ? buildHomeMarker(m)
+                : buildRegionDot(m)
           }}
           htmlElementVisibilityModifier={(el, visible) => {
             el.style.display = visible ? 'block' : 'none'

@@ -173,6 +173,7 @@ export function useTimelinePlayback({
     seekRevision,
     isPlaying: status === 'playing',
     getPosition,
+    start,
     toggle,
     stop,
     seek,

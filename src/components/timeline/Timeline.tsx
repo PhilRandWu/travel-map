@@ -16,6 +16,7 @@ interface Props {
   data: TravelData
   nodes: TimelineNodeModel[]
   selection: Selection
+  startSignal: number
   onSelect: (node: TimelineNodeModel) => void
   onFinishPlayback: () => void
   onPlaybackRuntimeChange: (runtime: ReplayRuntime) => void
@@ -25,6 +26,7 @@ export default function Timeline({
   data,
   nodes,
   selection,
+  startSignal,
   onSelect,
   onFinishPlayback,
   onPlaybackRuntimeChange,
@@ -50,6 +52,11 @@ export default function Timeline({
     },
     onFinish: onFinishPlayback,
   })
+
+  useEffect(() => {
+    if (startSignal === 0) return
+    playback.start()
+  }, [playback.start, startSignal])
 
   useEffect(() => {
     onPlaybackRuntimeChange({

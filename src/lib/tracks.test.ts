@@ -3,12 +3,13 @@ import type { TravelData } from '@/types'
 import { buildTracks } from '@/lib/tracks'
 
 const base: TravelData = {
-  meta: { owner: 't', homeCity: 'beijing', version: 1 },
+  meta: { owner: 't', homeCity: 'beijing', version: 2 },
   cities: [
     { id: 'beijing', name: '北京', lat: 39.9042, lng: 116.4074, province: '北京', country: '中国' },
     { id: 'shanghai', name: '上海', lat: 31.2304, lng: 121.4737, province: '上海', country: '中国' },
     { id: 'jiaxing', name: '嘉兴', lat: 30.7522, lng: 120.7555, province: '浙江', country: '中国' },
   ],
+  journeys: [],
   trips: [],
   visits: [],
 }
@@ -19,7 +20,7 @@ describe('buildTracks', () => {
   it('航班生成大圆弧：起终点正确，含 tooltip 文案', () => {
     const { flights, trains } = buildTracks(
       withTrips([
-        { id: 't1', date: '2025-05-01', type: 'flight', from: 'beijing', to: 'shanghai', waypoints: [], note: 'CA1' },
+        { id: 't1', journeyId: 'j-test', date: '2025-05-01', type: 'flight', from: 'beijing', to: 'shanghai', waypoints: [], note: 'CA1' },
       ]),
     )
     expect(trains).toHaveLength(0)
@@ -34,7 +35,7 @@ describe('buildTracks', () => {
   it('高铁折线经过所有 waypoint，且为贴地点串', () => {
     const { trains } = buildTracks(
       withTrips([
-        { id: 't2', date: '2025-05-03', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'], note: 'G1' },
+        { id: 't2', journeyId: 'j-test', date: '2025-05-03', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'], note: 'G1' },
       ]),
     )
     expect(trains).toHaveLength(1)
@@ -53,9 +54,9 @@ describe('buildTracks', () => {
   it('同走廊多条航班弧顶逐次抬高（往返也算同走廊）', () => {
     const { flights } = buildTracks(
       withTrips([
-        { id: 't1', date: '2025-05-01', type: 'flight', from: 'beijing', to: 'shanghai', waypoints: [] },
-        { id: 't2', date: '2025-05-05', type: 'flight', from: 'shanghai', to: 'beijing', waypoints: [] },
-        { id: 't3', date: '2025-06-01', type: 'flight', from: 'beijing', to: 'shanghai', waypoints: [] },
+        { id: 't1', journeyId: 'j-test', date: '2025-05-01', type: 'flight', from: 'beijing', to: 'shanghai', waypoints: [] },
+        { id: 't2', journeyId: 'j-test', date: '2025-05-05', type: 'flight', from: 'shanghai', to: 'beijing', waypoints: [] },
+        { id: 't3', journeyId: 'j-test', date: '2025-06-01', type: 'flight', from: 'beijing', to: 'shanghai', waypoints: [] },
       ]),
     )
     expect(flights).toHaveLength(3)
@@ -66,9 +67,9 @@ describe('buildTracks', () => {
   it('同走廊多条高铁折线侧向错开，同时保留端点与经停点', () => {
     const { trains } = buildTracks(
       withTrips([
-        { id: 't1', date: '2025-05-03', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'] },
-        { id: 't2', date: '2025-05-05', type: 'train', from: 'shanghai', to: 'beijing', waypoints: ['jiaxing'] },
-        { id: 't3', date: '2025-06-01', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'] },
+        { id: 't1', journeyId: 'j-test', date: '2025-05-03', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'] },
+        { id: 't2', journeyId: 'j-test', date: '2025-05-05', type: 'train', from: 'shanghai', to: 'beijing', waypoints: ['jiaxing'] },
+        { id: 't3', journeyId: 'j-test', date: '2025-06-01', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'] },
       ]),
     )
     expect(trains).toHaveLength(3)
@@ -91,8 +92,8 @@ describe('buildTracks', () => {
   it('引用缺失城市的行程被跳过', () => {
     const { flights, trains } = buildTracks(
       withTrips([
-        { id: 't1', date: '2025-05-01', type: 'flight', from: 'beijing', to: 'nowhere', waypoints: [] },
-        { id: 't2', date: '2025-05-03', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['nowhere'] },
+        { id: 't1', journeyId: 'j-test', date: '2025-05-01', type: 'flight', from: 'beijing', to: 'nowhere', waypoints: [] },
+        { id: 't2', journeyId: 'j-test', date: '2025-05-03', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['nowhere'] },
       ]),
     )
     expect(flights).toHaveLength(0)

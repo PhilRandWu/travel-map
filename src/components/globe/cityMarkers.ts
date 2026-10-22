@@ -3,6 +3,7 @@ import type { LitCity } from '@/lib/derive'
 /** htmlElementsData 的统一标记类型（城市点 + 反查定位点共用一个 html 层） */
 export type GlobeMarker =
   | ({ kind: 'city' } & CityMarkerDatum)
+  | ({ kind: 'home' } & HomeMarkerDatum)
   | ({ kind: 'region' } & RegionMarkerDatum)
 
 export interface CityMarkerDatum {
@@ -20,6 +21,14 @@ export interface RegionMarkerDatum {
   lat: number
   lng: number
   ocean?: boolean
+}
+
+export interface HomeMarkerDatum {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  labelVisible: boolean
 }
 
 interface CityHandlers {
@@ -98,6 +107,29 @@ export function buildCityMarker(d: CityMarkerDatum, handlers: CityHandlers): HTM
     e.stopPropagation()
     handlers.onSelect(d.id)
   })
+  return el
+}
+
+/** 常居城市使用无脉冲的空心双环，明确区别于旅行目的地。 */
+export function buildHomeMarker(d: HomeMarkerDatum): HTMLElement {
+  const el = document.createElement('div')
+  el.dataset.homeCity = d.id
+  el.style.cssText =
+    'position:relative;width:0;height:0;transform:translate(-50%,-50%);pointer-events:none;'
+  el.innerHTML = `
+    <span style="position:absolute;left:50%;top:50%;width:20px;height:20px;
+      transform:translate(-50%,-50%);border-radius:50%;
+      border:1px solid rgba(245,234,216,.72);
+      box-shadow:0 0 12px rgba(245,234,216,.28);"></span>
+    <span style="position:absolute;left:50%;top:50%;width:9px;height:9px;
+      transform:translate(-50%,-50%);border-radius:50%;
+      border:1.5px solid rgba(245,234,216,.9);background:rgba(5,8,17,.85);"></span>
+    <span class="rg-home-label" style="position:absolute;left:50%;bottom:15px;
+      transform:translateX(-50%);white-space:nowrap;color:rgba(245,234,216,.72);
+      font-size:10px;letter-spacing:.12em;transition:opacity .18s ease;
+      opacity:${d.labelVisible ? 1 : 0};"></span>
+  `
+  el.querySelector<HTMLElement>('.rg-home-label')!.textContent = `${d.name} · 常居`
   return el
 }
 

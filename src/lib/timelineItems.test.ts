@@ -10,7 +10,7 @@ describe('buildTimelineItems', () => {
   const items = buildTimelineItems(d, buildTimelineNodes(d))
 
   it('生成与时间轴节点一致的展示项', () => {
-    expect(items).toHaveLength(10)
+    expect(items).toHaveLength(8)
     expect(items[0]).toMatchObject({
       date: '2025-05-01',
       headline: '北京 → 杭州',
