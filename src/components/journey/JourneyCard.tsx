@@ -1,5 +1,5 @@
 import type { JourneySummary } from '@/lib/journeys'
-import { photoThumbUrl } from '@/lib/derive'
+import JourneyCoverMosaic from '@/components/journey/JourneyCoverMosaic'
 
 interface Props {
   summary: JourneySummary
@@ -23,29 +23,13 @@ export default function JourneyCard({ summary, featured = false, onOpen }: Props
       }`}
     >
       <span className="rg-journey-spark" aria-hidden="true" />
-      <div className={`grid gap-1.5 p-2 ${featured ? 'h-36 grid-cols-3' : 'h-24 grid-cols-2'}`}>
-        {coverSources.length > 0 ? coverSources.slice(0, featured ? 3 : 2).map((cover, index) => (
-          <span
-            key={`${cover.visitId}:${cover.file}`}
-            className={`relative overflow-hidden rounded-xl ${
-              index === 0 && featured ? 'row-span-2' : ''
-            }`}
-          >
-            <img
-              src={photoThumbUrl(cover.visitId, cover.file)}
-              alt=""
-              loading="lazy"
-              className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-            />
-            <span className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
-          </span>
-        )) : (
-          <div className="col-span-full row-span-full rounded-xl bg-[radial-gradient(circle_at_65%_30%,var(--rg-journey-glow),transparent_55%),linear-gradient(135deg,#0a1730,#07101f)] p-4">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-white/50">
-              {formatDate(journey.startDate)} - {formatDate(journey.endDate)}
-            </span>
-          </div>
-        )}
+      <div className={`p-2 ${featured ? 'h-36' : 'h-24'}`}>
+        <JourneyCoverMosaic
+          covers={coverSources.map(({ visitId, file }) => ({ visitId, file }))}
+          title={journey.title}
+          theme={journey.theme}
+          large={featured}
+        />
       </div>
 
       <div className="px-4 pb-4 pt-2">

@@ -2,6 +2,7 @@ import type { City, TimelineNodeKind, TravelData, Trip, Visit } from '@/types'
 import { resolveCities } from '@/lib/cities'
 import { compareDate } from '@/lib/validate'
 import { tripDistance } from '@/lib/geo'
+import { photoOriginalUrl, photoVariantUrl } from '@/lib/photoUrls'
 
 /**
  * 展示数据全部从 trips.json 推导（PRD 第 4 节「推导规则」），本文件只放纯函数。
@@ -159,10 +160,10 @@ export function findTrip(data: TravelData, tripId: string): Trip | undefined {
 
 /** 照片 URL：/photos/<visit-id>/<file>（public 静态目录） */
 export function photoUrl(visitId: string, file: string): string {
-  return `${import.meta.env.BASE_URL}photos/${visitId}/${file}`
+  return photoOriginalUrl(visitId, file)
 }
 
-/** 构建期生成的缩略图 URL：/thumbs/<visit-id>/<file>.webp */
+/** 构建期生成的小尺寸照片 URL：/media/<visit-id>/<file>/thumb-sm.webp */
 export function photoThumbUrl(visitId: string, file: string): string {
-  return `${import.meta.env.BASE_URL}thumbs/${visitId}/${file}.webp`
+  return photoVariantUrl(visitId, file, 'sm')
 }

@@ -113,15 +113,24 @@ public/photos/v006/02.jpg
 
 - `takenAt` 必须是带时区的 ISO 8601；
 - `focalPoint` 的 `x` / `y` 必须在 0–1 之间；
-- `featured` 标记精选照片，后续照片回忆阶段会优先使用。
+- `featured` 标记精选照片，照片回忆默认优先展示精选内容。
 
-时间轴、城市卡片和主图区使用构建期生成的 WebP 缩略图：
+时间轴、封面、地点篇章与照片回忆使用构建期生成的四级 WebP 资产：
 
 ```bash
-pnpm build:thumbs
+pnpm build:media
 ```
 
-`pnpm dev` 与 `pnpm build` 会自动执行该步骤，产物写入 `public/thumbs/<visit-id>/<文件名>.webp`。生成目录已加入 `.gitignore`，每次构建会先清理再重建；缺失或无法转换的照片会以明确错误中止构建。
+`pnpm dev` 与 `pnpm build` 会自动执行该步骤，产物写入
+`public/media/<visit-id>/<文件名>/`：
+
+- `blur.webp`：32px 占位
+- `thumb-sm.webp`：160px 章节与胶片条
+- `thumb-md.webp`：640px 拼图与星图
+- `preview.webp`：1600px 舞台预览
+
+原图仍在 `public/photos/`，仅在回忆舞台双击放大时请求。生成目录已加入
+`.gitignore`，每次构建会先清理再重建；缺失或无法转换的照片会以明确错误中止构建。
 
 ### 使用 EXIF 自动归组
 

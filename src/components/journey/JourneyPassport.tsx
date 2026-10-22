@@ -1,12 +1,12 @@
-import type { CSSProperties } from 'react'
-import type { Journey, TravelData } from '@/types'
-import { photoThumbUrl } from '@/lib/derive'
+import type { Journey, MemoryView, TravelData } from '@/types'
 import { summarizeJourney } from '@/lib/journeys'
+import JourneyCoverMosaic from '@/components/journey/JourneyCoverMosaic'
 
 interface Props {
   data: TravelData
   journey: Journey
   onStartReplay: () => void
+  onOpenMemory: (view: MemoryView) => void
   showOtherJourneys: boolean
   onShowOtherJourneysChange: (visible: boolean) => void
 }
@@ -17,6 +17,7 @@ export default function JourneyPassport({
   data,
   journey,
   onStartReplay,
+  onOpenMemory,
   showOtherJourneys,
   onShowOtherJourneysChange,
 }: Props) {
@@ -43,22 +44,13 @@ export default function JourneyPassport({
         {journey.epigraph ?? journey.summary}
       </p>
 
-      <div className="mt-3 grid h-24 grid-cols-[1.45fr_1fr_1fr] gap-1.5 overflow-hidden rounded-xl">
-        {summary.coverSources.slice(0, 3).map((cover, index) => (
-          <img
-            key={`${cover.visitId}:${cover.file}`}
-            src={photoThumbUrl(cover.visitId, cover.file)}
-            alt=""
-            loading="lazy"
-            style={{ '--rg-index': index } as CSSProperties}
-            className="rg-stagger-item h-full w-full object-cover"
-          />
-        ))}
-        {summary.coverSources.length === 0 && (
-          <div className="col-span-full flex items-center justify-center bg-[radial-gradient(circle_at_70%_20%,var(--rg-journey-glow),transparent_60%),linear-gradient(135deg,#0b1729,#07101f)] font-mono text-[9px] tracking-[0.2em] text-white/35">
-            MEMORY
-          </div>
-        )}
+      <div className="mt-3 h-36">
+        <JourneyCoverMosaic
+          covers={summary.coverSources.map(({ visitId, file }) => ({ visitId, file }))}
+          title={journey.title}
+          theme={journey.theme}
+          large
+        />
       </div>
 
       <div className="mt-3 flex flex-wrap gap-1.5">
@@ -108,6 +100,25 @@ export default function JourneyPassport({
       >
         开始旅程回放
       </button>
+
+      <div className="mt-2 grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          disabled={summary.photoCount === 0}
+          onClick={() => onOpenMemory('stage')}
+          className="cursor-pointer rounded-xl border border-amber-100/16 bg-amber-100/[.045] px-3 py-2 text-xs text-amber-50/80 transition hover:border-amber-100/32 hover:bg-amber-100/[.08] disabled:cursor-not-allowed disabled:opacity-35"
+        >
+          全部照片
+        </button>
+        <button
+          type="button"
+          disabled={summary.photoCount === 0}
+          onClick={() => onOpenMemory('constellation')}
+          className="cursor-pointer rounded-xl border border-cyan-100/14 bg-cyan-100/[.035] px-3 py-2 text-xs text-cyan-50/75 transition hover:border-cyan-100/30 hover:bg-cyan-100/[.07] disabled:cursor-not-allowed disabled:opacity-35"
+        >
+          回忆星图
+        </button>
+      </div>
     </aside>
   )
 }

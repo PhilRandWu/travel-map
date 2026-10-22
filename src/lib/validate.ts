@@ -1,13 +1,14 @@
 import type { City, TravelData, Trip, Visit } from '@/types'
 import { resolveCities } from '@/lib/cities'
 import { validateJourneyData } from '@/lib/journeyValidation'
+import { photoVariantUrl } from '@/lib/photoUrls'
 
 /**
  * 数据校验（PRD 第 4 节「校验要求」）：
  * - id 不重复（cities / trips / visits 各自且全局）
  * - from / to / waypoints / visit.city / meta.homeCity 引用存在
  * - 日期合法、arriveDate ≤ leaveDate
- * - 照片文件存在（dev 下异步 fetch HEAD，见 checkPhotoFiles）
+ * - 照片派生资产存在（dev 下异步 fetch HEAD，见 checkPhotoFiles）
  * 错误以醒目格式打印到 console，列出具体 id 与原因，不静默。
  */
 
@@ -166,14 +167,14 @@ export function validateTravelData(input: unknown): ValidationIssue[] {
   return issues
 }
 
-/** 照片文件存在性：dev 下对 /photos/<visit-id>/<file> 做 HEAD 请求 */
+/** 派生资产存在性：dev 下只探测 blur，避免首屏请求原图或 preview。 */
 export async function checkPhotoFiles(data: TravelData): Promise<ValidationIssue[]> {
   if (!import.meta.env.DEV) return []
   const issues: ValidationIssue[] = []
   await Promise.all(
     data.visits.flatMap((v) =>
       v.photos.map(async (p) => {
-        const url = `${import.meta.env.BASE_URL}photos/${v.id}/${p.file}`
+        const url = photoVariantUrl(v.id, p.file, 'blur')
         try {
           const res = await fetch(url, { method: 'HEAD' })
           // Vite dev 对缺失静态文件会 SPA fallback 返回 200 text/html，必须同时判别 Content-Type
@@ -182,7 +183,7 @@ export async function checkPhotoFiles(data: TravelData): Promise<ValidationIssue
             issues.push({
               level: 'error',
               subject: `visit:${v.id}`,
-              message: `照片文件不存在：${url}（HTTP ${res.status}${type ? `, ${type}` : ''}）`,
+              message: `照片派生资产不存在：${url}（HTTP ${res.status}${type ? `, ${type}` : ''}）`,
             })
           }
         } catch (e) {

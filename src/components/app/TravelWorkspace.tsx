@@ -1,5 +1,4 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
-import CityCard from '@/components/city/CityCard'
 import GlobeLoader from '@/components/common/GlobeLoader'
 import Starfield from '@/components/globe/Starfield'
 import type { PickedRegion } from '@/components/globe/pickedRegion'
@@ -8,8 +7,11 @@ import JourneyArchive from '@/components/journey/JourneyArchive'
 import JourneyBreadcrumb from '@/components/journey/JourneyBreadcrumb'
 import JourneyChapterRail from '@/components/journey/JourneyChapterRail'
 import JourneyPassport from '@/components/journey/JourneyPassport'
+import PlaceChapter from '@/components/journey/PlaceChapter'
+import MemoryStage from '@/components/memory/MemoryStage'
 import PhotoGrouping from '@/components/photos/PhotoGrouping'
 import StatsPanel from '@/components/stats/StatsPanel'
+import { useJourneyMemory } from '@/hooks/useJourneyMemory'
 import { useScopedTravelData } from '@/hooks/useScopedTravelData'
 import { useTravelNavigation } from '@/hooks/useTravelNavigation'
 import { resolveCity } from '@/lib/cities'
@@ -44,6 +46,7 @@ export default function TravelWorkspace({ data }: Props) {
   const [replayStartSignal, setReplayStartSignal] = useState(0)
   const isArchive = state.scope.kind === 'archive'
   const activeJourneyId = state.scope.kind === 'journey' ? state.scope.journeyId : null
+  const memory = useJourneyMemory(data, activeJourneyId ?? 'archive')
   const activeJourney = activeJourneyId
     ? data.journeys.find((journey) => journey.id === activeJourneyId)
     : undefined
@@ -195,6 +198,7 @@ export default function TravelWorkspace({ data }: Props) {
               data={scopedData}
               journey={activeJourney}
               onStartReplay={startJourneyReplay}
+              onOpenMemory={(view) => memory.openJourneyMemory(activeJourney.id, view)}
               showOtherJourneys={showOtherJourneys}
               onShowOtherJourneysChange={setShowOtherJourneys}
             />
@@ -230,11 +234,14 @@ export default function TravelWorkspace({ data }: Props) {
 
       {scopedData && state.cardCityId && (
         <div className="pointer-events-none absolute bottom-40 left-0 top-0 z-20 flex items-center px-3 sm:px-6">
-          <CityCard
+          <PlaceChapter
             data={scopedData}
             cityId={state.cardCityId}
+            activeVisitId={state.selection.kind === 'visit' ? state.selection.visitId : undefined}
             selection={state.selection}
+            onSelectVisit={actions.openVisit}
             onSelectTrip={handleSelectTrip}
+            onOpenMemory={memory.openMemory}
             onClose={actions.closePlace}
           />
         </div>
@@ -244,6 +251,19 @@ export default function TravelWorkspace({ data }: Props) {
         <div className="rg-hint pointer-events-none absolute bottom-48 left-1/2 z-10 max-w-[calc(100vw-2rem)] whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-5 py-2 text-center text-xs tracking-[0.2em] text-white/55 backdrop-blur-md">
           点击城市、轨迹或章节，重新走进这段旅程
         </div>
+      )}
+
+      {memory.overlay.status === 'open' && memory.collection && (
+        <MemoryStage
+          collection={memory.collection}
+          mode={memory.overlay.mode}
+          view={memory.overlay.view}
+          photoIndex={memory.overlay.photoIndex}
+          onPhotoIndex={memory.setPhotoIndex}
+          onMode={(mode) => memory.setMode(mode, 0)}
+          onView={memory.setView}
+          onClose={memory.close}
+        />
       )}
     </div>
   )

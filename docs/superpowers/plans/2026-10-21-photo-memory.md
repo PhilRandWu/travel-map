@@ -2339,8 +2339,8 @@ Run: `pnpm dev`
 
 使用浏览器 Network 面板确认：
 
-1. 档案与章节轴只请求 `thumb-sm.webp`。
-2. 地点拼图与封面请求 `thumb-md.webp`。
+1. 档案小卡与章节轴请求 `thumb-sm.webp`。
+2. 旅程封面拼图与地点相册请求 `thumb-md.webp`。
 3. 打开舞台后当前张请求 `preview.webp`，下一张被预加载，上一张保留缓存。
 4. `photos/` 原图请求只在双击放大后出现。
 5. 胶片条不请求 preview。
