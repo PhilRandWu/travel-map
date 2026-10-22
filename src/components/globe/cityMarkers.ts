@@ -36,6 +36,7 @@ interface CityHandlers {
   onSelect: (id: string) => void
   /** hover 仅用于唤醒大气辉光，不触发重渲染 */
   onHover: (id: string | null) => void
+  locked?: boolean
 }
 
 /**
@@ -44,6 +45,7 @@ interface CityHandlers {
  * 名称默认随缩放显隐，hover/选中时常显；到访次数越多亮点越大。
  */
 export function buildCityMarker(d: CityMarkerDatum, handlers: CityHandlers): HTMLElement {
+  const locked = handlers.locked ?? false
   const el = document.createElement('div')
   el.className = 'rg-city-marker'
   if (d.arrival) el.classList.add('rg-city-arrival')
@@ -72,8 +74,11 @@ export function buildCityMarker(d: CityMarkerDatum, handlers: CityHandlers): HTM
     <button type="button" class="rg-city-hit" aria-label="打开${d.name}地点" style="
       position:absolute;left:${-size}px;top:${-size}px;
       width:${size * 2}px;height:${size * 2}px;
-      display:flex;align-items:center;justify-content:center;cursor:pointer;
-      pointer-events:auto;border:0;background:transparent;padding:0;color:inherit;">
+      display:flex;align-items:center;justify-content:center;
+      cursor:${locked ? 'default' : 'pointer'};
+      pointer-events:${locked ? 'none' : 'auto'};
+      border:0;background:transparent;padding:0;color:inherit;"
+      ${locked ? 'disabled aria-disabled="true"' : ''}>
       <span style="position:absolute;left:50%;top:50%;width:${size}px;height:${size}px;
         margin:${-size / 2}px 0 0 ${-size / 2}px;border-radius:50%;
         border:1.5px solid ${core};" class="rg-ping-ring"></span>
@@ -95,11 +100,13 @@ export function buildCityMarker(d: CityMarkerDatum, handlers: CityHandlers): HTM
 
   // hover：名称常显 + 大气辉光被唤醒（直接改 DOM，避免 setState 重建标记导致抖动）
   hit.addEventListener('mouseenter', () => {
+    if (locked) return
     label.style.opacity = '1'
     label.style.transform = 'translate(-50%,0)'
     handlers.onHover(d.id)
   })
   hit.addEventListener('mouseleave', () => {
+    if (locked) return
     if (!showLabel) {
       label.style.opacity = '0'
       label.style.transform = 'translate(-50%,3px)'
@@ -107,6 +114,7 @@ export function buildCityMarker(d: CityMarkerDatum, handlers: CityHandlers): HTM
     handlers.onHover(null)
   })
   hit.addEventListener('click', (e) => {
+    if (locked) return
     e.stopPropagation()
     handlers.onSelect(d.id)
   })

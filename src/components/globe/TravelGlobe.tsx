@@ -9,20 +9,16 @@ import { useAtmosphereGlow, ATMOSPHERE_COLOR, ATMOSPHERE_ALTITUDE } from '@/comp
 import { useAutoRotate } from '@/components/globe/hooks/useAutoRotate'
 import { useDragClickGuard } from '@/components/globe/hooks/useDragClickGuard'
 import { useTrackPresentation } from '@/components/globe/hooks/useTrackPresentation'
-import { useVehiclePlayback } from '@/components/globe/hooks/useVehiclePlayback'
+import { useVehicleScene } from '@/components/globe/hooks/useVehicleScene'
 import { useJourneyReveal } from '@/components/globe/hooks/useJourneyReveal'
 import { useCameraFocus } from '@/components/globe/hooks/useCameraFocus'
 import { useMotion } from '@/components/motion/MotionProvider'
 import VehicleOverlay from '@/components/globe/VehicleOverlay'
+import VehicleCameraStatus from '@/components/globe/VehicleCameraStatus'
 import GlobeFeedback from '@/components/globe/GlobeFeedback'
 import SceneRouteOverlay from '@/components/globe/SceneRouteOverlay'
 import RouteFlowOverlay from '@/components/globe/RouteFlowOverlay'
-import {
-  buildCityMarker,
-  buildHomeMarker,
-  buildRegionDot,
-  type GlobeMarker,
-} from '@/components/globe/cityMarkers'
+import { buildCityMarker, buildHomeMarker, buildRegionDot, type GlobeMarker } from '@/components/globe/cityMarkers'
 import {
   INITIAL_POV,
   LABEL_ALT_THRESHOLD,
@@ -63,7 +59,7 @@ export default function TravelGlobe({
   const clickSeqRef = useRef(0)
   const [locating, setLocating] = useState(false)
   const [globeReady, setGlobeReady] = useState(false)
-  const { pageVisible } = useMotion()
+  const { effectiveLevel, pageVisible } = useMotion()
 
   // 交互状态用 ref，自转循环内读取，不触发重渲染
   const draggingRef = useRef(false)
@@ -101,6 +97,21 @@ export default function TravelGlobe({
 
   // 大气呼吸、表面 hover 指针样式（详见 useAtmosphereGlow）
   useAtmosphereGlow(globeRef, wrapperRef, [size], { draggingRef, cityHoveringRef })
+  const chaseEnabled = pageVisible && effectiveLevel !== 'calm'
+  const {
+    playback: vehiclePlayback,
+    runtime: vehicleRuntime,
+    chaseCamera,
+  } = useVehicleScene({
+    tracks,
+    selectedTripId,
+    playbackSignal: tripPlaybackSignal,
+    replayRuntime,
+    pageVisible,
+    chaseEnabled,
+    globeRef,
+  })
+  cameraLockedRef.current = chaseCamera.locked
   const flyTo = useCameraFocus({
     globeRef,
     lastInteractRef,
@@ -109,6 +120,7 @@ export default function TravelGlobe({
     selectedCityId,
     focusPoint,
     resetSignal,
+    suppressed: chaseEnabled && vehiclePlayback !== null,
   })
 
   // 点击地球任意位置 → 离线反查地名
@@ -157,12 +169,6 @@ export default function TravelGlobe({
     onSelectTripRef,
   })
 
-  const vehiclePlayback = useVehiclePlayback({
-    tracks,
-    selectedTripId,
-    playbackSignal: tripPlaybackSignal,
-  })
-
   // 地球空白点击在已有选中的场景中就是“退出到全局模式”
   const handleGlobeClickWithSelection = (coords: { lat: number; lng: number }) => {
     if (selectionRef.current !== 'none') {
@@ -184,11 +190,13 @@ export default function TravelGlobe({
     onSelectCityRef,
     cityHoveringRef,
     lastInteractRef,
+    locked: chaseCamera.locked,
   })
 
   const polygons = region?.boundary ? [region.boundary] : []
   const scenePaused = !pageVisible
     || dragging
+    || chaseCamera.locked
     || replayRuntime?.status === 'playing'
     || selectedCityId !== null
 
@@ -198,6 +206,7 @@ export default function TravelGlobe({
       data-visible-flight-tracks={visibleTrackCounts.flights}
       data-visible-train-tracks={visibleTrackCounts.trains}
       data-visible-stardust-tracks={visibleTrackCounts.stardust}
+      data-camera-locked={chaseCamera.locked}
       className="absolute inset-0"
     >
       {size.width > 0 && (
@@ -209,6 +218,7 @@ export default function TravelGlobe({
           globeImageUrl="/textures/earth-night.jpg"
           bumpImageUrl="/textures/earth-topology.png"
           showAtmosphere
+          enablePointerInteraction={!chaseCamera.locked}
           atmosphereColor={ATMOSPHERE_COLOR}
           atmosphereAltitude={ATMOSPHERE_ALTITUDE}
           onGlobeReady={() => {
@@ -224,7 +234,11 @@ export default function TravelGlobe({
               }
             }
           }}
-          onGlobeClick={handleGlobeClickWithSelection}
+          onGlobeClick={(coords) => {
+            if (!cameraLockedRef.current) {
+              handleGlobeClickWithSelection(coords)
+            }
+          }}
           {...trackProps}
           // 选中区域多边形高亮
           polygonsData={polygons}
@@ -240,7 +254,7 @@ export default function TravelGlobe({
           htmlElement={(d) => {
             const m = d as GlobeMarker
             return m.kind === 'city'
-              ? buildCityMarker(m, { onSelect: handleSelectCity, onHover: handleHoverCity })
+              ? buildCityMarker(m, { onSelect: handleSelectCity, onHover: handleHoverCity, locked: chaseCamera.locked })
               : m.kind === 'home'
                 ? buildHomeMarker(m)
                 : buildRegionDot(m)
@@ -268,8 +282,13 @@ export default function TravelGlobe({
       )}
       <VehicleOverlay
         playback={vehiclePlayback}
-        replayRuntime={replayRuntime}
+        runtime={vehicleRuntime}
         globeRef={globeRef}
+      />
+      <VehicleCameraStatus
+        active={chaseCamera.locked}
+        label={chaseCamera.status?.label ?? null}
+        type={chaseCamera.status?.type ?? null}
       />
       <GlobeFeedback
         region={region}

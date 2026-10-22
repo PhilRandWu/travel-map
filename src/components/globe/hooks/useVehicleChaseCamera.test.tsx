@@ -85,4 +85,77 @@ describe('useVehicleChaseCamera', () => {
     expect(controls.enabled).toBe(true)
     expect(controls.autoRotate).toBe(true)
   })
+
+  it('restores the exact saved POV when playback stops', () => {
+    const { globe, camera, controls } = fakeGlobe()
+    camera.position.set(12, 34, 56)
+    camera.up.set(0, 1, 0)
+    camera.lookAt(4, 5, 6)
+    controls.target.set(4, 5, 6)
+    controls.enabled = false
+    controls.autoRotate = true
+    const saved = {
+      position: camera.position.toArray(),
+      quaternion: camera.quaternion.toArray(),
+      up: camera.up.toArray(),
+      target: controls.target.toArray(),
+    }
+    let listener: (frame: VehicleRuntimeFrame | null) => void = () => undefined
+    const runtime = {
+      getFrame: () => null,
+      subscribe: vi.fn((next: (frame: VehicleRuntimeFrame | null) => void) => {
+        listener = next
+        return () => undefined
+      }),
+    }
+    renderHook(() => useVehicleChaseCamera({
+      globeRef: { current: globe },
+      runtime,
+      enabled: true,
+    }))
+
+    act(() => {
+      listener(buildVehicleRuntimeFrame(playback, route.durationMs / 2, 0))
+    })
+    expect(controls.enabled).toBe(false)
+
+    act(() => listener(null))
+
+    expect(camera.position.toArray()).toEqual(saved.position)
+    expect(camera.quaternion.toArray()).toEqual(saved.quaternion)
+    expect(camera.up.toArray()).toEqual(saved.up)
+    expect(controls.target.toArray()).toEqual(saved.target)
+    expect(controls.enabled).toBe(false)
+    expect(controls.autoRotate).toBe(true)
+    expect(controls.update).toHaveBeenCalled()
+  })
+
+  it('restores the saved POV when the scene unmounts mid-chase', () => {
+    const { globe, camera, controls } = fakeGlobe()
+    camera.position.set(7, 8, 9)
+    camera.lookAt(0, 0, 0)
+    const savedPosition = camera.position.toArray()
+    let listener: (frame: VehicleRuntimeFrame | null) => void = () => undefined
+    const runtime = {
+      getFrame: () => null,
+      subscribe: vi.fn((next: (frame: VehicleRuntimeFrame | null) => void) => {
+        listener = next
+        return () => undefined
+      }),
+    }
+    const { unmount } = renderHook(() => useVehicleChaseCamera({
+      globeRef: { current: globe },
+      runtime,
+      enabled: true,
+    }))
+
+    act(() => {
+      listener(buildVehicleRuntimeFrame(playback, 0, 0))
+    })
+    unmount()
+
+    expect(camera.position.toArray()).toEqual(savedPosition)
+    expect(controls.enabled).toBe(true)
+    expect(controls.autoRotate).toBe(true)
+  })
 })

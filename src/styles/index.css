@@ -6,6 +6,7 @@
 @import './motion-journey.css';
 @import './motion-replay.css';
 @import './motion-runtime.css';
+@import './motion-vehicle.css';
 
 [data-journey-theme='amber'] {
   --rg-journey-accent: #f3c579;

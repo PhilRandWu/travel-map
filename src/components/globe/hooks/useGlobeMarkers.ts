@@ -24,6 +24,7 @@ interface Options {
   onSelectCityRef: RefObject<(cityId: string | null) => void>
   cityHoveringRef: RefObject<boolean>
   lastInteractRef: RefObject<number>
+  locked: boolean
 }
 
 /** 城市点 + 反查定位点共用一个 html 层；名称显隐/选中态变化时才重建 */
@@ -39,6 +40,7 @@ export function useGlobeMarkers({
   onSelectCityRef,
   cityHoveringRef,
   lastInteractRef,
+  locked,
 }: Options) {
   const markers = useMemo<GlobeMarker[]>(() => {
     const visibleCities = revealedCityIds
@@ -72,6 +74,7 @@ export function useGlobeMarkers({
     arrivalActive,
     homeCity,
     litCities,
+    locked,
     region,
     revealedCityIds,
     selectedCityId,

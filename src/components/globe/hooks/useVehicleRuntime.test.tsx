@@ -5,6 +5,7 @@ import data from '@/data/trips.json'
 import type { TravelData } from '@/types'
 import { buildTracks } from '@/lib/tracks'
 import { buildVehicleRoute, type VehiclePlayback } from '@/lib/vehicle'
+import type { ReplayRuntime } from '@/lib/replay'
 import { useVehicleRuntime } from '@/components/globe/hooks/useVehicleRuntime'
 
 const { flights } = buildTracks(data as TravelData)
@@ -47,7 +48,7 @@ describe('useVehicleRuntime', () => {
     unsubscribe()
   })
 
-  it('does not start one-off playback when replay is idle', () => {
+  it('starts one-off playback when replay is idle', () => {
     const globeRef = { current: {} as GlobeMethods }
     const replayRuntime = {
       status: 'idle' as const,
@@ -65,6 +66,124 @@ describe('useVehicleRuntime', () => {
     const listener = vi.fn()
     result.current.subscribe(listener)
 
-    expect(listener).toHaveBeenCalledWith(null)
+    expect(listener).toHaveBeenCalledWith(expect.objectContaining({
+      tripId: playback.tripId,
+      stage: 'moving',
+      motion: expect.objectContaining({ progress: 0 }),
+    }))
+  })
+
+  it('does not replay a trip again when its replay step finishes', () => {
+    const globeRef = { current: {} as GlobeMethods }
+    const activeReplay: ReplayRuntime = {
+      status: 'playing' as const,
+      activeIndex: 0,
+      seekRevision: 0,
+      plan: {
+        steps: [{
+          node: {
+            kind: 'trip' as const,
+            date: '2026-01-01',
+            refId: playback.tripId,
+            cityId: '',
+            label: '',
+          },
+          startMs: 0,
+          durationMs: playback.route.durationMs + 1900,
+        }],
+        totalMs: playback.route.durationMs + 1900,
+      },
+      getPosition: () => ({
+        index: 0,
+        elapsedMs: playback.route.durationMs + 1900,
+      }),
+    }
+    const { result, rerender } = renderHook(
+      ({ replayRuntime }) => useVehicleRuntime({
+        playback,
+        replayRuntime,
+        pageVisible: true,
+        globeRef,
+      }),
+      { initialProps: { replayRuntime: activeReplay } },
+    )
+    const listener = vi.fn()
+    result.current.subscribe(listener)
+
+    expect(listener).toHaveBeenLastCalledWith(expect.objectContaining({
+      stage: 'complete',
+    }))
+
+    rerender({
+      replayRuntime: {
+        ...activeReplay,
+        status: 'idle' as const,
+      },
+    })
+
+    expect(listener).toHaveBeenLastCalledWith(null)
+  })
+
+  it('starts a new one-off after leaving a replay on the same trip', () => {
+    const globeRef = { current: {} as GlobeMethods }
+    const idleReplay: ReplayRuntime = {
+      status: 'idle',
+      activeIndex: -1,
+      seekRevision: 0,
+      plan: { steps: [], totalMs: 0 },
+      getPosition: () => ({ index: 0, elapsedMs: 0 }),
+    }
+    const activeReplay: ReplayRuntime = {
+      ...idleReplay,
+      status: 'playing',
+      activeIndex: 0,
+      plan: {
+        steps: [{
+          node: {
+            kind: 'trip',
+            date: '2026-01-01',
+            refId: playback.tripId,
+            cityId: '',
+            label: '',
+          },
+          startMs: 0,
+          durationMs: playback.route.durationMs + 1900,
+        }],
+        totalMs: playback.route.durationMs + 1900,
+      },
+    }
+    const initialProps: {
+      currentPlayback: VehiclePlayback | null
+      replayRuntime: ReplayRuntime
+    } = {
+      currentPlayback: playback,
+      replayRuntime: activeReplay,
+    }
+    const { result, rerender } = renderHook(
+      ({ currentPlayback, replayRuntime }: {
+        currentPlayback: VehiclePlayback | null
+        replayRuntime: ReplayRuntime
+      }) => useVehicleRuntime({
+        playback: currentPlayback,
+        replayRuntime,
+        pageVisible: true,
+        globeRef,
+      }),
+      { initialProps },
+    )
+    const listener = vi.fn()
+    result.current.subscribe(listener)
+
+    rerender({ currentPlayback: null, replayRuntime: idleReplay })
+    rerender({
+      currentPlayback: { ...playback, key: 2 },
+      replayRuntime: idleReplay,
+    })
+
+    expect(listener).toHaveBeenLastCalledWith(expect.objectContaining({
+      tripId: playback.tripId,
+      stage: 'moving',
+      motion: expect.objectContaining({ progress: 0 }),
+    }))
   })
 })

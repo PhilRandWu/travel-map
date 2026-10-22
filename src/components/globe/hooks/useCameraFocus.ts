@@ -12,6 +12,7 @@ interface Options {
   selectedCityId: string | null
   focusPoint: { lat: number; lng: number } | null
   resetSignal: number
+  suppressed?: boolean
 }
 
 export function useCameraFocus({
@@ -22,12 +23,13 @@ export function useCameraFocus({
   selectedCityId,
   focusPoint,
   resetSignal,
+  suppressed = false,
 }: Options) {
   const { effectiveLevel, reducedMotion } = useMotion()
   const duration = reducedMotion || effectiveLevel === 'calm' ? 0 : FLIGHT_MS
 
   const flyTo = useCallback((lat: number, lng: number, maxAlt: number) => {
-    if (cameraLockedRef.current) return
+    if (suppressed || cameraLockedRef.current) return
     const globe = globeRef.current
     if (!globe) return
     const current = globe.pointOfView()
@@ -40,7 +42,7 @@ export function useCameraFocus({
     const dAlt = Math.abs(current.altitude - targetAlt)
     if (dLat < 0.5 && dLng < 0.5 && dAlt < 0.05) return
     globe.pointOfView({ lat, lng, altitude: targetAlt }, duration)
-  }, [cameraLockedRef, duration, globeRef])
+  }, [cameraLockedRef, duration, globeRef, suppressed])
 
   const selectedCity = useMemo(
     () => litCities.find((city) => city.city.id === selectedCityId) ?? null,
@@ -48,25 +50,32 @@ export function useCameraFocus({
   )
 
   useEffect(() => {
-    if (!selectedCity) return
+    if (suppressed || !selectedCity) return
     lastInteractRef.current = performance.now()
     flyTo(selectedCity.city.lat, selectedCity.city.lng, 1.35)
-  }, [flyTo, lastInteractRef, selectedCity])
+  }, [flyTo, lastInteractRef, selectedCity, suppressed])
 
   useEffect(() => {
-    if (!focusPoint) return
+    if (suppressed || !focusPoint) return
     lastInteractRef.current = performance.now()
     flyTo(focusPoint.lat, focusPoint.lng, 2.3)
-  }, [flyTo, focusPoint, lastInteractRef])
+  }, [flyTo, focusPoint, lastInteractRef, suppressed])
 
   useEffect(() => {
-    if (cameraLockedRef.current) return
+    if (suppressed || cameraLockedRef.current) return
     if (resetSignal === 0) return
     const globe = globeRef.current
     if (!globe) return
     lastInteractRef.current = performance.now()
     globe.pointOfView(INITIAL_POV, duration)
-  }, [cameraLockedRef, duration, globeRef, lastInteractRef, resetSignal])
+  }, [
+    cameraLockedRef,
+    duration,
+    globeRef,
+    lastInteractRef,
+    resetSignal,
+    suppressed,
+  ])
 
   return flyTo
 }

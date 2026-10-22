@@ -80,6 +80,7 @@ export function useVehicleRuntime({
         ))
         replayFollowingRef.current = null
       } else {
+        replayFollowingRef.current = null
         emit(null)
       }
       return
@@ -88,8 +89,8 @@ export function useVehicleRuntime({
     let raf = 0
     let cancelled = false
 
-    if (replayRuntime) {
-      if (replayRuntime.status === 'idle' || replayRuntime.activeIndex < 0) {
+    if (replayRuntime && replayRuntime.status !== 'idle') {
+      if (replayRuntime.activeIndex < 0) {
         replayFollowingRef.current = null
         emit(null)
         return
@@ -146,6 +147,12 @@ export function useVehicleRuntime({
         cancelled = true
         cancelAnimationFrame(raf)
       }
+    }
+
+    if (replayFollowingRef.current) {
+      replayFollowingRef.current = null
+      emit(null)
+      return
     }
 
     if (singleKeyRef.current !== playback.key) {

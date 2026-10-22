@@ -1,0 +1,99 @@
+.rg-chase-vignette {
+  opacity: 0;
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 42%,
+      rgb(1 4 12 / 0.26) 76%,
+      rgb(1 4 12 / 0.58) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgb(1 4 12 / 0.34),
+      transparent 22%,
+      transparent 76%,
+      rgb(1 4 12 / 0.42)
+    );
+  transition: opacity 260ms var(--rg-ease-out);
+}
+
+html[data-vehicle-chase='true'] .rg-chase-vignette {
+  opacity: 1;
+}
+
+.rg-vehicle-camera-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 999px;
+  background: rgb(5 8 17 / 0.68);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.32);
+  color: rgb(255 255 255 / 0.68);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+}
+
+.rg-vehicle-camera-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #a5f3fc;
+  box-shadow: 0 0 10px rgb(103 232 249 / 0.7);
+}
+
+.rg-vehicle-marker[data-vehicle-chase='true'] .rg-vehicle-glyph {
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--rg-vehicle-angle, 0deg))
+    perspective(260px)
+    rotateX(var(--rg-vehicle-pitch, 0deg))
+    rotateZ(var(--rg-vehicle-roll, 0deg))
+    scale(0.88);
+}
+
+.rg-vehicle-marker[data-vehicle-chase='true'] .rg-vehicle-label {
+  opacity: 0;
+}
+
+[data-camera-locked='true'] .rg-city-hit {
+  pointer-events: none;
+}
+
+html[data-vehicle-chase='true'] .rg-city-marker {
+  opacity: 0.38;
+}
+
+html[data-vehicle-chase='true'] :is(
+  .rg-passport,
+  .rg-card-in,
+  .rg-hero-in,
+  .rg-stats-in
+) {
+  opacity: 0.34;
+  transition: opacity 220ms ease;
+}
+
+html[data-motion='calm'] .rg-chase-vignette {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .rg-vehicle-camera-status {
+    top: 4.75rem;
+    max-width: calc(100vw - 2rem);
+    overflow: hidden;
+    padding: 6px 10px;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-chase-vignette {
+    transition: none;
+  }
+}

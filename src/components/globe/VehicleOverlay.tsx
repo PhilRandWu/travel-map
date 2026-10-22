@@ -1,13 +1,7 @@
 import { useEffect, useRef, type RefObject } from 'react'
 import type { GlobeMethods } from 'react-globe.gl'
-import {
-  sampleVehicleRoute,
-} from '@/lib/vehicle'
-import {
-  getReplayStepProgress,
-  type ReplayRuntime,
-} from '@/lib/replay'
-import type { VehiclePlayback } from '@/components/globe/hooks/useVehiclePlayback'
+import { sampleVehicleRoute, type VehiclePlayback } from '@/lib/vehicle'
+import type { VehicleRuntime } from '@/components/globe/hooks/useVehicleRuntime'
 import { createVehicleTrail } from '@/components/globe/vehicleTrail'
 import { useMotion } from '@/components/motion/MotionProvider'
 import { isPointVisible, screenPoint } from '@/components/globe/vehicleScreen'
@@ -16,24 +10,18 @@ import { useVehicleMotionEffects } from '@/components/globe/useVehicleMotionEffe
 
 interface Props {
   playback: VehiclePlayback | null
-  replayRuntime: ReplayRuntime | null
+  runtime: VehicleRuntime
   globeRef: RefObject<GlobeMethods | undefined>
 }
 
-const HOLD_MS = 260
-const FADE_MS = 360
 const VEHICLE_ICONS = {
   flight: '/vehicle-icons/flight-3d.svg',
   train: '/vehicle-icons/train-3d.svg',
 } as const
 
-/**
- * 独立于 React 渲染帧的载具覆盖层。
- * 逐帧直接更新 DOM transform，避免 60fps setState 拖慢地球场景。
- */
 export default function VehicleOverlay({
   playback,
-  replayRuntime,
+  runtime,
   globeRef,
 }: Props) {
   const hostRef = useRef<HTMLDivElement>(null)
@@ -55,58 +43,10 @@ export default function VehicleOverlay({
     if (!playback || !globe || !host || !marker) return
 
     const calmMotion = effectiveLevel === 'calm'
-    const moveDuration = calmMotion ? 1 : playback.route.durationMs
     const trail = createVehicleTrail(globe, playback.route)
     host.dataset.vehicleTrail = 'true'
-    let animationFrame = 0
     let angle = 0
     let hasDirection = false
-
-    const renderProgress = (rawProgress: number, opacity = 1) => {
-      const easedProgress = rawProgress * rawProgress * (3 - 2 * rawProgress)
-      const position = sampleVehicleRoute(playback.route, easedProgress)
-      const screen = screenPoint(globe, position)
-      const visible = isPointVisible(globe, position)
-
-      const nextPosition = sampleVehicleRoute(
-        playback.route,
-        Math.min(1, easedProgress + 0.008),
-      )
-      const nextScreen = screenPoint(globe, nextPosition)
-      const dx = nextScreen.x - screen.x
-      const dy = nextScreen.y - screen.y
-      if (Math.hypot(dx, dy) > 0.4) {
-        const targetAngle = Math.atan2(dy, dx) * 180 / Math.PI
-        if (!hasDirection) {
-          angle = targetAngle
-          hasDirection = true
-        } else {
-          const delta = ((targetAngle - angle + 540) % 360) - 180
-          angle += delta * 0.24
-        }
-      }
-
-      const fadeIn = calmMotion ? 1 : Math.min(1, rawProgress / 0.05)
-      marker.style.visibility = 'visible'
-      marker.style.transform = `translate3d(${screen.x}px, ${screen.y}px, 0)`
-      marker.style.opacity = visible
-        ? String(Math.min(fadeIn, opacity))
-        : '0'
-      marker.style.setProperty('--rg-vehicle-angle', `${angle}deg`)
-      marker.dataset.vehicleProgress = rawProgress.toFixed(3)
-      host.dataset.vehicleTrailProgress = rawProgress.toFixed(3)
-      marker.dataset.vehicleVisible = String(visible)
-      trail.update(easedProgress)
-      effects.update(
-        globe,
-        playback.route,
-        easedProgress,
-        rawProgress,
-        visible,
-        calmMotion,
-      )
-      if (rawProgress >= 1) effects.markArrival(globe, playback.route)
-    }
 
     const hideMarker = () => {
       marker.style.opacity = '0'
@@ -115,87 +55,77 @@ export default function VehicleOverlay({
       host.dataset.vehiclePlaying = 'false'
     }
 
-    const replayStep = replayRuntime
-      ? replayRuntime.plan.steps[replayRuntime.getPosition().index]
-      : undefined
-    const followsReplay =
-      replayRuntime !== null
-      && replayRuntime.status !== 'idle'
-      && replayStep?.node.kind === 'trip'
-      && replayStep.node.refId === playback.tripId
-
-    if (followsReplay) {
-      const drawReplayFrame = () => {
-        const position = replayRuntime.getPosition()
-        const step = replayRuntime.plan.steps[position.index]
-        if (step?.node.kind !== 'trip' || step.node.refId !== playback.tripId) {
-          hideMarker()
-          return false
-        }
-        const stepProgress = getReplayStepProgress(
-          replayRuntime.plan,
-          position.index,
-          position.elapsedMs,
-        )
-        const travelProgress = Math.min(
-          1,
-          stepProgress * step.durationMs / moveDuration,
-        )
-        renderProgress(travelProgress)
-        return true
-      }
-
-      host.dataset.vehiclePlaying = String(replayRuntime.status === 'playing')
-      drawReplayFrame()
-      if (replayRuntime.status === 'playing') {
-        const replayFrame = () => {
-          if (!drawReplayFrame()) return
-          animationFrame = requestAnimationFrame(replayFrame)
-        }
-        animationFrame = requestAnimationFrame(replayFrame)
-      }
-
-      return () => {
-        cancelAnimationFrame(animationFrame)
-        host.dataset.vehiclePlaying = 'false'
-        delete host.dataset.vehicleTrail
-        delete host.dataset.vehicleTrailProgress
-        trail.dispose()
-      }
-    }
-
-    const totalDuration = moveDuration + HOLD_MS + FADE_MS
-    const start = performance.now()
-    marker.style.opacity = '0'
-    marker.style.visibility = 'visible'
-    marker.dataset.vehicleProgress = '0'
-    marker.dataset.vehicleVisible = 'false'
-    host.dataset.vehiclePlaying = 'true'
-
-    const frame = (now: number) => {
-      const elapsed = now - start
-      const rawProgress = Math.min(1, elapsed / moveDuration)
-      const fadeOut = elapsed <= moveDuration + HOLD_MS
-        ? 1
-        : Math.max(0, 1 - (elapsed - moveDuration - HOLD_MS) / FADE_MS)
-      renderProgress(rawProgress, fadeOut)
-
-      if (elapsed < totalDuration) {
-        animationFrame = requestAnimationFrame(frame)
-      } else {
+    const unsubscribe = runtime.subscribe((frame) => {
+      if (!frame || frame.tripId !== playback.tripId) {
         hideMarker()
+        return
       }
-    }
 
-    animationFrame = requestAnimationFrame(frame)
+      const { motion, stage } = frame
+      const position = calmMotion
+        ? sampleVehicleRoute(playback.route, 1)
+        : motion.position
+      const screen = screenPoint(globe, position)
+      const visible = isPointVisible(globe, position)
+
+      if (!calmMotion) {
+        const nextPosition = sampleVehicleRoute(
+          playback.route,
+          Math.min(1, motion.progress + 0.008),
+        )
+        const nextScreen = screenPoint(globe, nextPosition)
+        const dx = nextScreen.x - screen.x
+        const dy = nextScreen.y - screen.y
+        if (Math.hypot(dx, dy) > 0.4) {
+          const targetAngle = Math.atan2(dy, dx) * 180 / Math.PI
+          if (!hasDirection) {
+            angle = targetAngle
+            hasDirection = true
+          } else {
+            const delta = ((targetAngle - angle + 540) % 360) - 180
+            angle += delta * 0.24
+          }
+        }
+      }
+
+      const finished = stage === 'complete'
+      marker.style.visibility = 'visible'
+      marker.style.transform = `translate3d(${screen.x}px, ${screen.y}px, 0)`
+      marker.style.opacity = visible && !finished ? '1' : '0'
+      marker.style.setProperty('--rg-vehicle-angle', `${angle}deg`)
+      marker.style.setProperty('--rg-vehicle-pitch', `${motion.pitchDeg}deg`)
+      marker.style.setProperty('--rg-vehicle-roll', `${motion.rollDeg}deg`)
+      marker.dataset.vehicleProgress = motion.progress.toFixed(3)
+      marker.dataset.vehicleStage = stage
+      marker.dataset.vehicleChase = String(!calmMotion)
+      marker.dataset.vehicleVisible = String(visible)
+
+      host.dataset.vehiclePlaying = String(!finished)
+      host.dataset.vehicleTrailProgress = String(
+        calmMotion ? 1 : motion.progress,
+      )
+      trail.update(calmMotion ? 1 : motion.progress)
+      effects.update(
+        globe,
+        playback.route,
+        calmMotion ? 1 : motion.progress,
+        motion.progress,
+        visible,
+        calmMotion,
+      )
+      if (motion.progress >= 1) {
+        effects.markArrival(globe, playback.route)
+      }
+    })
+
     return () => {
-      cancelAnimationFrame(animationFrame)
+      unsubscribe()
       host.dataset.vehiclePlaying = 'false'
       delete host.dataset.vehicleTrail
       delete host.dataset.vehicleTrailProgress
       trail.dispose()
     }
-  }, [effectiveLevel, globeRef, playback, replayRuntime])
+  }, [effectiveLevel, globeRef, playback, runtime])
 
   if (!playback) return null
   const isFlight = playback.type === 'flight'
@@ -208,6 +138,7 @@ export default function VehicleOverlay({
       data-vehicle-playing="false"
       className="pointer-events-none absolute inset-0 z-[2] overflow-hidden"
     >
+      <div className="rg-chase-vignette pointer-events-none absolute inset-0" />
       <VehicleTrailLayer {...effects.refs} />
       <div
         ref={markerRef}

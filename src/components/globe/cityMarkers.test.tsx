@@ -27,4 +27,30 @@ describe('buildCityMarker', () => {
     button?.click()
     expect(onSelect).toHaveBeenCalledWith('hangzhou')
   })
+
+  it('disables city selection while the vehicle camera is locked', () => {
+    const onSelect = vi.fn()
+    const element = buildCityMarker({
+      id: 'hangzhou',
+      name: '杭州',
+      lat: 30.27,
+      lng: 120.15,
+      visitCount: 1,
+      labelVisible: false,
+      selected: false,
+      dimmed: false,
+      arrival: false,
+    }, {
+      onSelect,
+      onHover: vi.fn(),
+      locked: true,
+    })
+
+    const button = element.querySelector<HTMLButtonElement>('.rg-city-hit')
+    expect(button?.disabled).toBe(true)
+    expect(button?.style.pointerEvents).toBe('none')
+
+    button?.click()
+    expect(onSelect).not.toHaveBeenCalled()
+  })
 })
