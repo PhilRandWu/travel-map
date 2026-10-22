@@ -2,12 +2,17 @@ import type { PickedRegion } from '@/components/globe/pickedRegion'
 import type { LitCity } from '@/lib/derive'
 import type { ReplayRuntime } from '@/lib/replay'
 import type { Tracks } from '@/lib/tracks'
+import type { City } from '@/types'
 
 export interface TravelGlobeProps {
   /** 已点亮城市（由 trips.json 推导） */
   litCities: LitCity[]
+  /** 常居城市：空心双环提示，不参与目的地统计 */
+  homeCity?: City
   /** 行程轨迹（由 trips.json 推导） */
   tracks: Tracks
+  /** 其他旅程的低透明度星尘轨迹，仅用于回忆氛围 */
+  stardustTracks?: Tracks
   /** 当前高亮城市（卡片打开或时间轴选中时） */
   selectedCityId: string | null
   /** 当前选中的行程（轨迹保持高亮，其余轨迹/城市淡出） */

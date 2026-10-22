@@ -1,5 +1,6 @@
 import type { City, TravelData, Trip, Visit } from '@/types'
 import { resolveCities } from '@/lib/cities'
+import { validateJourneyData } from '@/lib/journeyValidation'
 
 /**
  * 数据校验（PRD 第 4 节「校验要求」）：
@@ -39,7 +40,10 @@ function isObject(v: unknown): v is Record<string, unknown> {
 /** 顶层结构防御性检查（JSON 可能被手工改坏） */
 export function isTravelData(v: unknown): v is TravelData {
   if (!isObject(v) || !isObject(v.meta)) return false
-  return Array.isArray(v.cities) && Array.isArray(v.trips) && Array.isArray(v.visits)
+  return Array.isArray(v.cities)
+    && Array.isArray(v.journeys)
+    && Array.isArray(v.trips)
+    && Array.isArray(v.visits)
 }
 
 function checkDuplicateIds(
@@ -73,7 +77,7 @@ export function validateTravelData(input: unknown): ValidationIssue[] {
     issues.push({
       level: 'error',
       subject: 'trips.json',
-      message: '顶层结构非法：需要 { meta, cities, trips, visits }',
+      message: '顶层结构非法：需要 { meta, cities, journeys, trips, visits }',
     })
     return issues
   }
@@ -83,6 +87,7 @@ export function validateTravelData(input: unknown): ValidationIssue[] {
   checkDuplicateIds(data.cities, 'city', seen, issues)
   checkDuplicateIds(data.trips, 'trip', seen, issues)
   checkDuplicateIds(data.visits, 'visit', seen, issues)
+  issues.push(...validateJourneyData(data, seen))
 
   const cityMap = resolveCities(data)
   const requireCity = (ref: unknown, subject: string, field: string) => {

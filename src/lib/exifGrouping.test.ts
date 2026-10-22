@@ -18,6 +18,7 @@ function singleVisitData(
     visits: [
       {
         id: 'v-test',
+        journeyId: 'j-test',
         city: 'hangzhou',
         arriveDate,
         leaveDate,
@@ -73,6 +74,7 @@ describe('matchPhotoDate', () => {
       visits: [
         {
           id: 'older',
+          journeyId: 'j-test',
           city: 'beijing',
           arriveDate: '2025-01-01',
           leaveDate: '2025-01-20',
@@ -80,6 +82,7 @@ describe('matchPhotoDate', () => {
         },
         {
           id: 'newer',
+          journeyId: 'j-test',
           city: 'hangzhou',
           arriveDate: '2025-01-10',
           leaveDate: '2025-01-15',

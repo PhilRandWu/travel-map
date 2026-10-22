@@ -1,5 +1,6 @@
 import { useMemo, type RefObject } from 'react'
 import type { LitCity } from '@/lib/derive'
+import type { City } from '@/types'
 import {
   toCityMarkerDatum,
   type GlobeMarker,
@@ -13,6 +14,7 @@ interface RegionPoint {
 
 interface Options {
   litCities: LitCity[]
+  homeCity?: City
   zoomedIn: boolean
   selectedCityId: string | null
   activeCityIds: ReadonlySet<string> | null
@@ -25,6 +27,7 @@ interface Options {
 /** 城市点 + 反查定位点共用一个 html 层；名称显隐/选中态变化时才重建 */
 export function useGlobeMarkers({
   litCities,
+  homeCity,
   zoomedIn,
   selectedCityId,
   activeCityIds,
@@ -42,11 +45,21 @@ export function useGlobeMarkers({
         dimmed: activeCityIds !== null && !activeCityIds.has(lit.city.id),
       }),
     }))
+    if (homeCity) {
+      list.push({
+        kind: 'home',
+        id: homeCity.id,
+        name: homeCity.name,
+        lat: homeCity.lat,
+        lng: homeCity.lng,
+        labelVisible: zoomedIn,
+      })
+    }
     if (region) {
       list.push({ kind: 'region', lat: region.lat, lng: region.lng, ocean: region.ocean })
     }
     return list
-  }, [litCities, zoomedIn, selectedCityId, activeCityIds, region])
+  }, [litCities, homeCity, zoomedIn, selectedCityId, activeCityIds, region])
 
   const handleSelectCity = (id: string) => {
     lastInteractRef.current = performance.now()

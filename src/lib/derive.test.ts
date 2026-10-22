@@ -55,16 +55,17 @@ describe('selectLitCities', () => {
 
   it('只有存在 visit 的城市被点亮', () => {
     const litIds = lit.map((c) => c.city.id).sort()
-    expect(litIds).toEqual(['beijing', 'chengdu', 'hangzhou', 'shanghai'])
+    expect(litIds).toEqual(['chengdu', 'hangzhou', 'shanghai'])
+    expect(lit.some((c) => c.city.id === 'beijing')).toBe(false)
     expect(lit.some((c) => c.city.id === 'jiaxing')).toBe(false)
   })
 
-  it('北京被到访两次，首末日期正确', () => {
-    const bj = lit.find((c) => c.city.id === 'beijing')!
-    expect(bj.visitCount).toBe(2)
-    expect(bj.firstDate).toBe('2025-05-05')
-    expect(bj.lastDate).toBe('2025-06-16')
-    expect(bj.visitIds).toEqual(['v004', 'v005'])
+  it('杭州到访一次，日期与到访 id 正确', () => {
+    const hangzhou = lit.find((c) => c.city.id === 'hangzhou')!
+    expect(hangzhou.visitCount).toBe(1)
+    expect(hangzhou.firstDate).toBe('2025-05-01')
+    expect(hangzhou.lastDate).toBe('2025-05-03')
+    expect(hangzhou.visitIds).toEqual(['v001'])
   })
 
   it('按首次到访日期升序', () => {
@@ -75,8 +76,8 @@ describe('selectLitCities', () => {
 describe('buildTimelineNodes', () => {
   const nodes = buildTimelineNodes(d)
 
-  it('节点数 = visits + trips = 10', () => {
-    expect(nodes).toHaveLength(10)
+  it('节点数 = visits + trips = 8', () => {
+    expect(nodes).toHaveLength(8)
   })
 
   it('按日期升序', () => {
@@ -93,12 +94,12 @@ describe('computeStats', () => {
   const s = computeStats(d)
 
   it('城市/省/段数统计', () => {
-    expect(s.cityCount).toBe(4)
-    expect(s.provinceCount).toBe(4) // 北京、浙江、上海、四川
+    expect(s.cityCount).toBe(3)
+    expect(s.provinceCount).toBe(3) // 浙江、上海、四川
     expect(s.flightCount).toBe(4)
     expect(s.trainCount).toBe(1)
     expect(s.firstDate).toBe('2025-05-01')
-    expect(s.lastDate).toBe('2025-06-16')
+    expect(s.lastDate).toBe('2025-06-13')
   })
 
   it('里程：train 含 waypoint 分段，数字在合理范围', () => {
@@ -118,8 +119,8 @@ describe('computeStats', () => {
 })
 
 describe('关联查询', () => {
-  it('getCityVisits 北京两次且按日期升序', () => {
-    expect(getCityVisits(d, 'beijing').map((v) => v.id)).toEqual(['v004', 'v005'])
+  it('getCityVisits 杭州只命中 v001', () => {
+    expect(getCityVisits(d, 'hangzhou').map((v) => v.id)).toEqual(['v001'])
   })
   it('getCityTrips 嘉兴只命中 t002', () => {
     expect(getCityTrips(d, 'jiaxing').map((t) => t.id)).toEqual(['t002'])

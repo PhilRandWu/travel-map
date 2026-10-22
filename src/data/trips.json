@@ -2,7 +2,7 @@
   "meta": {
     "owner": "旅行者",
     "homeCity": "beijing",
-    "version": 1
+    "version": 2
   },
   "cities": [
     { "id": "beijing", "name": "北京", "lat": 39.9042, "lng": 116.4074, "province": "北京", "country": "中国" },
@@ -11,9 +11,40 @@
     { "id": "jiaxing", "name": "嘉兴", "lat": 30.7522, "lng": 120.7555, "province": "浙江", "country": "中国" },
     { "id": "chengdu", "name": "成都", "lat": 30.5728, "lng": 104.0668, "province": "四川", "country": "中国" }
   ],
+  "journeys": [
+    {
+      "id": "j001",
+      "title": "江南春行",
+      "startDate": "2025-05-01",
+      "endDate": "2025-05-05",
+      "epigraph": "沿着水汽与梧桐，走进五月的江南。",
+      "summary": "从杭州的湖光出发，经嘉兴抵达上海，再从外滩归程。",
+      "theme": "cyan",
+      "coverPhotos": [
+        { "visitId": "v001", "file": "02.svg" },
+        { "visitId": "v001", "file": "01.svg" },
+        { "visitId": "v002", "file": "01.svg" }
+      ]
+    },
+    {
+      "id": "j002",
+      "title": "成都慢夏",
+      "startDate": "2025-06-10",
+      "endDate": "2025-06-13",
+      "epigraph": "在竹影、红油与缓慢的午后之间停留。",
+      "summary": "一次只围绕成都展开的短途停留。",
+      "theme": "amber",
+      "coverPhotos": [
+        { "visitId": "v003", "file": "03.svg" },
+        { "visitId": "v003", "file": "02.svg" },
+        { "visitId": "v003", "file": "01.svg" }
+      ]
+    }
+  ],
   "trips": [
     {
       "id": "t001",
+      "journeyId": "j001",
       "date": "2025-05-01",
       "type": "flight",
       "from": "beijing",
@@ -23,6 +54,7 @@
     },
     {
       "id": "t002",
+      "journeyId": "j001",
       "date": "2025-05-03",
       "type": "train",
       "from": "hangzhou",
@@ -32,6 +64,7 @@
     },
     {
       "id": "t003",
+      "journeyId": "j001",
       "date": "2025-05-05",
       "type": "flight",
       "from": "shanghai",
@@ -41,6 +74,7 @@
     },
     {
       "id": "t004",
+      "journeyId": "j002",
       "date": "2025-06-10",
       "type": "flight",
       "from": "beijing",
@@ -50,6 +84,7 @@
     },
     {
       "id": "t005",
+      "journeyId": "j002",
       "date": "2025-06-13",
       "type": "flight",
       "from": "chengdu",
@@ -61,57 +96,88 @@
   "visits": [
     {
       "id": "v001",
+      "journeyId": "j001",
       "city": "hangzhou",
       "arriveDate": "2025-05-01",
       "leaveDate": "2025-05-03",
       "note": "五一西湖行",
       "photos": [
-        { "file": "01.svg", "caption": "断桥" },
-        { "file": "02.svg", "caption": "西湖暮色" },
-        { "file": "03.svg", "caption": "" }
+        {
+          "file": "01.svg",
+          "caption": "断桥",
+          "takenAt": "2025-05-01T09:20:00+08:00",
+          "featured": true,
+          "focalPoint": { "x": 0.54, "y": 0.48 }
+        },
+        {
+          "file": "02.svg",
+          "caption": "西湖暮色",
+          "takenAt": "2025-05-02T18:40:00+08:00",
+          "featured": true,
+          "focalPoint": { "x": 0.46, "y": 0.42 }
+        },
+        {
+          "file": "03.svg",
+          "caption": "",
+          "takenAt": "2025-05-03T07:15:00+08:00",
+          "featured": false,
+          "focalPoint": { "x": 0.5, "y": 0.5 }
+        }
       ]
     },
     {
       "id": "v002",
+      "journeyId": "j001",
       "city": "shanghai",
       "arriveDate": "2025-05-03",
       "leaveDate": "2025-05-05",
       "note": "外滩与武康路",
       "photos": [
-        { "file": "01.svg", "caption": "外滩夜景" },
-        { "file": "02.svg", "caption": "" }
+        {
+          "file": "01.svg",
+          "caption": "外滩夜景",
+          "takenAt": "2025-05-03T20:10:00+08:00",
+          "featured": true,
+          "focalPoint": { "x": 0.58, "y": 0.5 }
+        },
+        {
+          "file": "02.svg",
+          "caption": "",
+          "takenAt": "2025-05-04T15:30:00+08:00",
+          "featured": false,
+          "focalPoint": { "x": 0.5, "y": 0.55 }
+        }
       ]
     },
     {
       "id": "v003",
+      "journeyId": "j002",
       "city": "chengdu",
       "arriveDate": "2025-06-10",
       "leaveDate": "2025-06-13",
       "note": "端午成都逛吃",
       "photos": [
-        { "file": "01.svg", "caption": "宽窄巷子" },
-        { "file": "02.svg", "caption": "火锅" },
-        { "file": "03.svg", "caption": "大熊猫基地" }
-      ]
-    },
-    {
-      "id": "v004",
-      "city": "beijing",
-      "arriveDate": "2025-05-05",
-      "leaveDate": "2025-06-09",
-      "note": "五一后回到北京",
-      "photos": [
-        { "file": "01.svg", "caption": "" }
-      ]
-    },
-    {
-      "id": "v005",
-      "city": "beijing",
-      "arriveDate": "2025-06-13",
-      "leaveDate": "2025-06-16",
-      "note": "端午后回到北京",
-      "photos": [
-        { "file": "01.svg", "caption": "仲夏的胡同" }
+        {
+          "file": "01.svg",
+          "caption": "宽窄巷子",
+          "takenAt": "2025-06-10T16:00:00+08:00",
+          "featured": false,
+          "focalPoint": { "x": 0.5, "y": 0.5 }
+        },
+        {
+          "file": "02.svg",
+          "caption": "火锅",
+          "takenAt": "2025-06-11T19:20:00+08:00",
+          "featured": true,
+          "focalPoint": { "x": 0.52, "y": 0.58 }
+        },
+        {
+          "file": "03.svg",
+          "caption": "大熊猫基地",
+          "takenAt": "2025-06-12T08:40:00+08:00",
+          "featured": true,
+          "focalPoint": { "x": 0.48, "y": 0.44 }
+        }
       ]
     }
   ]
