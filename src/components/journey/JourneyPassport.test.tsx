@@ -14,6 +14,7 @@ describe('JourneyPassport', () => {
         data={data}
         journey={data.journeys[0]}
         onStartReplay={() => undefined}
+        onOpenMemory={() => undefined}
         showOtherJourneys={false}
         onShowOtherJourneysChange={() => undefined}
       />,
@@ -31,6 +32,7 @@ describe('JourneyPassport', () => {
         data={data}
         journey={data.journeys[0]}
         onStartReplay={() => undefined}
+        onOpenMemory={() => undefined}
         showOtherJourneys={false}
         onShowOtherJourneysChange={onShowOtherJourneysChange}
       />,

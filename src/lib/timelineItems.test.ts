@@ -24,7 +24,7 @@ describe('buildTimelineItems', () => {
       detail: '五一西湖行',
       icon: 'visit',
     })
-    expect(items[1].thumbnailUrl).toContain('/thumbs/v001/01.svg.webp')
+    expect(items[1].thumbnailUrl).toContain('/media/v001/01.svg/thumb-sm.webp')
   })
 
   it('高铁节点包含经停路线', () => {

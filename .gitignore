@@ -2,6 +2,7 @@ node_modules
 dist
 dist-ssr
 /public/thumbs/
+/public/media/
 *.local
 .DS_Store
 .vite

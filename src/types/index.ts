@@ -32,6 +32,14 @@ export interface Photo {
   }
 }
 
+export type PhotoVariant = 'blur' | 'sm' | 'md' | 'preview'
+export type MemoryMode = 'featured' | 'all'
+export type MemoryView = 'stage' | 'constellation'
+
+export type MemorySource =
+  | { kind: 'visit'; visitId: string }
+  | { kind: 'journey'; journeyId: string }
+
 export interface JourneyCoverPhoto {
   visitId: string
   file: string

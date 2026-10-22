@@ -290,6 +290,57 @@
   box-shadow: 0 0 0 2px rgb(103 232 249 / 0.2);
 }
 
+.rg-memory-chip[aria-pressed='true'] {
+  background: rgb(245 234 216 / 0.12);
+  color: rgb(255 251 235 / 0.92);
+}
+
+.rg-memory-range {
+  height: 4px;
+  appearance: none;
+  border-radius: 999px;
+  outline: none;
+  background: linear-gradient(
+    90deg,
+    rgb(245 234 216 / 0.72) 0 var(--rg-memory-progress, 0%),
+    rgb(255 255 255 / 0.12) var(--rg-memory-progress, 0%) 100%
+  );
+  cursor: pointer;
+}
+
+.rg-memory-range::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  appearance: none;
+  border: 1px solid rgb(255 251 235 / 0.85);
+  border-radius: 999px;
+  background: #f5ead8;
+  box-shadow: 0 0 12px rgb(245 234 216 / 0.45);
+}
+
+.rg-memory-range::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border: 1px solid rgb(255 251 235 / 0.85);
+  border-radius: 999px;
+  background: #f5ead8;
+  box-shadow: 0 0 12px rgb(245 234 216 / 0.45);
+}
+
+.rg-memory-constellation-card {
+  transition:
+    scale 280ms var(--rg-ease-out),
+    border-color 280ms ease,
+    box-shadow 280ms ease;
+}
+
+.rg-memory-constellation-card:hover {
+  z-index: 1000 !important;
+  border-color: rgb(245 234 216 / 0.42);
+  box-shadow: 0 18px 48px rgb(0 0 0 / 0.6), 0 0 28px rgb(245 234 216 / 0.08);
+  scale: 1.06;
+}
+
 /* 卡片内滚动条：细、低调 */
 .rg-scroll {
   scrollbar-width: thin;
@@ -318,5 +369,34 @@
 
   .rg-vehicle-halo {
     animation: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .rg-place-chapter {
+    width: calc(100vw - 1rem);
+    max-height: calc(100svh - 1rem);
+  }
+
+  .rg-memory-toolbar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .rg-memory-toolbar button,
+  .rg-memory-controls button {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .rg-memory-photo-image {
+    max-width: 94vw;
+    max-height: 56vh;
+  }
+
+  .rg-memory-controls {
+    gap: 0.35rem;
+    padding-inline: 0.75rem;
   }
 }

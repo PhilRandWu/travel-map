@@ -8,9 +8,14 @@ import sharp from 'sharp'
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const dataFile = join(projectRoot, 'src/data/trips.json')
 const photosRoot = join(projectRoot, 'public/photos')
-const thumbsRoot = join(projectRoot, 'public/thumbs')
-const thumbWidth = 480
-const webpQuality = 78
+const mediaRoot = join(projectRoot, 'public/media')
+
+const VARIANTS = [
+  { name: 'blur', width: 32, quality: 50 },
+  { name: 'thumb-sm', width: 160, quality: 72 },
+  { name: 'thumb-md', width: 640, quality: 78 },
+  { name: 'preview', width: 1600, quality: 82 },
+]
 
 const isSafeSegment = (value) =>
   value.length > 0
@@ -37,13 +42,13 @@ function collectJobs(data) {
     }
     for (const photo of visit.photos) {
       if (typeof photo?.file !== 'string' || !isSafeSegment(photo.file)) {
-        errors.push(`visit:${visit.id} 的照片文件名非法：${JSON.stringify(photo?.file)}`)
+        errors.push(`visit:${visit.id} 照片文件名非法：${JSON.stringify(photo?.file)}`)
         continue
       }
       const input = join(photosRoot, visit.id, photo.file)
       jobs.push({
         input,
-        output: join(thumbsRoot, visit.id, `${photo.file}.webp`),
+        outputDirectory: join(mediaRoot, visit.id, photo.file),
         label: relative(projectRoot, input),
       })
     }
@@ -51,59 +56,56 @@ function collectJobs(data) {
   return { jobs, errors }
 }
 
-async function buildThumb(job) {
+async function buildVariants(job) {
   try {
     await access(job.input)
   } catch {
     throw new Error(`缺少照片文件：${job.label}`)
   }
 
-  await mkdir(dirname(job.output), { recursive: true })
-  try {
-    await sharp(job.input, { failOn: 'error' })
-      .rotate()
-      .resize({ width: thumbWidth, withoutEnlargement: true })
-      .webp({ quality: webpQuality, effort: 5 })
-      .toFile(job.output)
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error)
-    throw new Error(`不支持的图片或处理失败：${job.label}（${message}）`)
+  await mkdir(job.outputDirectory, { recursive: true })
+  for (const variant of VARIANTS) {
+    const output = join(job.outputDirectory, `${variant.name}.webp`)
+    try {
+      await sharp(job.input, { failOn: 'error' })
+        .rotate()
+        .resize({ width: variant.width, withoutEnlargement: true })
+        .webp({ quality: variant.quality, effort: 5 })
+        .toFile(output)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      throw new Error(`处理失败：${job.label} → ${variant.name}（${message}）`)
+    }
   }
 }
 
 async function main() {
-  let data
-  try {
-    data = JSON.parse(await readFile(dataFile, 'utf8'))
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error)
-    throw new Error(`无法读取 ${relative(projectRoot, dataFile)}：${message}`)
-  }
+  const data = JSON.parse(await readFile(dataFile, 'utf8'))
   const { jobs, errors } = collectJobs(data)
 
-  await rm(thumbsRoot, { recursive: true, force: true })
-  await mkdir(thumbsRoot, { recursive: true })
+  await rm(mediaRoot, { recursive: true, force: true })
+  await mkdir(mediaRoot, { recursive: true })
 
   for (const job of jobs) {
     try {
-      await buildThumb(job)
+      await buildVariants(job)
     } catch (error) {
-      errors.push(error.message)
+      errors.push(error instanceof Error ? error.message : String(error))
     }
   }
 
   if (errors.length > 0) {
-    console.error(`✕ 缩略图生成失败：${errors.length} 个问题`)
+    console.error(`✕ 照片资产生成失败：${errors.length} 个问题`)
     for (const message of errors) console.error(`  - ${message}`)
     process.exitCode = 1
     return
   }
 
-  console.log(`✓ 已生成 ${jobs.length} 张 WebP 缩略图（宽 ≤ ${thumbWidth}px）`)
+  console.log(`✓ 已生成 ${jobs.length * VARIANTS.length} 个照片派生资产`)
 }
 
 main().catch((error) => {
   const message = error instanceof Error ? error.message : String(error)
-  console.error(`✕ 缩略图生成失败：${message}`)
+  console.error(`✕ 照片资产生成失败：${message}`)
   process.exitCode = 1
 })
