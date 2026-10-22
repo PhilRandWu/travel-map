@@ -43,7 +43,7 @@ The 450ms entrance transition overlaps the first 450ms of the main motion. A rep
 - Modify: `src/lib/replay.ts`
 - Modify: `src/lib/replay.test.ts`
 
-- [ ] **Step 1: Write failing motion-model tests**
+- [x] **Step 1: Write failing motion-model tests**
 
 Add `src/lib/vehicleMotion.test.ts`:
 
@@ -129,7 +129,7 @@ describe('vehicleMotionAt', () => {
 })
 ```
 
-- [ ] **Step 2: Run the new test and verify it fails**
+- [x] **Step 2: Run the new test and verify it fails**
 
 Run:
 
@@ -139,7 +139,7 @@ pnpm test src/lib/vehicleMotion.test.ts
 
 Expected: FAIL because `vehicleMotion.ts`, `vehicleDurationForDistance`, `VEHICLE_ARRIVAL_TOTAL_MS` and `vehicleMotionAt` do not exist.
 
-- [ ] **Step 3: Add route distance and duration to `vehicle.ts`**
+- [x] **Step 3: Add route distance and duration to `vehicle.ts`**
 
 Import `haversineKm` and add `distanceKm` plus `VehiclePlayback` to the existing types:
 
@@ -244,7 +244,7 @@ export function vehicleAltitudeAt(
 }
 ```
 
-- [ ] **Step 4: Implement `src/lib/vehicleMotion.ts`**
+- [x] **Step 4: Implement `src/lib/vehicleMotion.ts`**
 
 ```ts
 import {
@@ -433,7 +433,7 @@ export function vehicleMotionAt(
 }
 ```
 
-- [ ] **Step 5: Update replay durations**
+- [x] **Step 5: Update replay durations**
 
 In `src/lib/replay.ts`, replace the independent flight/train constants with:
 
@@ -475,7 +475,7 @@ it('visit steps keep the existing hold duration', () => {
 
 Update accumulated `startMs` assertions to use previous step durations instead of fixed numbers.
 
-- [ ] **Step 6: Run focused tests**
+- [x] **Step 6: Run focused tests**
 
 Run:
 
@@ -485,7 +485,7 @@ pnpm test src/lib/vehicle.test.ts src/lib/vehicleMotion.test.ts src/lib/replay.t
 
 Expected: PASS.
 
-- [ ] **Step 7: Run the full test suite**
+- [x] **Step 7: Run the full test suite**
 
 Run:
 
@@ -495,7 +495,7 @@ pnpm test
 
 Expected: all tests PASS.
 
-- [ ] **Step 8: Commit stage 1**
+- [x] **Step 8: Commit stage 1**
 
 ```bash
 git add src/lib/vehicle.ts src/lib/vehicle.test.ts \
@@ -515,7 +515,7 @@ git commit -S -m "feat: add complete vehicle motion timeline"
 - Create: `src/lib/chaseCamera.test.ts`
 - Modify: `src/components/globe/hooks/useVehiclePlayback.ts`
 
-- [ ] **Step 1: Write failing runtime-frame tests**
+- [x] **Step 1: Write failing runtime-frame tests**
 
 Add `src/lib/vehicleRuntime.test.ts`:
 
@@ -570,7 +570,7 @@ describe('buildVehicleRuntimeFrame', () => {
 })
 ```
 
-- [ ] **Step 2: Write failing chase-camera tests**
+- [x] **Step 2: Write failing chase-camera tests**
 
 Add `src/lib/chaseCamera.test.ts`:
 
@@ -622,7 +622,7 @@ describe('buildChaseCameraPose', () => {
 })
 ```
 
-- [ ] **Step 3: Run focused tests and verify they fail**
+- [x] **Step 3: Run focused tests and verify they fail**
 
 Run:
 
@@ -632,7 +632,7 @@ pnpm test src/lib/vehicleRuntime.test.ts src/lib/chaseCamera.test.ts
 
 Expected: FAIL because both modules do not exist.
 
-- [ ] **Step 4: Implement `src/lib/vehicleRuntime.ts`**
+- [x] **Step 4: Implement `src/lib/vehicleRuntime.ts`**
 
 ```ts
 import type { VehicleMotionFrame } from '@/lib/vehicleMotion'
@@ -692,7 +692,7 @@ export function buildVehicleRuntimeFrame(
 }
 ```
 
-- [ ] **Step 5: Implement `src/lib/chaseCamera.ts`**
+- [x] **Step 5: Implement `src/lib/chaseCamera.ts`**
 
 ```ts
 import { Matrix4, Quaternion, Vector3 } from 'three'
@@ -799,7 +799,7 @@ export function poseQuaternion(
 }
 ```
 
-- [ ] **Step 6: Update the playback type import**
+- [x] **Step 6: Update the playback type import**
 
 In `src/components/globe/hooks/useVehiclePlayback.ts`, remove the local `VehiclePlayback` interface and import/export the shared type:
 
@@ -815,7 +815,7 @@ export type { VehiclePlayback }
 
 The hook return type remains `VehiclePlayback | null`.
 
-- [ ] **Step 7: Run focused and full tests**
+- [x] **Step 7: Run focused and full tests**
 
 Run:
 
@@ -826,7 +826,7 @@ pnpm test
 
 Expected: PASS.
 
-- [ ] **Step 8: Commit stage 2**
+- [x] **Step 8: Commit stage 2**
 
 ```bash
 git add src/lib/vehicleRuntime.ts src/lib/vehicleRuntime.test.ts \
@@ -845,7 +845,7 @@ git commit -S -m "feat: add runtime frames and chase camera geometry"
 - Modify: `src/components/globe/hooks/useCameraFocus.ts`
 - Modify: `src/components/globe/hooks/useAutoRotate.ts`
 
-- [ ] **Step 1: Implement the shared runtime hook**
+- [x] **Step 1: Implement the shared runtime hook**
 
 Create `useVehicleRuntime.ts` with one RAF loop:
 
@@ -994,7 +994,7 @@ export function useVehicleRuntime({
 
 Keep the replay branch responsible for both the current trip and the synthetic completion frame; no unused helper is required.
 
-- [ ] **Step 2: Implement camera save, lock, follow and restore**
+- [x] **Step 2: Implement camera save, lock, follow and restore**
 
 Create `useVehicleChaseCamera.ts`:
 
@@ -1226,7 +1226,7 @@ export function useVehicleChaseCamera({ globeRef, runtime, enabled }: Options) {
 
 Keep the quaternion helper available for future pose interpolation; camera orientation is applied through `camera.lookAt`.
 
-- [ ] **Step 3: Stop camera writers while locked**
+- [x] **Step 3: Stop camera writers while locked**
 
 Add `cameraLockedRef: RefObject<boolean>` to the options of both hooks.
 
@@ -1249,7 +1249,7 @@ const flyTo = useCallback((lat: number, lng: number, maxAlt: number) => {
 
 Guard the reset effect before `pointOfView`.
 
-- [ ] **Step 4: Run TypeScript and tests**
+- [x] **Step 4: Run TypeScript and tests**
 
 Run:
 
@@ -1260,7 +1260,7 @@ pnpm build
 
 Expected: all tests and the production build PASS.
 
-- [ ] **Step 5: Commit stage 3**
+- [x] **Step 5: Commit stage 3**
 
 ```bash
 git add src/components/globe/hooks/useVehicleRuntime.ts \
@@ -1282,7 +1282,7 @@ git commit -S -m "feat: lock and animate globe chase camera"
 - Create: `src/components/globe/VehicleCameraStatus.tsx`
 - Modify: `src/components/globe/TravelGlobe.types.ts`
 
-- [ ] **Step 1: Refactor `VehicleOverlay` to subscribe to runtime frames**
+- [x] **Step 1: Refactor `VehicleOverlay` to subscribe to runtime frames**
 
 Remove its `useEffect` RAF clock and replay imports. The component receives:
 
@@ -1337,7 +1337,7 @@ useEffect(() => runtime.subscribe((frame) => {
 
 The route is represented by `frame.playback.route`; `calmMotion` is handled by disabling the chase camera at a higher level. For calm mode, render the destination endpoint with a 200ms opacity fade instead of a moving marker.
 
-- [ ] **Step 2: Extend the trail with abstract ground light bands**
+- [x] **Step 2: Extend the trail with abstract ground light bands**
 
 In `vehicleTrail.ts`, create start and end guide lines from the first/last 8% of route points:
 
@@ -1380,7 +1380,7 @@ dispose() {
 
 Use `vehicleAltitudeAt(route, pointIndex / max)` when constructing guide positions, matching the main trail.
 
-- [ ] **Step 3: Create the accessible phase status**
+- [x] **Step 3: Create the accessible phase status**
 
 Add `VehicleCameraStatus.tsx`:
 
@@ -1408,7 +1408,7 @@ export default function VehicleCameraStatus({ active, label, type }: Props) {
 }
 ```
 
-- [ ] **Step 4: Connect runtime and camera in `TravelGlobe`**
+- [x] **Step 4: Connect runtime and camera in `TravelGlobe`**
 
 Add `cameraLockedRef = useRef(false)` and pass it to `useAutoRotate` and `useCameraFocus`.
 
@@ -1451,7 +1451,7 @@ Set `data-camera-locked={chaseCamera.locked}` on the wrapper, add `chaseCamera.l
 />
 ```
 
-- [ ] **Step 5: Add chase styling**
+- [x] **Step 5: Add chase styling**
 
 Create `src/styles/motion-vehicle.css` and import it from `index.css`:
 
@@ -1511,7 +1511,7 @@ document.documentElement.dataset.vehicleChase = String(locked)
 
 Add a `.rg-chase-vignette` overlay in `VehicleOverlay` that is opacity-controlled by `locked`.
 
-- [ ] **Step 6: Run tests and production build**
+- [x] **Step 6: Run tests and production build**
 
 Run:
 
@@ -1522,7 +1522,7 @@ pnpm build
 
 Expected: both PASS. Do not run them concurrently because both rebuild media assets.
 
-- [ ] **Step 7: Commit stage 4**
+- [x] **Step 7: Commit stage 4**
 
 ```bash
 git add src/components/globe/VehicleOverlay.tsx \
@@ -1544,7 +1544,7 @@ git commit -S -m "feat: render complete vehicle chase experience"
 - Modify: `README.md`
 - Modify: `package.json`
 
-- [ ] **Step 1: Run all automated checks**
+- [x] **Step 1: Run all automated checks**
 
 Run sequentially:
 
@@ -1555,7 +1555,7 @@ pnpm build
 
 Expected: 36+ test files, all cases PASS; TypeScript and Vite production build PASS.
 
-- [ ] **Step 2: Browser acceptance**
+- [x] **Step 2: Browser acceptance**
 
 Run the development server:
 
@@ -1573,18 +1573,18 @@ Verify in a desktop viewport and at 390px:
 6. Calm/reduced motion does not enter chase mode.
 7. Existing archive, journey scope, tracks, statistics, EXIF grouping and photo memory still work.
 
-- [ ] **Step 3: Update version and documentation**
+- [x] **Step 3: Update version and documentation**
 
 Set `package.json` version to `0.3.1`. Add a short README bullet describing the chase-camera playback and update `docs/PLAN.md` with the completed stage, test/build counts and browser acceptance result.
 
-- [ ] **Step 4: Commit release stage**
+- [x] **Step 4: Commit release stage**
 
 ```bash
 git add package.json README.md docs/PLAN.md
 git commit -S -m "chore: prepare v0.3.1 vehicle chase release"
 ```
 
-- [ ] **Step 5: Merge signed stages into master**
+- [x] **Step 5: Merge signed stages into master**
 
 From the primary checkout:
 
