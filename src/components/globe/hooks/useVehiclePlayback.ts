@@ -1,15 +1,11 @@
 import { useMemo } from 'react'
 import type { Tracks } from '@/lib/tracks'
-import { buildVehicleRoute, type VehicleRoute } from '@/lib/vehicle'
+import {
+  buildVehicleRoute,
+  type VehiclePlayback,
+} from '@/lib/vehicle'
 
-export interface VehiclePlayback {
-  /** 每次点击生成新 key，即使重复选择同一条行程也会重新播放 */
-  key: number
-  tripId: string
-  type: VehicleRoute['type']
-  route: VehicleRoute
-  label: string
-}
+export type { VehiclePlayback }
 
 interface Options {
   tracks: Tracks
