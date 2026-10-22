@@ -67,6 +67,7 @@ export default function TravelGlobe({
 
   // 交互状态用 ref，自转循环内读取，不触发重渲染
   const draggingRef = useRef(false)
+  const cameraLockedRef = useRef(false)
   // 选中城市时暂停自转，避免相机刚聚焦就漂走
   const selectedCityIdRef = useRef(selectedCityId)
   selectedCityIdRef.current = selectedCityId
@@ -95,6 +96,7 @@ export default function TravelGlobe({
     draggingRef,
     selectedCityIdRef,
     lastInteractRef,
+    cameraLockedRef,
   })
 
   // 大气呼吸、表面 hover 指针样式（详见 useAtmosphereGlow）
@@ -102,6 +104,7 @@ export default function TravelGlobe({
   const flyTo = useCameraFocus({
     globeRef,
     lastInteractRef,
+    cameraLockedRef,
     litCities,
     selectedCityId,
     focusPoint,

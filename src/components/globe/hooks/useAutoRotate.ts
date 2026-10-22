@@ -10,12 +10,19 @@ interface Options {
   draggingRef: RefObject<boolean>
   selectedCityIdRef: RefObject<string | null>
   lastInteractRef: RefObject<number>
+  cameraLockedRef: RefObject<boolean>
 }
 
 /** 自动自转：拖拽中/选中城市时暂停，闲置一段时间后恢复 */
 export function useAutoRotate(
   globeRef: RefObject<GlobeMethods | undefined>,
-  { resumeAfterIdle, draggingRef, selectedCityIdRef, lastInteractRef }: Options,
+  {
+    resumeAfterIdle,
+    draggingRef,
+    selectedCityIdRef,
+    lastInteractRef,
+    cameraLockedRef,
+  }: Options,
 ) {
   useEffect(() => {
     let raf = 0
@@ -32,6 +39,7 @@ export function useAutoRotate(
         && idle
         && !draggingRef.current
         && !selectedCityIdRef.current
+        && !cameraLockedRef.current
       ) {
         const pov = globe.pointOfView()
         globe.pointOfView({ ...pov, lng: pov.lng + dt * ROTATE_SPEED }, 0)
@@ -40,5 +48,12 @@ export function useAutoRotate(
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [globeRef, resumeAfterIdle, draggingRef, selectedCityIdRef, lastInteractRef])
+  }, [
+    cameraLockedRef,
+    draggingRef,
+    globeRef,
+    lastInteractRef,
+    resumeAfterIdle,
+    selectedCityIdRef,
+  ])
 }

@@ -7,6 +7,7 @@ import { useMotion } from '@/components/motion/MotionProvider'
 interface Options {
   globeRef: RefObject<GlobeMethods | undefined>
   lastInteractRef: RefObject<number>
+  cameraLockedRef: RefObject<boolean>
   litCities: LitCity[]
   selectedCityId: string | null
   focusPoint: { lat: number; lng: number } | null
@@ -16,6 +17,7 @@ interface Options {
 export function useCameraFocus({
   globeRef,
   lastInteractRef,
+  cameraLockedRef,
   litCities,
   selectedCityId,
   focusPoint,
@@ -25,6 +27,7 @@ export function useCameraFocus({
   const duration = reducedMotion || effectiveLevel === 'calm' ? 0 : FLIGHT_MS
 
   const flyTo = useCallback((lat: number, lng: number, maxAlt: number) => {
+    if (cameraLockedRef.current) return
     const globe = globeRef.current
     if (!globe) return
     const current = globe.pointOfView()
@@ -37,7 +40,7 @@ export function useCameraFocus({
     const dAlt = Math.abs(current.altitude - targetAlt)
     if (dLat < 0.5 && dLng < 0.5 && dAlt < 0.05) return
     globe.pointOfView({ lat, lng, altitude: targetAlt }, duration)
-  }, [duration, globeRef])
+  }, [cameraLockedRef, duration, globeRef])
 
   const selectedCity = useMemo(
     () => litCities.find((city) => city.city.id === selectedCityId) ?? null,
@@ -57,12 +60,13 @@ export function useCameraFocus({
   }, [flyTo, focusPoint, lastInteractRef])
 
   useEffect(() => {
+    if (cameraLockedRef.current) return
     if (resetSignal === 0) return
     const globe = globeRef.current
     if (!globe) return
     lastInteractRef.current = performance.now()
     globe.pointOfView(INITIAL_POV, duration)
-  }, [duration, globeRef, lastInteractRef, resetSignal])
+  }, [cameraLockedRef, duration, globeRef, lastInteractRef, resetSignal])
 
   return flyTo
 }

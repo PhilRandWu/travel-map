@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { TimelineNode } from '@/lib/derive'
+import { usePageVisibility } from '@/components/motion/usePageVisibility'
 import {
   getReplayProgress,
   seekReplayPlan,
@@ -33,6 +34,7 @@ export function useTimelinePlayback({
   const [progress, setProgress] = useState(0)
   const [activeIndex, setActiveIndex] = useState(-1)
   const [seekRevision, setSeekRevision] = useState(0)
+  const pageVisible = usePageVisibility()
 
   const planRef = useRef(plan)
   const statusRef = useRef(status)
@@ -115,7 +117,7 @@ export function useTimelinePlayback({
   }, [applyPosition])
 
   useEffect(() => {
-    if (status !== 'playing') return
+    if (status !== 'playing' || !pageVisible) return
     let animationFrame = 0
     let cancelled = false
     frameTimeRef.current = performance.now()
@@ -172,7 +174,7 @@ export function useTimelinePlayback({
       cancelled = true
       cancelAnimationFrame(animationFrame)
     }
-  }, [status])
+  }, [pageVisible, status])
 
   const getPosition = useCallback(
     (): ReplayPosition => ({ ...positionRef.current }),
