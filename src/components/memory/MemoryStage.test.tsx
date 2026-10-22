@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import dataJson from '@/data/trips.json'
 import type { TravelData } from '@/types'
 import { buildMemoryCollection } from '@/lib/memory'
@@ -9,6 +9,8 @@ import MemoryStage from '@/components/memory/MemoryStage'
 import { MotionProvider } from '@/components/motion/MotionProvider'
 
 const data = dataJson as TravelData
+
+afterEach(() => vi.unstubAllGlobals())
 
 describe('MemoryStage', () => {
   it('switches photos and closes with Escape', async () => {
@@ -44,5 +46,33 @@ describe('MemoryStage', () => {
     expect(screen.getByText('西湖暮色')).toBeTruthy()
     await userEvent.keyboard('{Escape}')
     await waitFor(() => expect(onClose).toHaveBeenCalled())
+  })
+
+  it('opens the stage immediately from a constellation card', async () => {
+    vi.stubGlobal('innerWidth', 390)
+    vi.stubGlobal('CSS', { escape: (value: string) => value.replaceAll('"', '\\"') })
+    const collection = buildMemoryCollection(data, { kind: 'journey', journeyId: 'j002' })
+    const onPhotoIndex = vi.fn()
+    const onView = vi.fn()
+
+    render(
+      <MotionProvider>
+        <MemoryStage
+          collection={collection}
+          mode="all"
+          view="constellation"
+          photoIndex={0}
+          onPhotoIndex={onPhotoIndex}
+          onMode={() => undefined}
+          onView={onView}
+          onClose={() => undefined}
+        />
+      </MotionProvider>,
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: '火锅 火锅' }))
+
+    expect(onPhotoIndex).toHaveBeenCalledWith(1)
+    expect(onView).toHaveBeenCalledWith('stage')
   })
 })

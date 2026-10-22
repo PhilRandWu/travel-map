@@ -1,4 +1,4 @@
-import type { Journey, MemoryView, TravelData } from '@/types'
+import type { Journey, MemoryMode, MemoryView, TravelData } from '@/types'
 import { summarizeJourney } from '@/lib/journeys'
 import JourneyCoverMosaic from '@/components/journey/JourneyCoverMosaic'
 import AmbientDust from '@/components/motion/AmbientDust'
@@ -7,7 +7,7 @@ interface Props {
   data: TravelData
   journey: Journey
   onStartReplay: () => void
-  onOpenMemory: (view: MemoryView) => void
+  onOpenMemory: (view: MemoryView, mode?: MemoryMode) => void
   showOtherJourneys: boolean
   onShowOtherJourneysChange: (visible: boolean) => void
 }
@@ -107,7 +107,7 @@ export default function JourneyPassport({
         <button
           type="button"
           disabled={summary.photoCount === 0}
-          onClick={() => onOpenMemory('stage')}
+          onClick={() => onOpenMemory('stage', 'all')}
           className="cursor-pointer rounded-xl border border-amber-100/16 bg-amber-100/[.045] px-3 py-2 text-xs text-amber-50/80 transition hover:border-amber-100/32 hover:bg-amber-100/[.08] disabled:cursor-not-allowed disabled:opacity-35"
         >
           全部照片

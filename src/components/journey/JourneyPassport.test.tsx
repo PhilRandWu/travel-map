@@ -44,4 +44,22 @@ describe('JourneyPassport', () => {
     await userEvent.click(toggle)
     expect(onShowOtherJourneysChange).toHaveBeenCalledWith(true)
   })
+
+  it('opens the all-photo entry in all mode', async () => {
+    const onOpenMemory = vi.fn()
+    render(
+      <JourneyPassport
+        data={data}
+        journey={data.journeys[0]}
+        onStartReplay={() => undefined}
+        onOpenMemory={onOpenMemory}
+        showOtherJourneys={false}
+        onShowOtherJourneysChange={() => undefined}
+      />,
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: '全部照片' }))
+
+    expect(onOpenMemory).toHaveBeenCalledWith('stage', 'all')
+  })
 })

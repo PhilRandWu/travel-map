@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import type { MemorySource, MemoryView, TravelData } from '@/types'
+import type { MemoryMode, MemorySource, MemoryView, TravelData } from '@/types'
 import {
   buildMemoryCollection,
   filterMemoryPhotos,
@@ -28,11 +28,15 @@ export function useJourneyMemory(data: TravelData, scopeKey: string) {
     })
   }, [data, memory.open])
 
-  const openJourneyMemory = useCallback((journeyId: string, view: MemoryView) => {
+  const openJourneyMemory = useCallback((
+    journeyId: string,
+    view: MemoryView,
+    mode?: MemoryMode,
+  ) => {
     const source: MemorySource = { kind: 'journey', journeyId }
     const next = buildMemoryCollection(data, source)
     memory.open(source, {
-      mode: initialMemoryMode(next),
+      mode: mode ?? initialMemoryMode(next),
       view,
       photoIndex: 0,
     })

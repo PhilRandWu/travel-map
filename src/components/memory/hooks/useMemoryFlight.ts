@@ -35,10 +35,12 @@ export function useMemoryFlight({
   const openFromConstellation = (index: number, rect: DOMRect) => {
     const photo = photos[index]
     if (!photo) return
+    onPhotoIndex(index)
+    onView('stage')
+
     const motionEnabled = !reducedMotion && effectiveLevel !== 'calm'
     if (!motionEnabled) {
-      onPhotoIndex(index)
-      onView('stage')
+      setFlight(null)
       return
     }
 
@@ -65,8 +67,7 @@ export function useMemoryFlight({
       },
     })
     timerRef.current = window.setTimeout(() => {
-      onPhotoIndex(index)
-      onView('stage')
+      timerRef.current = null
       setFlight(null)
     }, FLIGHT_MS)
   }

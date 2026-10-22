@@ -207,7 +207,9 @@ export default function TravelWorkspace({ data }: Props) {
               data={scopedData}
               journey={activeJourney}
               onStartReplay={startJourneyReplay}
-              onOpenMemory={(view) => memory.openJourneyMemory(activeJourney.id, view)}
+              onOpenMemory={(view, mode) => (
+                memory.openJourneyMemory(activeJourney.id, view, mode)
+              )}
               showOtherJourneys={showOtherJourneys}
               onShowOtherJourneysChange={setShowOtherJourneys}
             />
