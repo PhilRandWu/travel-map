@@ -15,6 +15,7 @@ export interface CityMarkerDatum {
   labelVisible: boolean
   selected: boolean
   dimmed: boolean
+  arrival: boolean
 }
 
 export interface RegionMarkerDatum {
@@ -45,6 +46,7 @@ interface CityHandlers {
 export function buildCityMarker(d: CityMarkerDatum, handlers: CityHandlers): HTMLElement {
   const el = document.createElement('div')
   el.className = 'rg-city-marker'
+  if (d.arrival) el.classList.add('rg-city-arrival')
   el.dataset.cityId = d.id
   el.style.cssText =
     `position:relative;width:0;height:0;transform:translate(-50%,-50%);font-family:inherit;opacity:${d.dimmed ? 0.24 : 1};transition:opacity .18s ease;`
@@ -67,10 +69,11 @@ export function buildCityMarker(d: CityMarkerDatum, handlers: CityHandlers): HTM
       transition:opacity .18s ease,transform .18s ease;">
       ${d.name}${d.visitCount > 1 ? ` <span style="color:rgba(255,255,255,.5);font-size:10px;">×${d.visitCount}</span>` : ''}
     </div>
-    <div class="rg-city-hit" style="
+    <button type="button" class="rg-city-hit" aria-label="打开${d.name}地点" style="
       position:absolute;left:${-size}px;top:${-size}px;
       width:${size * 2}px;height:${size * 2}px;
-      display:flex;align-items:center;justify-content:center;cursor:pointer;">
+      display:flex;align-items:center;justify-content:center;cursor:pointer;
+      pointer-events:auto;border:0;background:transparent;padding:0;color:inherit;">
       <span style="position:absolute;left:50%;top:50%;width:${size}px;height:${size}px;
         margin:${-size / 2}px 0 0 ${-size / 2}px;border-radius:50%;
         border:1.5px solid ${core};" class="rg-ping-ring"></span>
@@ -84,7 +87,7 @@ export function buildCityMarker(d: CityMarkerDatum, handlers: CityHandlers): HTM
         box-shadow:0 0 18px 3px rgba(103,232,249,.25);"></span>` : ''}
       <span style="position:relative;width:${size * 0.56}px;height:${size * 0.56}px;border-radius:50%;
         background:${core};box-shadow:0 0 8px 2px ${glow};"></span>
-    </div>
+    </button>
   `
 
   const label = el.querySelector<HTMLElement>('.rg-city-label')!
@@ -147,7 +150,12 @@ export function buildRegionDot(d: RegionMarkerDatum): HTMLElement {
 
 export function toCityMarkerDatum(
   lit: LitCity,
-  opts: { labelVisible: boolean; selected: boolean; dimmed: boolean },
+  opts: {
+    labelVisible: boolean
+    selected: boolean
+    dimmed: boolean
+    arrival: boolean
+  },
 ): CityMarkerDatum {
   return {
     id: lit.city.id,
@@ -158,5 +166,6 @@ export function toCityMarkerDatum(
     labelVisible: opts.labelVisible,
     selected: opts.selected,
     dimmed: opts.dimmed,
+    arrival: opts.arrival,
   }
 }

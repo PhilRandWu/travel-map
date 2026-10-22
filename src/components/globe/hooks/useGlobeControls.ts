@@ -19,16 +19,19 @@ export function useGlobeControls(
   { labelAltitude, initialAltitude, draggingRef, lastInteractRef }: Options,
 ) {
   const [zoomedIn, setZoomedIn] = useState(initialAltitude < labelAltitude)
+  const [dragging, setDragging] = useState(false)
 
   useEffect(() => {
     const controls = globeRef.current?.controls?.()
     if (!controls) return
     const onStart = () => {
       draggingRef.current = true
+      setDragging(true)
       lastInteractRef.current = performance.now()
     }
     const onEnd = () => {
       draggingRef.current = false
+      setDragging(false)
       lastInteractRef.current = performance.now()
     }
     const onChange = () => {
@@ -49,5 +52,5 @@ export function useGlobeControls(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 
-  return zoomedIn
+  return { zoomedIn, dragging }
 }

@@ -4,13 +4,18 @@ import { describe, expect, it, vi } from 'vitest'
 import dataJson from '@/data/trips.json'
 import type { TravelData } from '@/types'
 import JourneyArchive from '@/components/journey/JourneyArchive'
+import { MotionProvider } from '@/components/motion/MotionProvider'
 
 const data = dataJson as TravelData
 
 describe('JourneyArchive', () => {
   it('shows newest journeys first and opens a journey', async () => {
     const onOpen = vi.fn()
-    render(<JourneyArchive data={data} onOpenJourney={onOpen} />)
+    render(
+      <MotionProvider>
+        <JourneyArchive data={data} onOpenJourney={onOpen} />
+      </MotionProvider>,
+    )
 
     const cards = screen.getAllByRole('button', { name: /打开旅程/ })
     expect(cards[0].getAttribute('aria-label')).toContain('成都慢夏')
@@ -20,7 +25,11 @@ describe('JourneyArchive', () => {
   })
 
   it('opens the all-journeys drawer grouped by year', async () => {
-    render(<JourneyArchive data={data} onOpenJourney={() => undefined} />)
+    render(
+      <MotionProvider>
+        <JourneyArchive data={data} onOpenJourney={() => undefined} />
+      </MotionProvider>,
+    )
 
     await userEvent.click(screen.getByRole('button', { name: '全部旅程' }))
 

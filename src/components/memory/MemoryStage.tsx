@@ -12,6 +12,13 @@ import MemoryToolbar from '@/components/memory/MemoryToolbar'
 import MemoryPhoto from '@/components/memory/MemoryPhoto'
 import MemoryFilmstrip from '@/components/memory/MemoryFilmstrip'
 import MemoryConstellation from '@/components/memory/MemoryConstellation'
+import MemoryChapterCard from '@/components/memory/MemoryChapterCard'
+import MemoryFlight from '@/components/memory/MemoryFlight'
+import AmbientDust from '@/components/motion/AmbientDust'
+import { useLayerReturn } from '@/components/motion/useLayerReturn'
+import { useMemoryChapterCard } from '@/components/memory/hooks/useMemoryChapterCard'
+import { useMemoryConstellationReturn } from '@/components/memory/hooks/useMemoryConstellationReturn'
+import { useMemoryFlight } from '@/components/memory/hooks/useMemoryFlight'
 import { useMemoryPlayback } from '@/components/memory/hooks/useMemoryPlayback'
 import { usePhotoZoom } from '@/components/memory/hooks/usePhotoZoom'
 import { useSwipeNavigation } from '@/components/memory/hooks/useSwipeNavigation'
@@ -44,10 +51,18 @@ export default function MemoryStage({
   useFocusTrap(rootRef)
   const reducedMotion = useReducedMotion()
   const zoom = usePhotoZoom()
+  const { returning, requestClose } = useLayerReturn(onClose)
 
   const photos = useMemo(() => filterMemoryPhotos(collection, mode), [collection, mode])
   const index = clampMemoryIndex(photoIndex, photos.length)
   const photo = photos[index]
+  const chapterCard = useMemoryChapterCard(collection, photo)
+  const { flight, openFromConstellation } = useMemoryFlight({
+    photos,
+    onPhotoIndex,
+    onView,
+  })
+  useMemoryConstellationReturn(view, photoIndex, photos)
   const playback = useMemoryPlayback({
     photoCount: photos.length,
     index,
@@ -74,13 +89,13 @@ export default function MemoryStage({
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
+      if (event.key === 'Escape') requestClose()
       if (event.key === 'ArrowLeft') goManually(-1)
       if (event.key === 'ArrowRight') goManually(1)
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  })
+  }, [index, photos.length, requestClose])
 
   useEffect(() => {
     if (photos.length <= 1) return
@@ -104,8 +119,23 @@ export default function MemoryStage({
       role="dialog"
       aria-modal="true"
       aria-label={`照片回忆：${photo?.cityName ?? '旅行照片'}`}
-      className="fixed inset-0 z-[70] flex flex-col bg-[#090707]/94 text-[#f5ead8] backdrop-blur-xl"
+      data-returning={returning}
+      data-finished={reducedMotion ? 'true' : undefined}
+      onAnimationEnd={(event) => {
+        if (event.target === event.currentTarget) {
+          event.currentTarget.dataset.finished = 'true'
+        }
+      }}
+      className="rg-memory-stage rg-layer rg-transitioning fixed inset-0 z-[70] flex flex-col bg-[#090707]/94 text-[#f5ead8] backdrop-blur-xl"
     >
+      <AmbientDust />
+      <div aria-hidden className="rg-memory-film-grain absolute inset-0 z-[12]" />
+      {view === 'stage' && chapterCard && (
+        <MemoryChapterCard
+          date={chapterCard.date}
+          cityName={chapterCard.cityName}
+        />
+      )}
       <MemoryToolbar
         mode={mode}
         view={view}
@@ -120,21 +150,19 @@ export default function MemoryStage({
           zoom.reset()
           onView(nextView)
         }}
-        onClose={onClose}
+        onClose={requestClose}
       />
-      {view === 'constellation' ? (
+      <div className={view === 'stage' ? 'hidden' : 'contents'}>
         <MemoryConstellation
           collection={constellationCollection}
           initialScrollTop={constellationScrollRef.current}
           onScrollTopChange={(scrollTop) => {
             constellationScrollRef.current = scrollTop
           }}
-          onOpenPhoto={(nextIndex) => {
-            onPhotoIndex(nextIndex)
-            onView('stage')
-          }}
+          onOpenPhoto={openFromConstellation}
         />
-      ) : photo ? (
+      </div>
+      {view === 'stage' && photo && (
         <>
           <div className="relative flex min-h-0 flex-1 items-center">
             <MemoryPhoto
@@ -167,7 +195,7 @@ export default function MemoryStage({
             第 {index + 1} 张，共 {photos.length} 张，{photo.cityName}，{photo.takenAt ?? '拍摄时间未知'}
           </p>
         </>
-      ) : null}
+      )}
       {view === 'stage' && <div className="rg-memory-controls flex items-center gap-2 px-5 pb-2">
         {photos.length > 1 && (
           <>
@@ -244,6 +272,13 @@ export default function MemoryStage({
             setDirection(nextIndex > index ? 'next' : 'previous')
             onPhotoIndex(nextIndex)
           }}
+        />
+      )}
+      {flight && (
+        <MemoryFlight
+          src={flight.src}
+          from={flight.from}
+          to={flight.to}
         />
       )}
     </div>

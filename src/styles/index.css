@@ -1,6 +1,11 @@
 @import 'tailwindcss';
 @import './loading.css';
 @import './motion.css';
+@import './motion-memory.css';
+@import './motion-ambient.css';
+@import './motion-journey.css';
+@import './motion-replay.css';
+@import './motion-runtime.css';
 
 [data-journey-theme='amber'] {
   --rg-journey-accent: #f3c579;
@@ -329,6 +334,7 @@
 
 .rg-memory-constellation-card {
   transition:
+    translate 180ms var(--rg-ease-out),
     scale 280ms var(--rg-ease-out),
     border-color 280ms ease,
     box-shadow 280ms ease;

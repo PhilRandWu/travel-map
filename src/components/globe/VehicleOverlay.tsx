@@ -2,7 +2,6 @@ import { useEffect, useRef, type RefObject } from 'react'
 import type { GlobeMethods } from 'react-globe.gl'
 import {
   sampleVehicleRoute,
-  type VehiclePosition,
 } from '@/lib/vehicle'
 import {
   getReplayStepProgress,
@@ -10,6 +9,10 @@ import {
 } from '@/lib/replay'
 import type { VehiclePlayback } from '@/components/globe/hooks/useVehiclePlayback'
 import { createVehicleTrail } from '@/components/globe/vehicleTrail'
+import { useMotion } from '@/components/motion/MotionProvider'
+import { isPointVisible, screenPoint } from '@/components/globe/vehicleScreen'
+import VehicleTrailLayer from '@/components/globe/VehicleTrailLayer'
+import { useVehicleMotionEffects } from '@/components/globe/useVehicleMotionEffects'
 
 interface Props {
   playback: VehiclePlayback | null
@@ -24,28 +27,6 @@ const VEHICLE_ICONS = {
   train: '/vehicle-icons/train-3d.svg',
 } as const
 
-function isPointVisible(
-  globe: GlobeMethods,
-  position: VehiclePosition,
-): boolean {
-  const point = globe.getCoords(position.lat, position.lng, position.altitude)
-  const camera = globe.camera().position
-  // 点位于地球正面时，相机到该点的向量与法线夹角小于 90°。
-  return point.x * camera.x + point.y * camera.y + point.z * camera.z
-    >= point.x * point.x + point.y * point.y + point.z * point.z
-}
-
-function screenPoint(
-  globe: GlobeMethods,
-  position: VehiclePosition,
-): { x: number; y: number } {
-  return globe.getScreenCoords(
-    position.lat,
-    position.lng,
-    position.altitude,
-  )
-}
-
 /**
  * 独立于 React 渲染帧的载具覆盖层。
  * 逐帧直接更新 DOM transform，避免 60fps setState 拖慢地球场景。
@@ -57,6 +38,8 @@ export default function VehicleOverlay({
 }: Props) {
   const hostRef = useRef<HTMLDivElement>(null)
   const markerRef = useRef<HTMLDivElement>(null)
+  const { effectiveLevel } = useMotion()
+  const effects = useVehicleMotionEffects(playback?.key)
 
   useEffect(() => {
     for (const source of Object.values(VEHICLE_ICONS)) {
@@ -71,8 +54,8 @@ export default function VehicleOverlay({
     const marker = markerRef.current
     if (!playback || !globe || !host || !marker) return
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const moveDuration = reducedMotion ? 1 : playback.route.durationMs
+    const calmMotion = effectiveLevel === 'calm'
+    const moveDuration = calmMotion ? 1 : playback.route.durationMs
     const trail = createVehicleTrail(globe, playback.route)
     host.dataset.vehicleTrail = 'true'
     let animationFrame = 0
@@ -103,7 +86,7 @@ export default function VehicleOverlay({
         }
       }
 
-      const fadeIn = reducedMotion ? 1 : Math.min(1, rawProgress / 0.05)
+      const fadeIn = calmMotion ? 1 : Math.min(1, rawProgress / 0.05)
       marker.style.visibility = 'visible'
       marker.style.transform = `translate3d(${screen.x}px, ${screen.y}px, 0)`
       marker.style.opacity = visible
@@ -114,6 +97,15 @@ export default function VehicleOverlay({
       host.dataset.vehicleTrailProgress = rawProgress.toFixed(3)
       marker.dataset.vehicleVisible = String(visible)
       trail.update(easedProgress)
+      effects.update(
+        globe,
+        playback.route,
+        easedProgress,
+        rawProgress,
+        visible,
+        calmMotion,
+      )
+      if (rawProgress >= 1) effects.markArrival(globe, playback.route)
     }
 
     const hideMarker = () => {
@@ -203,7 +195,7 @@ export default function VehicleOverlay({
       delete host.dataset.vehicleTrailProgress
       trail.dispose()
     }
-  }, [globeRef, playback, replayRuntime])
+  }, [effectiveLevel, globeRef, playback, replayRuntime])
 
   if (!playback) return null
   const isFlight = playback.type === 'flight'
@@ -216,6 +208,7 @@ export default function VehicleOverlay({
       data-vehicle-playing="false"
       className="pointer-events-none absolute inset-0 z-[2] overflow-hidden"
     >
+      <VehicleTrailLayer {...effects.refs} />
       <div
         ref={markerRef}
         data-vehicle-type={playback.type}

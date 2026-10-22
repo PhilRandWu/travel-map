@@ -14,6 +14,7 @@ interface Props {
   onToggle: () => void
   onSpeedChange: (speed: ReplaySpeed) => void
   onSeek: (progress: number) => void
+  onSkip: () => void
 }
 
 export default function TimelineControls({
@@ -25,6 +26,7 @@ export default function TimelineControls({
   onToggle,
   onSpeedChange,
   onSeek,
+  onSkip,
 }: Props) {
   const [draftProgress, setDraftProgress] = useState<number | null>(null)
   const displayProgress = draftProgress ?? progress
@@ -92,6 +94,17 @@ export default function TimelineControls({
           } as CSSProperties}
         />
       </div>
+
+      {status !== 'idle' && activeIndex >= 0 && (
+        <button
+          type="button"
+          aria-label="跳过当前地点"
+          onClick={onSkip}
+          className="shrink-0 cursor-pointer rounded-full border border-white/10 px-2.5 py-1 text-[9px] text-white/48 transition hover:border-white/22 hover:text-white/75"
+        >
+          跳过
+        </button>
+      )}
 
       <div
         role="group"

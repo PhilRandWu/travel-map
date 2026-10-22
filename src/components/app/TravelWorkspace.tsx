@@ -9,15 +9,17 @@ import JourneyChapterRail from '@/components/journey/JourneyChapterRail'
 import JourneyPassport from '@/components/journey/JourneyPassport'
 import PlaceChapter from '@/components/journey/PlaceChapter'
 import MemoryStage from '@/components/memory/MemoryStage'
+import MotionSettings from '@/components/motion/MotionSettings'
 import PhotoGrouping from '@/components/photos/PhotoGrouping'
 import StatsPanel from '@/components/stats/StatsPanel'
+import ReplayFinale from '@/components/timeline/ReplayFinale'
 import { useJourneyMemory } from '@/hooks/useJourneyMemory'
 import { useScopedTravelData } from '@/hooks/useScopedTravelData'
 import { useTravelNavigation } from '@/hooks/useTravelNavigation'
 import { resolveCity } from '@/lib/cities'
 import { findTrip } from '@/lib/derive'
 import { preloadGeoData } from '@/lib/geoLookup'
-import { getOtherJourneyTrips } from '@/lib/journeys'
+import { getOtherJourneyTrips, summarizeJourney } from '@/lib/journeys'
 import type { ReplayRuntime } from '@/lib/replay'
 import { buildTracks, type Tracks } from '@/lib/tracks'
 import type { TravelData } from '@/types'
@@ -44,6 +46,7 @@ export default function TravelWorkspace({ data }: Props) {
   const [globeReady, setGlobeReady] = useState(false)
   const [showOtherJourneys, setShowOtherJourneys] = useState(false)
   const [replayStartSignal, setReplayStartSignal] = useState(0)
+  const [finaleOpen, setFinaleOpen] = useState(false)
   const isArchive = state.scope.kind === 'archive'
   const activeJourneyId = state.scope.kind === 'journey' ? state.scope.journeyId : null
   const memory = useJourneyMemory(data, activeJourneyId ?? 'archive')
@@ -82,6 +85,7 @@ export default function TravelWorkspace({ data }: Props) {
   useEffect(() => {
     setShowOtherJourneys(false)
     setReplayStartSignal(0)
+    setFinaleOpen(false)
   }, [activeJourneyId])
 
   const focusPoint = useMemo(() => {
@@ -100,6 +104,7 @@ export default function TravelWorkspace({ data }: Props) {
     setRegion(null)
     setShowOtherJourneys(false)
     setReplayStartSignal(0)
+    setFinaleOpen(false)
     setResetSignal((signal) => signal + 1)
     actions.openJourney(journeyId)
   }
@@ -109,6 +114,7 @@ export default function TravelWorkspace({ data }: Props) {
     setRegion(null)
     setShowOtherJourneys(false)
     setReplayStartSignal(0)
+    setFinaleOpen(false)
     setResetSignal((signal) => signal + 1)
     actions.openArchive()
   }
@@ -141,6 +147,7 @@ export default function TravelWorkspace({ data }: Props) {
 
   const startJourneyReplay = () => {
     setRegion(null)
+    setFinaleOpen(false)
     setReplayStartSignal((signal) => signal + 1)
   }
 
@@ -156,6 +163,7 @@ export default function TravelWorkspace({ data }: Props) {
             stardustTracks={stardustTracks}
             selectedCityId={state.cardCityId}
             selectedTripId={selectedTripId}
+            journeyId={activeJourneyId}
             focusPoint={focusPoint}
             tripPlaybackSignal={tripPlaybackSignal}
             replayRuntime={replayRuntime}
@@ -188,6 +196,7 @@ export default function TravelWorkspace({ data }: Props) {
           />
           <div className="flex shrink-0 items-center gap-2 text-xs text-white/50 sm:gap-3">
             {isArchive && <PhotoGrouping data={data} />}
+            <MotionSettings />
             <StatsPanel stats={stats} context={activeJourney?.title} />
           </div>
         </header>
@@ -225,7 +234,7 @@ export default function TravelWorkspace({ data }: Props) {
               selection={state.selection}
               startSignal={replayStartSignal}
               onSelect={openTimelineNode}
-              onFinishPlayback={resetOverview}
+              onFinishPlayback={() => setFinaleOpen(true)}
               onPlaybackRuntimeChange={setReplayRuntime}
             />
           ) : null}
@@ -263,6 +272,14 @@ export default function TravelWorkspace({ data }: Props) {
           onMode={(mode) => memory.setMode(mode, 0)}
           onView={memory.setView}
           onClose={memory.close}
+        />
+      )}
+      {finaleOpen && activeJourney && (
+        <ReplayFinale
+          journey={activeJourney}
+          summary={summarizeJourney(data, activeJourney)}
+          onClose={() => setFinaleOpen(false)}
+          onReplay={startJourneyReplay}
         />
       )}
     </div>

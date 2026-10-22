@@ -3,6 +3,7 @@ import type { MemorySource, Selection, TravelData } from '@/types'
 import { getCityTrips, getCityVisits } from '@/lib/derive'
 import { resolveCity, resolveCities } from '@/lib/cities'
 import { photoObjectPosition, photoVariantUrl } from '@/lib/photoUrls'
+import { useLayerReturn } from '@/components/motion/useLayerReturn'
 
 interface Props {
   data: TravelData
@@ -27,6 +28,7 @@ export default function PlaceChapter({
   onOpenMemory,
   onClose,
 }: Props) {
+  const { returning, requestClose } = useLayerReturn(onClose)
   const city = resolveCity(data, cityId)
   const cities = useMemo(() => resolveCities(data), [data])
   const visits = useMemo(() => getCityVisits(data, cityId), [data, cityId])
@@ -41,7 +43,8 @@ export default function PlaceChapter({
   return (
     <aside
       aria-label={`${city.name}地点篇章`}
-      className="rg-place-chapter rg-card-in pointer-events-auto flex max-h-[min(calc(100svh-12rem),720px)] w-[360px] flex-col overflow-hidden rounded-2xl border border-white/12 bg-[rgba(8,11,22,.84)] shadow-[0_18px_60px_rgba(0,0,0,.55)] backdrop-blur-xl"
+      data-returning={returning}
+      className="rg-place-chapter rg-layer rg-card-in pointer-events-auto flex max-h-[min(calc(100svh-12rem),720px)] w-[360px] flex-col overflow-hidden rounded-2xl border border-white/12 bg-[rgba(8,11,22,.84)] shadow-[0_18px_60px_rgba(0,0,0,.55)] backdrop-blur-xl"
     >
       <header className="flex items-start justify-between gap-3 border-b border-white/8 px-4 py-3.5">
         <div>
@@ -54,7 +57,7 @@ export default function PlaceChapter({
         <button
           type="button"
           aria-label="关闭地点篇章"
-          onClick={onClose}
+          onClick={requestClose}
           className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/12 text-white/60 transition hover:border-white/24 hover:bg-white/8 hover:text-white"
         >
           ×

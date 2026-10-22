@@ -161,6 +161,7 @@ export default function Timeline({
         onToggle={playback.toggle}
         onSpeedChange={playback.setSpeed}
         onSeek={playback.seek}
+        onSkip={playback.skip}
       />
       <div className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-[#050811] to-transparent" />

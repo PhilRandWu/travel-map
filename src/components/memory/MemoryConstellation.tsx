@@ -1,16 +1,25 @@
-import { useEffect, useMemo, useRef, useState, type UIEvent } from 'react'
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+  type UIEvent,
+} from 'react'
 import type { MemoryCollection } from '@/lib/memory'
 import {
   buildConstellationLayout,
   filterConstellationNodes,
+  getConstellationParallax,
 } from '@/lib/constellation'
 import { photoVariantUrl } from '@/lib/photoUrls'
+import { useMotion } from '@/components/motion/MotionProvider'
 
 interface Props {
   collection: MemoryCollection
   initialScrollTop?: number
   onScrollTopChange?: (scrollTop: number) => void
-  onOpenPhoto: (index: number) => void
+  onOpenPhoto: (index: number, sourceRect: DOMRect) => void
 }
 
 const CANVAS = { width: 1400, height: 900 }
@@ -22,6 +31,7 @@ export default function MemoryConstellation({
   onScrollTopChange,
   onOpenPhoto,
 }: Props) {
+  const { effectiveLevel, touchDevice } = useMotion()
   const hostRef = useRef<HTMLDivElement>(null)
   const [mobile, setMobile] = useState(() => window.innerWidth < 640)
   const [viewport, setViewport] = useState({
@@ -43,7 +53,11 @@ export default function MemoryConstellation({
 
   useEffect(() => {
     const host = hostRef.current
-    host?.scrollTo({ top: initialScrollTop })
+    if (host && typeof host.scrollTo === 'function') {
+      host.scrollTo({ top: initialScrollTop })
+    } else if (host) {
+      host.scrollTop = initialScrollTop
+    }
     const updateMode = () => setMobile(window.innerWidth < 640)
     const syncViewport = () => {
       if (!host) return
@@ -79,9 +93,29 @@ export default function MemoryConstellation({
     onScrollTopChange?.(host.scrollTop)
   }
 
+  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (effectiveLevel !== 'immersive' || touchDevice) return
+    const rect = event.currentTarget.getBoundingClientRect()
+    const parallax = getConstellationParallax(
+      (event.clientX - rect.left) / rect.width,
+      (event.clientY - rect.top) / rect.height,
+      effectiveLevel,
+    )
+    event.currentTarget.style.setProperty('--rg-depth-x', `${parallax.x}px`)
+    event.currentTarget.style.setProperty('--rg-depth-y', `${parallax.y}px`)
+  }
+
+  const resetPointerDepth = (event: ReactPointerEvent<HTMLDivElement>) => {
+    event.currentTarget.style.setProperty('--rg-depth-x', '0px')
+    event.currentTarget.style.setProperty('--rg-depth-y', '0px')
+  }
+
   if (mobile) {
     return (
-      <div className="rg-scroll min-h-0 flex-1 overflow-y-auto px-4 pb-6">
+      <div
+        data-constellation-host
+        className="rg-scroll min-h-0 flex-1 overflow-y-auto px-4 pb-6"
+      >
         {collection.chapters.map((chapter) => (
           <section key={chapter.key} className="mb-6">
             <h3 className="mb-2 font-serif text-lg text-[#f5ead8]">
@@ -92,8 +126,12 @@ export default function MemoryConstellation({
                 <button
                   key={photo.key}
                   type="button"
-                  onClick={() => onOpenPhoto(
-                    collection.photos.findIndex((item) => item.key === photo.key),
+                  data-photo-key={photo.key}
+                  onClick={(event) => onOpenPhoto(
+                    collection.photos.findIndex(
+                      (item) => item.key === photo.key,
+                    ),
+                    event.currentTarget.getBoundingClientRect(),
                   )}
                   className="rg-memory-constellation-card overflow-hidden rounded-lg border border-white/10 text-left"
                 >
@@ -118,7 +156,10 @@ export default function MemoryConstellation({
   return (
     <div
       ref={hostRef}
+      data-constellation-host
       onScroll={handleScroll}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={resetPointerDepth}
       className="rg-memory-constellation relative min-h-0 flex-1 overflow-auto"
     >
       <div
@@ -148,8 +189,13 @@ export default function MemoryConstellation({
             <button
               key={node.photo.key}
               type="button"
+              data-photo-key={node.photo.key}
+              data-depth={node.chapterIndex % 3}
               aria-label={`打开${node.photo.cityName}照片：${node.photo.caption ?? node.photo.file}`}
-              onClick={() => onOpenPhoto(index)}
+              onClick={(event) => onOpenPhoto(
+                index,
+                event.currentTarget.getBoundingClientRect(),
+              )}
               className="rg-memory-constellation-card absolute w-28 overflow-hidden rounded-lg border border-white/12 bg-black/40 shadow-[0_12px_36px_rgba(0,0,0,.45)]"
               style={{
                 left: node.x - 56,

@@ -1,4 +1,5 @@
 import type { MemoryCollection, MemoryPhoto } from '@/lib/memory'
+import type { MotionLevel } from '@/lib/motion'
 
 export interface ConstellationSize {
   width: number
@@ -64,4 +65,27 @@ export function filterConstellationNodes(
     && node.x <= viewport.left + viewport.width + viewport.overscan
     && node.y >= viewport.top - viewport.overscan
     && node.y <= viewport.top + viewport.height + viewport.overscan)
+}
+
+export function getConstellationParallax(
+  x: number,
+  y: number,
+  level: MotionLevel,
+): { x: number; y: number } {
+  if (level !== 'immersive') return { x: 0, y: 0 }
+  return {
+    x: (x - 0.5) * 12,
+    y: (y - 0.5) * 12,
+  }
+}
+
+export function getFlightTarget(
+  source: Pick<DOMRect, 'left' | 'top' | 'width' | 'height'>,
+  viewport: { width: number; height: number },
+): { x: number; y: number; scale: number } {
+  return {
+    x: viewport.width / 2 - (source.left + source.width / 2),
+    y: viewport.height / 2 - (source.top + source.height / 2),
+    scale: Math.min(5, Math.max(2, 280 / Math.max(1, source.width))),
+  }
 }

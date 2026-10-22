@@ -100,6 +100,20 @@ export function useTimelinePlayback({
     setProgress(0)
   }, [])
 
+  const skip = useCallback(() => {
+    const currentPlan = planRef.current
+    const nextIndex = positionRef.current.index + 1
+    if (nextIndex >= currentPlan.steps.length) {
+      setStatus('idle')
+      setProgress(1)
+      callbacksRef.current.onFinish()
+      return
+    }
+    applyPosition({ index: nextIndex, elapsedMs: 0 })
+    callbacksRef.current.onActivate(currentPlan.steps[nextIndex].node)
+    frameTimeRef.current = performance.now()
+  }, [applyPosition])
+
   useEffect(() => {
     if (status !== 'playing') return
     let animationFrame = 0
@@ -176,6 +190,7 @@ export function useTimelinePlayback({
     start,
     toggle,
     stop,
+    skip,
     seek,
     setSpeed,
   }

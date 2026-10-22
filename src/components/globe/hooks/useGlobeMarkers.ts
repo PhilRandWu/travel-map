@@ -18,6 +18,8 @@ interface Options {
   zoomedIn: boolean
   selectedCityId: string | null
   activeCityIds: ReadonlySet<string> | null
+  revealedCityIds: ReadonlySet<string> | null
+  arrivalActive: boolean
   region: RegionPoint | null
   onSelectCityRef: RefObject<(cityId: string | null) => void>
   cityHoveringRef: RefObject<boolean>
@@ -31,18 +33,24 @@ export function useGlobeMarkers({
   zoomedIn,
   selectedCityId,
   activeCityIds,
+  revealedCityIds,
+  arrivalActive,
   region,
   onSelectCityRef,
   cityHoveringRef,
   lastInteractRef,
 }: Options) {
   const markers = useMemo<GlobeMarker[]>(() => {
-    const list: GlobeMarker[] = litCities.map((lit) => ({
+    const visibleCities = revealedCityIds
+      ? litCities.filter((lit) => revealedCityIds.has(lit.city.id))
+      : litCities
+    const list: GlobeMarker[] = visibleCities.map((lit) => ({
       kind: 'city',
       ...toCityMarkerDatum(lit, {
         labelVisible: zoomedIn,
         selected: lit.city.id === selectedCityId,
         dimmed: activeCityIds !== null && !activeCityIds.has(lit.city.id),
+        arrival: arrivalActive,
       }),
     }))
     if (homeCity) {
@@ -59,7 +67,16 @@ export function useGlobeMarkers({
       list.push({ kind: 'region', lat: region.lat, lng: region.lng, ocean: region.ocean })
     }
     return list
-  }, [litCities, homeCity, zoomedIn, selectedCityId, activeCityIds, region])
+  }, [
+    activeCityIds,
+    arrivalActive,
+    homeCity,
+    litCities,
+    region,
+    revealedCityIds,
+    selectedCityId,
+    zoomedIn,
+  ])
 
   const handleSelectCity = (id: string) => {
     lastInteractRef.current = performance.now()

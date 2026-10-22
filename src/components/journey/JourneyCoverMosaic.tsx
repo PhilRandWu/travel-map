@@ -53,6 +53,7 @@ export default function JourneyCoverMosaic({
       {visible.map((cover, index) => (
         <span
           key={`${cover.visitId}:${cover.file}`}
+          data-cover-layer={index < 3 ? index : undefined}
           className={`group relative overflow-hidden rounded-lg ${
             index === 0 ? 'col-span-2 row-span-2' : ''
           }`}

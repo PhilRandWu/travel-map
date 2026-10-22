@@ -1,4 +1,5 @@
 import type { Journey, JourneyScope } from '@/types'
+import WakeTitle from '@/components/motion/WakeTitle'
 
 interface Props {
   scope: JourneyScope
@@ -22,10 +23,11 @@ export default function JourneyBreadcrumb({
     >
       <button
         type="button"
+        aria-label="返回旅行档案"
         onClick={onArchive}
         className="whitespace-nowrap text-white/45 transition hover:text-white"
       >
-        旅行档案
+        {scope.kind === 'archive' ? <WakeTitle /> : '旅行档案'}
       </button>
       {scope.kind === 'journey' && (
         <>

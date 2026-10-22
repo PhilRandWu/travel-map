@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import Globe, { type GlobeMethods } from 'react-globe.gl'
 import { reverseGeocode, formatLatLng, type GeoHit } from '@/lib/geoLookup'
 import type { TravelGlobeProps } from '@/components/globe/TravelGlobe.types'
@@ -10,8 +10,13 @@ import { useAutoRotate } from '@/components/globe/hooks/useAutoRotate'
 import { useDragClickGuard } from '@/components/globe/hooks/useDragClickGuard'
 import { useTrackPresentation } from '@/components/globe/hooks/useTrackPresentation'
 import { useVehiclePlayback } from '@/components/globe/hooks/useVehiclePlayback'
+import { useJourneyReveal } from '@/components/globe/hooks/useJourneyReveal'
+import { useCameraFocus } from '@/components/globe/hooks/useCameraFocus'
+import { useMotion } from '@/components/motion/MotionProvider'
 import VehicleOverlay from '@/components/globe/VehicleOverlay'
 import GlobeFeedback from '@/components/globe/GlobeFeedback'
+import SceneRouteOverlay from '@/components/globe/SceneRouteOverlay'
+import RouteFlowOverlay from '@/components/globe/RouteFlowOverlay'
 import {
   buildCityMarker,
   buildHomeMarker,
@@ -19,11 +24,14 @@ import {
   type GlobeMarker,
 } from '@/components/globe/cityMarkers'
 import {
-  FLIGHT_MS,
   INITIAL_POV,
   LABEL_ALT_THRESHOLD,
   RESUME_AFTER_IDLE,
 } from '@/components/globe/globeConfig'
+import { buildJourneySceneRoutes } from '@/lib/journeyScene'
+import type { Tracks } from '@/lib/tracks'
+
+const EMPTY_TRACKS: Tracks = { flights: [], trains: [] }
 
 export default function TravelGlobe({
   litCities,
@@ -32,6 +40,7 @@ export default function TravelGlobe({
   stardustTracks,
   selectedCityId,
   selectedTripId,
+  journeyId,
   focusPoint,
   tripPlaybackSignal,
   replayRuntime,
@@ -53,6 +62,8 @@ export default function TravelGlobe({
   // 点击序号：丢弃过期的反查结果，避免快速连点时结果乱跳
   const clickSeqRef = useRef(0)
   const [locating, setLocating] = useState(false)
+  const [globeReady, setGlobeReady] = useState(false)
+  const { pageVisible } = useMotion()
 
   // 交互状态用 ref，自转循环内读取，不触发重渲染
   const draggingRef = useRef(false)
@@ -64,9 +75,15 @@ export default function TravelGlobe({
   // 鼠标悬停在城市发光点上（同样唤醒大气辉光）
   const cityHoveringRef = useRef(false)
   const lastInteractRef = useRef(-Infinity)
+  const { entrance, revealedCityIds } = useJourneyReveal(
+    litCities,
+    journeyId,
+    globeReady,
+  )
+  const sceneRoutes = useMemo(() => buildJourneySceneRoutes(tracks), [tracks])
 
   const size = useContainerSize(wrapperRef)
-  const zoomedIn = useGlobeControls(globeRef, [size], {
+  const { zoomedIn, dragging } = useGlobeControls(globeRef, [size], {
     labelAltitude: LABEL_ALT_THRESHOLD,
     initialAltitude: INITIAL_POV.altitude,
     draggingRef,
@@ -82,55 +99,14 @@ export default function TravelGlobe({
 
   // 大气呼吸、表面 hover 指针样式（详见 useAtmosphereGlow）
   useAtmosphereGlow(globeRef, wrapperRef, [size], { draggingRef, cityHoveringRef })
-
-  // 平滑飞向目标：只在距离或高度差明显时飞，避免无意义动画造成的"顿一下"
-  const flyTo = (lat: number, lng: number, maxAlt: number) => {
-    const globe = globeRef.current
-    if (!globe) return
-    const cur = globe.pointOfView()
-    const targetAlt = Math.min(cur.altitude, maxAlt)
-    const dLat = Math.abs(cur.lat - lat)
-    const dLng = Math.min(Math.abs(cur.lng - lng), 360 - Math.abs(cur.lng - lng))
-    const dAlt = Math.abs(cur.altitude - targetAlt)
-    if (dLat < 0.5 && dLng < 0.5 && dAlt < 0.05) return
-    globe.pointOfView({ lat, lng, altitude: targetAlt }, FLIGHT_MS)
-  }
-
-  // 选中城市 → 相机平滑聚焦（PRD 3.1）
-  const selectedCity = useMemo(
-    () => litCities.find((c) => c.city.id === selectedCityId) ?? null,
-    [litCities, selectedCityId],
-  )
-  useEffect(() => {
-    if (!selectedCity) return
-    lastInteractRef.current = performance.now()
-    flyTo(selectedCity.city.lat, selectedCity.city.lng, 1.35)
-    // flyTo 为每次渲染重建的普通函数，只依赖城市 id/lat/lng
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCity?.city.id])
-
-  // 行程选中 → 取景轨迹中点；保持原高度即可看到整条弧线
-  const focusPointRef = useRef(focusPoint)
-  focusPointRef.current = focusPoint
-  useEffect(() => {
-    const point = focusPointRef.current
-    if (!point) return
-    lastInteractRef.current = performance.now()
-    flyTo(point.lat, point.lng, 2.3)
-    // flyTo 只依赖 focusPoint 的坐标
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusPoint?.lat, focusPoint?.lng])
-
-  // 全局模式：强制回到初始斜俯视，并短暂暂停自转，避免立刻漂走
-  useEffect(() => {
-    if (resetSignal === 0) return
-    const globe = globeRef.current
-    if (!globe) return
-    lastInteractRef.current = performance.now()
-    globe.pointOfView(INITIAL_POV, FLIGHT_MS)
-    // resetSignal 仅作为“再次点总览也要复位”的触发器
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resetSignal])
+  const flyTo = useCameraFocus({
+    globeRef,
+    lastInteractRef,
+    litCities,
+    selectedCityId,
+    focusPoint,
+    resetSignal,
+  })
 
   // 点击地球任意位置 → 离线反查地名
   const handleGlobeClick = async (coords: { lat: number; lng: number }) => {
@@ -170,7 +146,7 @@ export default function TravelGlobe({
   }
 
   const { trackProps, activeCityIds, visibleTrackCounts } = useTrackPresentation({
-    tracks,
+    tracks: entrance.routesVisible ? tracks : EMPTY_TRACKS,
     stardustTracks,
     selectedTripId,
     replayRuntime,
@@ -199,6 +175,8 @@ export default function TravelGlobe({
     zoomedIn,
     selectedCityId,
     activeCityIds,
+    revealedCityIds,
+    arrivalActive: entrance.active,
     region,
     onSelectCityRef,
     cityHoveringRef,
@@ -206,6 +184,10 @@ export default function TravelGlobe({
   })
 
   const polygons = region?.boundary ? [region.boundary] : []
+  const scenePaused = !pageVisible
+    || dragging
+    || replayRuntime?.status === 'playing'
+    || selectedCityId !== null
 
   return (
     <div
@@ -228,6 +210,7 @@ export default function TravelGlobe({
           atmosphereAltitude={ATMOSPHERE_ALTITUDE}
           onGlobeReady={() => {
             globeRef.current?.pointOfView(INITIAL_POV, 0)
+            setGlobeReady(true)
             onReady?.()
             // 仅 dev：?pick=lat,lng 自动反查，便于调试/截图
             if (import.meta.env.DEV) {
@@ -265,6 +248,21 @@ export default function TravelGlobe({
         />
       )}
 
+      {globeReady && entrance.active && (
+        <SceneRouteOverlay
+          routes={sceneRoutes}
+          progress={entrance.progress}
+          globeRef={globeRef}
+        />
+      )}
+      {globeReady && !entrance.active && (
+        <RouteFlowOverlay
+          routes={sceneRoutes}
+          activeRouteId={selectedTripId}
+          paused={scenePaused}
+          globeRef={globeRef}
+        />
+      )}
       <VehicleOverlay
         playback={vehiclePlayback}
         replayRuntime={replayRuntime}
