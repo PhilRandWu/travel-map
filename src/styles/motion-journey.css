@@ -1,0 +1,36 @@
+.rg-city-arrival::before,
+.rg-city-arrival::after {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgb(251 191 36 / 0.72);
+  border-radius: 999px;
+  content: '';
+  transform: translate(-50%, -50%) scale(0.4);
+  animation: rg-arrival-ripple 900ms var(--rg-ease-exit) both;
+}
+
+.rg-city-arrival::after {
+  animation-delay: 120ms;
+}
+
+@keyframes rg-arrival-ripple {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(3.2);
+  }
+}
+
+html[data-motion='calm'] .rg-city-arrival::before,
+html[data-motion='calm'] .rg-city-arrival::after {
+  animation-duration: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-city-arrival::before,
+  .rg-city-arrival::after {
+    animation: none;
+  }
+}

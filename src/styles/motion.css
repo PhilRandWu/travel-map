@@ -1,10 +1,62 @@
 :root {
   color-scheme: dark;
+  --rg-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --rg-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --rg-fast: 160ms;
+  --rg-panel: 280ms;
+  --rg-photo: 700ms;
+  --rg-chapter: 900ms;
   --rg-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --rg-ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
   --rg-duration-fast: 180ms;
-  --rg-duration-base: 320ms;
+  --rg-duration-base: 280ms;
   --rg-duration-slow: 720ms;
+}
+
+html[data-motion='calm'] {
+  --rg-photo: 200ms;
+  --rg-chapter: 240ms;
+  --rg-duration-slow: 240ms;
+}
+
+html[data-motion='cinematic'] {
+  --rg-photo: 700ms;
+  --rg-chapter: 900ms;
+}
+
+html[data-motion='immersive'] {
+  --rg-photo: 760ms;
+  --rg-chapter: 980ms;
+}
+
+@keyframes rg-calm-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+html[data-motion='calm'] :is(
+  .rg-app-reveal,
+  .rg-stagger-item,
+  .rg-journey-card,
+  .rg-passport,
+  .rg-film-node,
+  .rg-photo-reveal,
+  .rg-card-in,
+  .rg-hero-in,
+  .rg-hint,
+  .rg-stats-in,
+  .rg-memory-constellation-card
+) {
+  animation: rg-calm-fade 200ms ease-out both;
+}
+
+html[data-motion='calm'] .rg-journey-card:hover {
+  transform: none;
+}
+
+html[data-motion='calm'] .rg-journey-card::before {
+  display: none;
 }
 
 html,
@@ -156,59 +208,6 @@ input[type='range'] {
   }
 }
 
-.rg-memory-photo[data-photo-direction='next'] .rg-memory-photo-image {
-  animation: rg-memory-next-in 430ms var(--rg-ease-out) both;
-}
-
-.rg-memory-photo[data-photo-direction='previous'] .rg-memory-photo-image {
-  animation: rg-memory-previous-in 430ms var(--rg-ease-out) both;
-}
-
-@keyframes rg-memory-next-in {
-  from {
-    opacity: 0;
-    transform: translate3d(22px, 0, 0) scale(0.975);
-  }
-}
-
-@keyframes rg-memory-previous-in {
-  from {
-    opacity: 0;
-    transform: translate3d(-22px, 0, 0) scale(0.975);
-  }
-}
-
-.rg-memory-arrow {
-  box-shadow: 0 8px 28px rgb(0 0 0 / 0.28);
-}
-
-.rg-memory-thumb {
-  transition:
-    opacity 220ms ease,
-    border-color 220ms ease,
-    transform 220ms var(--rg-ease-out);
-}
-
-.rg-memory-thumb:hover {
-  transform: translateY(-2px);
-}
-
-.rg-memory-constellation-card {
-  animation: rg-memory-constellation-in 520ms var(--rg-ease-out) both;
-}
-
-@keyframes rg-memory-constellation-in {
-  from {
-    opacity: 0;
-    filter: blur(4px);
-    transform: translate3d(0, 10px, 0) scale(0.92);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
 @keyframes rg-film-node-in {
   from {
     opacity: 0;
@@ -316,6 +315,9 @@ input[type='range'] {
   *,
   *::before,
   *::after {
+    animation-delay: 0ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }

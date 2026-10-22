@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import dataJson from '@/data/trips.json'
 import type { TravelData } from '@/types'
 import PlaceChapter from '@/components/journey/PlaceChapter'
+import { MotionProvider } from '@/components/motion/MotionProvider'
 
 const data = dataJson as TravelData
 
@@ -11,16 +12,18 @@ describe('PlaceChapter', () => {
   it('shows the active visit collage and opens its memory', async () => {
     const onOpenMemory = vi.fn()
     render(
-      <PlaceChapter
-        data={data}
-        cityId="hangzhou"
-        activeVisitId="v001"
-        selection={{ kind: 'visit', visitId: 'v001' }}
-        onSelectVisit={() => undefined}
-        onSelectTrip={() => undefined}
-        onOpenMemory={onOpenMemory}
-        onClose={() => undefined}
-      />,
+      <MotionProvider>
+        <PlaceChapter
+          data={data}
+          cityId="hangzhou"
+          activeVisitId="v001"
+          selection={{ kind: 'visit', visitId: 'v001' }}
+          onSelectVisit={() => undefined}
+          onSelectTrip={() => undefined}
+          onOpenMemory={onOpenMemory}
+          onClose={() => undefined}
+        />
+      </MotionProvider>,
     )
     expect(screen.getByRole('heading', { name: '杭州' })).toBeTruthy()
     expect(screen.getByAltText('西湖暮色')).toBeTruthy()
@@ -32,16 +35,18 @@ describe('PlaceChapter', () => {
     const cloned = structuredClone(data)
     cloned.visits[0].photos = []
     render(
-      <PlaceChapter
-        data={cloned}
-        cityId="hangzhou"
-        activeVisitId="v001"
-        selection={{ kind: 'city', cityId: 'hangzhou' }}
-        onSelectVisit={() => undefined}
-        onSelectTrip={() => undefined}
-        onOpenMemory={() => undefined}
-        onClose={() => undefined}
-      />,
+      <MotionProvider>
+        <PlaceChapter
+          data={cloned}
+          cityId="hangzhou"
+          activeVisitId="v001"
+          selection={{ kind: 'city', cityId: 'hangzhou' }}
+          onSelectVisit={() => undefined}
+          onSelectTrip={() => undefined}
+          onOpenMemory={() => undefined}
+          onClose={() => undefined}
+        />
+      </MotionProvider>,
     )
     expect((screen.getByRole('button', { name: '暂无照片' }) as HTMLButtonElement).disabled)
       .toBe(true)

@@ -17,6 +17,8 @@ export interface TravelGlobeProps {
   selectedCityId: string | null
   /** 当前选中的行程（轨迹保持高亮，其余轨迹/城市淡出） */
   selectedTripId: string | null
+  /** 当前旅程；变化时播放路线生长与城市依次点亮 */
+  journeyId: string | null
   /** 行程选中时的轨迹取景点；visit/city 由 selectedCityId 聚焦 */
   focusPoint: { lat: number; lng: number } | null
   /** 每次选择行程递增，用于重复播放同一条轨迹的载具动效 */

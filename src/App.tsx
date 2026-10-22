@@ -1,7 +1,8 @@
 import TravelWorkspace from '@/components/app/TravelWorkspace'
+import { MotionProvider } from '@/components/motion/MotionProvider'
 import { useTravelData } from '@/hooks/useTravelData'
 
-export default function App() {
+function AppContent() {
   const { data, hasErrors } = useTravelData()
 
   if (!data || hasErrors) {
@@ -20,4 +21,12 @@ export default function App() {
   }
 
   return <TravelWorkspace data={data} />
+}
+
+export default function App() {
+  return (
+    <MotionProvider>
+      <AppContent />
+    </MotionProvider>
+  )
 }

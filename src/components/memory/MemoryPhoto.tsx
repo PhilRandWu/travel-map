@@ -27,6 +27,7 @@ export default function MemoryPhoto({
 
   return (
     <figure
+      key={photo.key}
       data-photo-direction={direction}
       className="rg-memory-photo relative flex min-h-0 flex-1 items-center justify-center overflow-hidden px-4"
       onDoubleClick={onDoubleClick}

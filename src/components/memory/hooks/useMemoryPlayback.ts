@@ -50,6 +50,10 @@ export function useMemoryPlayback({
 
   useEffect(() => {
     if (!playing) return
+    if (document.hidden) {
+      setPlaying(false)
+      return
+    }
 
     const onVisibility = () => {
       if (document.hidden) pause()

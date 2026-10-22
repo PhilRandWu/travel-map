@@ -1,0 +1,14 @@
+.rg-transitioning {
+  will-change: transform, opacity, filter;
+}
+
+.rg-transitioning[data-finished='true'] {
+  will-change: auto;
+}
+
+.rg-starfield[data-paused='true'] *,
+[data-animation-paused='true'] *,
+[data-animation-paused='true'] *::before,
+[data-animation-paused='true'] *::after {
+  animation-play-state: paused !important;
+}

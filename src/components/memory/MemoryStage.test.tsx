@@ -6,6 +6,7 @@ import dataJson from '@/data/trips.json'
 import type { TravelData } from '@/types'
 import { buildMemoryCollection } from '@/lib/memory'
 import MemoryStage from '@/components/memory/MemoryStage'
+import { MotionProvider } from '@/components/motion/MotionProvider'
 
 const data = dataJson as TravelData
 
@@ -33,11 +34,15 @@ describe('MemoryStage', () => {
         </>
       )
     }
-    render(<Harness />)
+    render(
+      <MotionProvider>
+        <Harness />
+      </MotionProvider>,
+    )
     await waitFor(() => expect(screen.getByRole('dialog', { name: /照片回忆/ })).toBeTruthy())
     await userEvent.click(screen.getByRole('button', { name: '下一张' }))
     expect(screen.getByText('西湖暮色')).toBeTruthy()
     await userEvent.keyboard('{Escape}')
-    expect(onClose).toHaveBeenCalled()
+    await waitFor(() => expect(onClose).toHaveBeenCalled())
   })
 })

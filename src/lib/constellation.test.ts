@@ -5,6 +5,8 @@ import { buildMemoryCollection } from '@/lib/memory'
 import {
   buildConstellationLayout,
   filterConstellationNodes,
+  getConstellationParallax,
+  getFlightTarget,
 } from '@/lib/constellation'
 import type { MemoryCollection } from '@/lib/memory'
 
@@ -94,5 +96,24 @@ describe('constellation layout', () => {
     expect(layout).toHaveLength(320)
     expect(visible.length).toBeGreaterThan(0)
     expect(visible.length).toBeLessThan(layout.length)
+  })
+})
+
+describe('constellation motion', () => {
+  it('keeps parallax within 2-6px and immersive only', () => {
+    expect(getConstellationParallax(0.5, 0.5, 'immersive')).toEqual({ x: 0, y: 0 })
+    const edge = getConstellationParallax(0, 1, 'immersive')
+    expect(Math.abs(edge.x)).toBeLessThanOrEqual(6)
+    expect(Math.abs(edge.y)).toBeLessThanOrEqual(6)
+    expect(getConstellationParallax(0, 1, 'cinematic')).toEqual({ x: 0, y: 0 })
+  })
+
+  it('derives a centered flight target from a source rectangle', () => {
+    const target = getFlightTarget(
+      { left: 100, top: 200, width: 120, height: 80 },
+      { width: 1200, height: 800 },
+    )
+    expect(target.x).toBe(440)
+    expect(target.y).toBe(160)
   })
 })

@@ -1,5 +1,7 @@
+import { useRef } from 'react'
 import type { JourneySummary } from '@/lib/journeys'
 import JourneyCoverMosaic from '@/components/journey/JourneyCoverMosaic'
+import { useJourneyCardMotion } from '@/components/motion/useJourneyCardMotion'
 
 interface Props {
   summary: JourneySummary
@@ -11,9 +13,12 @@ const formatDate = (date: string) => date.replaceAll('-', '.')
 
 export default function JourneyCard({ summary, featured = false, onOpen }: Props) {
   const { journey, coverSources, destinationCityIds, photoCount, tripCount } = summary
+  const cardRef = useRef<HTMLButtonElement>(null)
+  useJourneyCardMotion(cardRef)
 
   return (
     <button
+      ref={cardRef}
       type="button"
       aria-label={`打开旅程：${journey.title}，${journey.startDate} 至 ${journey.endDate}`}
       onClick={onOpen}

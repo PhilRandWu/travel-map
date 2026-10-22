@@ -1,6 +1,7 @@
 import type { Journey, MemoryView, TravelData } from '@/types'
 import { summarizeJourney } from '@/lib/journeys'
 import JourneyCoverMosaic from '@/components/journey/JourneyCoverMosaic'
+import AmbientDust from '@/components/motion/AmbientDust'
 
 interface Props {
   data: TravelData
@@ -28,6 +29,7 @@ export default function JourneyPassport({
       data-journey-theme={journey.theme}
       className="rg-passport pointer-events-auto w-[min(340px,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-white/12 bg-[rgba(6,10,22,.84)] p-4 shadow-[0_18px_60px_rgba(0,0,0,.55)] backdrop-blur-xl"
     >
+      <AmbientDust />
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="font-mono text-[10px] tracking-[0.2em] text-[var(--rg-journey-accent)]">

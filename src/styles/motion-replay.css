@@ -1,0 +1,68 @@
+.rg-finale-in {
+  animation: rg-finale-in 620ms var(--rg-ease-enter) both;
+}
+
+html[data-motion='calm'] .rg-finale-in {
+  animation: rg-calm-fade 200ms ease-out both;
+}
+
+@keyframes rg-finale-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+    filter: blur(5px);
+  }
+}
+
+.rg-vehicle-arrival {
+  display: none;
+}
+
+.rg-vehicle-arrival-active {
+  display: block;
+}
+
+.rg-vehicle-arrival span {
+  position: absolute;
+  left: -18px;
+  top: -18px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgb(251 191 36 / 0.8);
+  border-radius: 999px;
+  animation: rg-vehicle-arrival 850ms var(--rg-ease-exit) both;
+}
+
+.rg-vehicle-arrival span:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+@keyframes rg-vehicle-arrival {
+  from {
+    opacity: 1;
+    transform: scale(0.45);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.9);
+  }
+}
+
+.rg-vehicle-friction-dot {
+  box-shadow: 0 0 4px rgb(251 191 36 / 0.4);
+}
+
+html[data-motion='calm'] .rg-vehicle-arrival span {
+  animation-duration: 180ms;
+}
+
+html[data-motion='calm'] .rg-vehicle-friction-dot {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-finale-in,
+  .rg-vehicle-arrival span {
+    animation: none;
+  }
+}

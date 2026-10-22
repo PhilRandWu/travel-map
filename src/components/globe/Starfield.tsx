@@ -1,4 +1,6 @@
-import { useMemo, type CSSProperties } from 'react'
+import { useMemo, useRef, type CSSProperties } from 'react'
+import { usePointerParallax } from '@/components/motion/usePointerParallax'
+import { useMotion } from '@/components/motion/MotionProvider'
 
 interface Star {
   top: string
@@ -12,6 +14,7 @@ interface Star {
   /** 闪烁延迟（s） */
   delay: number
   glow: boolean
+  layer: number
 }
 
 /**
@@ -20,6 +23,10 @@ interface Star {
  * 叠在地球画布之下，地球背景透明即可透出。
  */
 export default function Starfield() {
+  const hostRef = useRef<HTMLDivElement>(null)
+  const { pageVisible } = useMotion()
+  usePointerParallax(hostRef)
+
   const { stars, nebulae } = useMemo(() => {
     let seed = 20261020
     // mulberry32 —— 确定性，避免重渲染星点闪烁
@@ -40,7 +47,7 @@ export default function Starfield() {
       { count: 110, size: 1.6, opacity: 0.85, glow: false },
       { count: 26, size: 2.4, opacity: 1, glow: true },
     ]
-    const stars: Star[] = layers.flatMap(({ count, size, opacity, glow }) =>
+    const stars: Star[] = layers.flatMap(({ count, size, opacity, glow }, layer) =>
       Array.from({ length: count }, () => {
         const r = rand()
         return {
@@ -53,6 +60,7 @@ export default function Starfield() {
           // 只有亮星和少量中层星闪烁，节奏错开避免"一起眨"
           twinkle: glow || r > 0.92 ? 2.6 + rand() * 3.4 : 0,
           delay: rand() * 5,
+          layer,
         }
       }),
     )
@@ -67,7 +75,11 @@ export default function Starfield() {
   }, [])
 
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden bg-[radial-gradient(ellipse_at_50%_42%,#0c1330_0%,#070b1c_55%,#02030a_100%)]">
+    <div
+      ref={hostRef}
+      data-paused={!pageVisible}
+      className="rg-starfield pointer-events-none absolute inset-0 overflow-hidden bg-[radial-gradient(ellipse_at_50%_42%,#0c1330_0%,#070b1c_55%,#02030a_100%)]"
+    >
       {nebulae.map((n, i) => (
         <span
           key={`nebula-${i}`}
@@ -82,32 +94,41 @@ export default function Starfield() {
           }}
         />
       ))}
-      {stars.map((star, i) => {
-        const style: CSSProperties = {
-          top: star.top,
-          left: star.left,
-          width: star.size,
-          height: star.size,
-          opacity: star.opacity,
-          backgroundColor: star.color,
-          boxShadow: star.glow
-            ? `0 0 ${star.size * 3}px ${star.size * 0.7}px rgba(190,205,255,0.35)`
-            : undefined,
-        }
-        if (star.twinkle) {
-          style.animationDuration = `${star.twinkle}s`
-          style.animationDelay = `${star.delay}s`
-          // 闪烁动画需要各星自己的基础亮度
-          ;(style as Record<string, string | number>)['--rg-star-o'] = star.opacity
-        }
-        return (
-          <span
-            key={i}
-            className={star.twinkle ? 'rg-twinkle absolute rounded-full' : 'absolute rounded-full'}
-            style={style}
-          />
-        )
-      })}
+      {[0, 1, 2].map((layer) => (
+        <div
+          key={layer}
+          className="rg-star-layer absolute inset-0"
+          data-star-layer={layer}
+        >
+          {stars.filter((star) => star.layer === layer).map((star, index) => {
+            const style: CSSProperties = {
+              top: star.top,
+              left: star.left,
+              width: star.size,
+              height: star.size,
+              opacity: star.opacity,
+              backgroundColor: star.color,
+              boxShadow: star.glow
+                ? `0 0 ${star.size * 3}px ${star.size * 0.7}px rgba(190,205,255,0.35)`
+                : undefined,
+            }
+            if (star.twinkle) {
+              style.animationDuration = `${star.twinkle}s`
+              style.animationDelay = `${star.delay}s`
+              ;(style as Record<string, string | number>)['--rg-star-o'] = star.opacity
+            }
+            return (
+              <span
+                key={index}
+                className={star.twinkle
+                  ? 'rg-twinkle absolute rounded-full'
+                  : 'absolute rounded-full'}
+                style={style}
+              />
+            )
+          })}
+        </div>
+      ))}
     </div>
   )
 }
