@@ -1,4 +1,8 @@
 import { findTrip, type TimelineNode } from '@/lib/derive'
+import { resolveCities } from '@/lib/cities'
+import { tripDistance } from '@/lib/geo'
+import { vehicleDurationForDistance } from '@/lib/vehicle'
+import { VEHICLE_ARRIVAL_TOTAL_MS } from '@/lib/vehicleMotion'
 import type { TravelData } from '@/types'
 
 export const REPLAY_SPEEDS = [0.5, 1, 2] as const
@@ -6,8 +10,6 @@ export type ReplaySpeed = (typeof REPLAY_SPEEDS)[number]
 export type PlaybackStatus = 'idle' | 'playing' | 'paused'
 
 const VISIT_DURATION_MS = 2200
-const FLIGHT_DURATION_MS = 3400
-const TRAIN_DURATION_MS = 4300
 
 export interface ReplayStep {
   node: TimelineNode
@@ -41,8 +43,7 @@ export interface ReplayTrackState {
 }
 
 /**
- * 节点停留时长覆盖载具完整动效，避免下一段在图标抵达前抢跑。
- * 飞机/高铁时长与 VehicleOverlay 的移动、停留和淡出总时长对应。
+ * 节点停留时长覆盖主体运动与到达收束，避免下一段在抵达前抢跑。
  */
 export function replayNodeDurationMs(
   data: TravelData,
@@ -50,7 +51,10 @@ export function replayNodeDurationMs(
 ): number {
   if (node.kind === 'visit') return VISIT_DURATION_MS
   const trip = findTrip(data, node.refId)
-  return trip?.type === 'train' ? TRAIN_DURATION_MS : FLIGHT_DURATION_MS
+  if (!trip) return VISIT_DURATION_MS
+  const distanceKm = tripDistance(trip, resolveCities(data)) ?? 0
+  return vehicleDurationForDistance(trip.type, distanceKm)
+    + VEHICLE_ARRIVAL_TOTAL_MS
 }
 
 export function buildReplayPlan(
