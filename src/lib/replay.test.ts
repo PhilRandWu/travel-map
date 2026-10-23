@@ -17,8 +17,8 @@ const plan = buildReplayPlan(travelData, nodes)
 describe('buildReplayPlan', () => {
   it('按节点类型分配停留时长并累计起点', () => {
     expect(plan.steps[0]).toMatchObject({ startMs: 0 })
-    expect(plan.steps[0].durationMs).toBeGreaterThanOrEqual(8900)
-    expect(plan.steps[0].durationMs).toBeLessThanOrEqual(10_900)
+    expect(plan.steps[0].durationMs).toBeGreaterThanOrEqual(9550)
+    expect(plan.steps[0].durationMs).toBeLessThanOrEqual(11_550)
     expect(plan.steps[1]).toMatchObject({
       startMs: plan.steps[0].durationMs,
       durationMs: 2200,
@@ -26,8 +26,8 @@ describe('buildReplayPlan', () => {
     expect(plan.steps[2]).toMatchObject({
       startMs: plan.steps[0].durationMs + plan.steps[1].durationMs,
     })
-    expect(plan.steps[2].durationMs).toBeGreaterThanOrEqual(8900)
-    expect(plan.steps[2].durationMs).toBeLessThanOrEqual(10_900)
+    expect(plan.steps[2].durationMs).toBeGreaterThanOrEqual(9550)
+    expect(plan.steps[2].durationMs).toBeLessThanOrEqual(11_550)
     expect(plan.totalMs).toBe(plan.steps.reduce(
       (sum, step) => sum + step.durationMs,
       0,
@@ -36,10 +36,10 @@ describe('buildReplayPlan', () => {
 })
 
 describe('replayNodeDurationMs', () => {
-  it('vehicle steps include main motion and arrival settlement', () => {
+  it('vehicle steps include pre-roll, motion and arrival settlement', () => {
     const tripStep = plan.steps.find((step) => step.node.kind === 'trip')!
-    expect(tripStep.durationMs).toBeGreaterThanOrEqual(8900)
-    expect(tripStep.durationMs).toBeLessThanOrEqual(10_900)
+    expect(tripStep.durationMs).toBeGreaterThanOrEqual(9550)
+    expect(tripStep.durationMs).toBeLessThanOrEqual(11_550)
   })
 
   it('visit steps keep the existing hold duration', () => {

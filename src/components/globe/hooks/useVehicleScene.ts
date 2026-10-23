@@ -1,10 +1,11 @@
 import type { RefObject } from 'react'
 import type { GlobeMethods } from 'react-globe.gl'
 import type { ReplayRuntime } from '@/lib/replay'
+import type { RouteCameraFraming } from '@/lib/routeCamera'
 import type { Tracks } from '@/lib/tracks'
 import { useVehiclePlayback } from '@/components/globe/hooks/useVehiclePlayback'
 import { useVehicleRuntime } from '@/components/globe/hooks/useVehicleRuntime'
-import { useVehicleChaseCamera } from '@/components/globe/hooks/useVehicleChaseCamera'
+import { useVehicleDirectorCamera } from '@/components/globe/hooks/useVehicleDirectorCamera'
 
 interface Options {
   tracks: Tracks
@@ -12,8 +13,9 @@ interface Options {
   playbackSignal: number
   replayRuntime: ReplayRuntime | null
   pageVisible: boolean
-  chaseEnabled: boolean
+  directorEnabled: boolean
   globeRef: RefObject<GlobeMethods | undefined>
+  framing: RouteCameraFraming
 }
 
 export function useVehicleScene({
@@ -22,8 +24,9 @@ export function useVehicleScene({
   playbackSignal,
   replayRuntime,
   pageVisible,
-  chaseEnabled,
+  directorEnabled,
   globeRef,
+  framing,
 }: Options) {
   const playback = useVehiclePlayback({
     tracks,
@@ -36,11 +39,12 @@ export function useVehicleScene({
     pageVisible,
     globeRef,
   })
-  const chaseCamera = useVehicleChaseCamera({
+  const directorCamera = useVehicleDirectorCamera({
     globeRef,
     runtime,
-    enabled: chaseEnabled,
+    enabled: directorEnabled,
+    framing,
   })
 
-  return { playback, runtime, chaseCamera }
+  return { playback, runtime, directorCamera }
 }

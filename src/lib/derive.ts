@@ -1,6 +1,6 @@
 import type { City, TimelineNodeKind, TravelData, Trip, Visit } from '@/types'
 import { resolveCities } from '@/lib/cities'
-import { compareDate } from '@/lib/validate'
+import { compareDate } from '@/lib/date'
 import { tripDistance } from '@/lib/geo'
 import { photoOriginalUrl, photoVariantUrl } from '@/lib/photoUrls'
 

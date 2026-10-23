@@ -1,5 +1,12 @@
 import type { FlightArc, TrainPath } from '@/lib/tracks'
 import { greatCirclePoints, haversineKm } from '@/lib/geo'
+import {
+  FLIGHT_CRUISE_MIN_MS,
+  FLIGHT_FIXED_MS,
+  TRAIN_CRUISE_MIN_MS,
+  TRAIN_FIXED_MS,
+  vehicleAltitudeProfile,
+} from '@/lib/vehicleTiming'
 
 export type VehicleTrack = FlightArc | TrainPath
 
@@ -34,18 +41,76 @@ function pathDistanceKm(points: [number, number][]): number {
   return total
 }
 
+function resampleByDistance(
+  points: [number, number][],
+): [number, number][] {
+  if (points.length <= 2) return points.map((point) => [...point])
+
+  const lengths = points.slice(1).map((point, index) => haversineKm(
+    { lat: points[index][0], lng: points[index][1] },
+    { lat: point[0], lng: point[1] },
+  ))
+  const total = lengths.reduce((sum, length) => sum + length, 0)
+  if (total <= 0) return points.map((point) => [...point])
+
+  const intervals = points.length - 1
+  const result: [number, number][] = []
+  let segmentIndex = 0
+  let segmentStartDistance = 0
+
+  for (let index = 0; index <= intervals; index += 1) {
+    if (index === 0) {
+      result.push([...points[0]])
+      continue
+    }
+    if (index === intervals) {
+      result.push([...points.at(-1)!])
+      continue
+    }
+
+    const targetDistance = total * index / intervals
+    while (
+      segmentIndex < lengths.length - 1
+      && segmentStartDistance + lengths[segmentIndex] < targetDistance
+    ) {
+      segmentStartDistance += lengths[segmentIndex]
+      segmentIndex += 1
+    }
+
+    const from = points[segmentIndex]
+    const to = points[segmentIndex + 1]
+    const segmentProgress = lengths[segmentIndex] <= 0
+      ? 0
+      : (targetDistance - segmentStartDistance) / lengths[segmentIndex]
+    const rawLngDelta = to[1] - from[1]
+    const lngDelta = rawLngDelta > 180
+      ? rawLngDelta - 360
+      : rawLngDelta < -180
+        ? rawLngDelta + 360
+        : rawLngDelta
+    const lng = from[1] + lngDelta * segmentProgress
+    result.push([
+      from[0] + (to[0] - from[0]) * segmentProgress,
+      ((lng + 540) % 360) - 180,
+    ])
+  }
+
+  return result
+}
+
 export function vehicleDurationForDistance(
   type: VehicleRoute['type'],
   distanceKm: number,
 ): number {
-  if (type === 'flight') {
-    const cruise = 2300
-      + Math.max(0, Math.min(1, (distanceKm - 300) / 9700)) * 2000
-    return Math.round(cruise + 4700)
-  }
-  const cruise = 2500
-    + Math.max(0, Math.min(1, (distanceKm - 100) / 3900)) * 2000
-  return Math.round(cruise + 4500)
+  const flight = type === 'flight'
+  const cruiseFloor = flight ? FLIGHT_CRUISE_MIN_MS : TRAIN_CRUISE_MIN_MS
+  const fixed = flight ? FLIGHT_FIXED_MS : TRAIN_FIXED_MS
+  const distanceStart = flight ? 300 : 100
+  const distanceRange = flight ? 9700 : 3900
+  const cruise = cruiseFloor
+    + Math.max(0, Math.min(1, (distanceKm - distanceStart) / distanceRange))
+      * 2000
+  return Math.round(cruise + fixed)
 }
 
 /** 把一条行程轨迹转成载具可沿用的采样路径；飞机按高空弧线，高铁按贴地折线。 */
@@ -71,7 +136,7 @@ export function buildVehicleRoute(track: VehicleTrack): VehicleRoute {
   const distanceKm = pathDistanceKm(track.points)
   return {
     type: 'train',
-    points: track.points,
+    points: resampleByDistance(track.points),
     altitude: TRAIN_ALTITUDE,
     distanceKm,
     durationMs: vehicleDurationForDistance('train', distanceKm),
@@ -88,18 +153,12 @@ export function vehicleAltitudeAt(
   route: VehicleRoute,
   progress: number,
 ): number {
-  if (route.type !== 'flight') return route.altitude
-  if (progress <= 0.08 || progress >= 0.93) return 0
-  if (progress < 0.24) {
-    return smoothstep((progress - 0.08) / 0.16) * route.altitude
-  }
-  if (progress <= 0.78) return route.altitude
-  return (1 - smoothstep((progress - 0.78) / 0.15)) * route.altitude
-}
-
-function smoothstep(value: number): number {
-  const t = Math.max(0, Math.min(1, value))
-  return t * t * (3 - 2 * t)
+  return vehicleAltitudeProfile(
+    route.type,
+    route.altitude,
+    route.durationMs,
+    progress,
+  )
 }
 
 /** 在路径上取 0–1 进度对应的位置；相邻点按最短经度差插值，避免跨 180° 跳变。 */

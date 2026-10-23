@@ -26,4 +26,24 @@ describe('ReplayFinale', () => {
     await userEvent.keyboard('{Escape}')
     expect(onClose).toHaveBeenCalledOnce()
   })
+
+  it('returns focus to the replay control when the opener is gone', async () => {
+    const replayControl = document.createElement('button')
+    replayControl.dataset.replayToggle = 'true'
+    document.body.append(replayControl)
+    const { unmount } = render(
+      <ReplayFinale
+        journey={journey}
+        summary={summarizeJourney(data, journey)}
+        onClose={() => undefined}
+        onReplay={() => undefined}
+      />,
+    )
+
+    const replay = screen.getByRole('button', { name: '再看一次' })
+    await waitFor(() => expect(document.activeElement).toBe(replay))
+    unmount()
+    expect(document.activeElement).toBe(replayControl)
+    replayControl.remove()
+  })
 })

@@ -9,13 +9,18 @@ const FOCUSABLE = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(',')
 
-export function useFocusTrap(ref: RefObject<HTMLElement | null>) {
+export function useFocusTrap(
+  ref: RefObject<HTMLElement | null>,
+  fallbackSelector?: string,
+) {
   useEffect(() => {
     const root = ref.current
     if (!root) return
 
-    const previousFocus = document.activeElement instanceof HTMLElement
-      ? document.activeElement
+    const activeElement = document.activeElement
+    const previousFocus = activeElement instanceof HTMLElement
+      && activeElement !== document.body
+      ? activeElement
       : null
     const initial = root.querySelector<HTMLElement>(FOCUSABLE)
     initial?.focus()
@@ -27,7 +32,10 @@ export function useFocusTrap(ref: RefObject<HTMLElement | null>) {
       const first = focusable[0]
       const last = focusable[focusable.length - 1]
 
-      if (event.shiftKey && document.activeElement === first) {
+      if (!root.contains(document.activeElement)) {
+        event.preventDefault()
+        first.focus()
+      } else if (event.shiftKey && document.activeElement === first) {
         event.preventDefault()
         last.focus()
       } else if (!event.shiftKey && document.activeElement === last) {
@@ -39,7 +47,11 @@ export function useFocusTrap(ref: RefObject<HTMLElement | null>) {
     root.addEventListener('keydown', onKeyDown)
     return () => {
       root.removeEventListener('keydown', onKeyDown)
-      if (previousFocus?.isConnected) previousFocus.focus()
+      const fallback = fallbackSelector
+        ? document.querySelector<HTMLElement>(fallbackSelector)
+        : null
+      const target = previousFocus?.isConnected ? previousFocus : fallback
+      target?.focus()
     }
-  }, [ref])
+  }, [fallbackSelector, ref])
 }

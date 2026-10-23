@@ -1,0 +1,101 @@
+.rg-memory-chapter {
+  --rg-memory-paper: #f3e9d5;
+  --rg-memory-muted: rgb(243 233 213 / 0.38);
+  --rg-memory-brass: #d7ad68;
+}
+
+.rg-memory-chapter-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, transparent 0 49.95%, rgb(243 233 213 / 0.1) 50%, transparent 50.05%),
+    linear-gradient(180deg, transparent 0 49.9%, rgb(243 233 213 / 0.08) 50%, transparent 50.1%);
+}
+
+.rg-memory-chapter-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(65vw, 760px);
+  aspect-ratio: 1;
+  border: 1px solid rgb(243 233 213 / 0.08);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.rg-memory-chapter-orbit::before,
+.rg-memory-chapter-orbit::after {
+  position: absolute;
+  content: '';
+  border: 1px solid rgb(215 173 104 / 0.1);
+  border-radius: inherit;
+}
+
+.rg-memory-chapter-orbit::before { inset: 13%; }
+.rg-memory-chapter-orbit::after { inset: 31%; }
+
+.rg-memory-chapter-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: min(92vw, 1240px);
+  height: 100%;
+  margin: auto;
+  grid-template-columns: 1fr minmax(340px, 1.4fr) 1fr;
+  align-items: center;
+  gap: 44px;
+}
+
+.rg-memory-chapter-left,
+.rg-memory-chapter-right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--rg-memory-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--rg-memory-muted);
+}
+
+.rg-memory-chapter-left { align-items: flex-end; }
+.rg-memory-chapter-right { align-items: flex-start; }
+.rg-memory-chapter-left b,
+.rg-memory-chapter-right b {
+  font-family: var(--rg-memory-display);
+  font-size: 58px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: rgb(243 233 213 / 0.12);
+}
+
+.rg-memory-chapter-center {
+  padding: 36px 38px;
+  border-top: 1px solid rgb(243 233 213 / 0.18);
+  border-bottom: 1px solid rgb(243 233 213 / 0.18);
+  text-align: center;
+}
+
+.rg-memory-chapter-date {
+  font-family: var(--rg-memory-mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  color: var(--rg-memory-brass);
+}
+
+.rg-memory-chapter-center i {
+  display: block;
+  width: 42px;
+  height: 1px;
+  margin: 22px auto;
+  background: var(--rg-memory-brass);
+}
+
+.rg-memory-chapter-center h2 {
+  font-family: var(--rg-memory-serif);
+  font-size: clamp(3.2rem, 6vw, 6.4rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  color: var(--rg-memory-paper);
+}

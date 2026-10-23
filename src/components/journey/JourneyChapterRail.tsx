@@ -18,8 +18,8 @@ export default function JourneyChapterRail(props: Props) {
   return (
     <section aria-label="当前旅程章节">
       <div className="mb-2 flex items-center justify-between px-1">
-        <p className="text-[10px] tracking-[0.22em] text-amber-100/55">JOURNEY CHAPTERS</p>
-        <p className="text-[10px] text-white/35">按日期从出发到归程</p>
+        <p className="text-[10px] tracking-[0.22em] text-amber-100/65">JOURNEY CHAPTERS</p>
+        <p className="text-[10px] text-white/52">按日期从出发到归程</p>
       </div>
       <Timeline {...props} />
     </section>

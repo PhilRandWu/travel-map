@@ -4,7 +4,16 @@ import { sampleVehicleRoute, type VehiclePlayback } from '@/lib/vehicle'
 import type { VehicleRuntime } from '@/components/globe/hooks/useVehicleRuntime'
 import { createVehicleTrail } from '@/components/globe/vehicleTrail'
 import { useMotion } from '@/components/motion/MotionProvider'
-import { isPointVisible, screenPoint } from '@/components/globe/vehicleScreen'
+import {
+  VEHICLE_ARRIVAL_HOLD_MS,
+  VEHICLE_ARRIVAL_RETURN_MS,
+} from '@/lib/vehicleMotion'
+import {
+  isPointVisible,
+  isScreenPointVisible,
+  screenPoint,
+  smoothAngle,
+} from '@/components/globe/vehicleScreen'
 import VehicleTrailLayer from '@/components/globe/VehicleTrailLayer'
 import { useVehicleMotionEffects } from '@/components/globe/useVehicleMotionEffects'
 
@@ -18,6 +27,8 @@ const VEHICLE_ICONS = {
   flight: '/vehicle-icons/flight-3d.svg',
   train: '/vehicle-icons/train-3d.svg',
 } as const
+
+const CAMERA_SETTLE_PROGRESS = 0.86
 
 export default function VehicleOverlay({
   playback,
@@ -44,13 +55,22 @@ export default function VehicleOverlay({
 
     const calmMotion = effectiveLevel === 'calm'
     const trail = createVehicleTrail(globe, playback.route)
+    const viewport = {
+      width: host.clientWidth,
+      height: host.clientHeight,
+    }
+    const resizeObserver = new ResizeObserver(() => {
+      viewport.width = host.clientWidth
+      viewport.height = host.clientHeight
+    })
+    resizeObserver.observe(host)
     host.dataset.vehicleTrail = 'true'
     let angle = 0
     let hasDirection = false
+    let lastMotionElapsedMs = 0
 
     const hideMarker = () => {
       marker.style.opacity = '0'
-      marker.style.visibility = 'hidden'
       marker.dataset.vehicleVisible = 'false'
       host.dataset.vehiclePlaying = 'false'
     }
@@ -66,9 +86,16 @@ export default function VehicleOverlay({
         ? sampleVehicleRoute(playback.route, 1)
         : motion.position
       const screen = screenPoint(globe, position)
-      const visible = isPointVisible(globe, position)
+      const cameraSettled = frame.stage !== 'preparing'
+        || frame.entryProgress >= CAMERA_SETTLE_PROGRESS
+      const visible = cameraSettled
+        && isPointVisible(globe, position)
+        && isScreenPointVisible(screen, viewport.width, viewport.height)
 
       if (!calmMotion) {
+        const seekedBackwards = motion.elapsedMs < lastMotionElapsedMs
+        const deltaMs = Math.max(0, motion.elapsedMs - lastMotionElapsedMs)
+        lastMotionElapsedMs = motion.elapsedMs
         const nextPosition = sampleVehicleRoute(
           playback.route,
           Math.min(1, motion.progress + 0.008),
@@ -78,26 +105,35 @@ export default function VehicleOverlay({
         const dy = nextScreen.y - screen.y
         if (Math.hypot(dx, dy) > 0.4) {
           const targetAngle = Math.atan2(dy, dx) * 180 / Math.PI
-          if (!hasDirection) {
+          if (!hasDirection || seekedBackwards) {
             angle = targetAngle
             hasDirection = true
           } else {
-            const delta = ((targetAngle - angle + 540) % 360) - 180
-            angle += delta * 0.24
+            angle = smoothAngle(angle, targetAngle, deltaMs)
           }
         }
       }
 
       const finished = stage === 'complete'
+      const returningProgress = stage === 'returning'
+        ? Math.max(0, Math.min(
+          1,
+          (frame.arrivalElapsedMs - VEHICLE_ARRIVAL_HOLD_MS)
+            / VEHICLE_ARRIVAL_RETURN_MS,
+        ))
+        : 0
+      const markerOpacity = stage === 'returning'
+        ? 1 - returningProgress
+        : 1
       marker.style.visibility = 'visible'
       marker.style.transform = `translate3d(${screen.x}px, ${screen.y}px, 0)`
-      marker.style.opacity = visible && !finished ? '1' : '0'
+      marker.style.opacity = visible && !finished
+        ? String(markerOpacity)
+        : '0'
       marker.style.setProperty('--rg-vehicle-angle', `${angle}deg`)
-      marker.style.setProperty('--rg-vehicle-pitch', `${motion.pitchDeg}deg`)
-      marker.style.setProperty('--rg-vehicle-roll', `${motion.rollDeg}deg`)
       marker.dataset.vehicleProgress = motion.progress.toFixed(3)
       marker.dataset.vehicleStage = stage
-      marker.dataset.vehicleChase = String(!calmMotion)
+      marker.dataset.vehicleMode = calmMotion ? 'static' : 'route'
       marker.dataset.vehicleVisible = String(visible)
 
       host.dataset.vehiclePlaying = String(!finished)
@@ -110,7 +146,7 @@ export default function VehicleOverlay({
         playback.route,
         calmMotion ? 1 : motion.progress,
         motion.progress,
-        visible,
+        visible && stage !== 'returning',
         calmMotion,
       )
       if (motion.progress >= 1) {
@@ -119,6 +155,7 @@ export default function VehicleOverlay({
     })
 
     return () => {
+      resizeObserver.disconnect()
       unsubscribe()
       host.dataset.vehiclePlaying = 'false'
       delete host.dataset.vehicleTrail
@@ -138,7 +175,7 @@ export default function VehicleOverlay({
       data-vehicle-playing="false"
       className="pointer-events-none absolute inset-0 z-[2] overflow-hidden"
     >
-      <div className="rg-chase-vignette pointer-events-none absolute inset-0" />
+      <div className="rg-route-vignette pointer-events-none absolute inset-0" />
       <VehicleTrailLayer {...effects.refs} />
       <div
         ref={markerRef}

@@ -4,17 +4,28 @@ interface Props {
 }
 
 export default function MemoryChapterCard({ date, cityName }: Props) {
-  const [, month = 0, day = 0] = date.split('-').map(Number)
+  const [year = '', month = 0, day = 0] = date.split('-')
   return (
     <div
       aria-hidden="true"
-      className="rg-memory-chapter pointer-events-none absolute inset-0 z-20 grid grid-cols-2 overflow-hidden bg-[#0c0907]"
+      className="rg-memory-chapter pointer-events-none absolute inset-0 z-40 overflow-hidden bg-[#090b0e]"
     >
-      <div className="rg-memory-chapter-left flex items-center justify-end pr-8 font-mono text-[#f5ead8]/70">
-        {month} 月 {day} 日
-      </div>
-      <div className="rg-memory-chapter-right flex items-center border-l border-[#f5ead8]/12 pl-8 font-serif text-4xl text-[#f5ead8]">
-        {cityName}
+      <div aria-hidden className="rg-memory-chapter-grid" />
+      <div aria-hidden className="rg-memory-chapter-orbit" />
+      <div className="rg-memory-chapter-inner">
+        <div className="rg-memory-chapter-left">
+          <span>CHAPTER TRANSITION</span>
+          <b>{year}</b>
+        </div>
+        <div className="rg-memory-chapter-center">
+          <span className="rg-memory-chapter-date">{Number(month)} 月 {Number(day)} 日</span>
+          <i aria-hidden />
+          <h2>{cityName}</h2>
+        </div>
+        <div className="rg-memory-chapter-right">
+          <span>LOCATION LOGGED</span>
+          <b>{cityName.slice(0, 1)}</b>
+        </div>
       </div>
       <div className="rg-memory-grain-flash absolute inset-0" />
     </div>

@@ -1,4 +1,4 @@
-.rg-chase-vignette {
+.rg-route-vignette {
   opacity: 0;
   background:
     radial-gradient(
@@ -17,25 +17,114 @@
   transition: opacity 260ms var(--rg-ease-out);
 }
 
-html[data-vehicle-chase='true'] .rg-chase-vignette {
+html[data-route-camera='true'] .rg-route-vignette {
   opacity: 1;
 }
 
 .rg-vehicle-camera-status {
+  display: grid;
+  width: min(360px, calc(100vw - 6rem));
+  gap: 5px;
+  padding: 10px 14px 11px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 13px;
+  background:
+    linear-gradient(135deg, rgb(10 17 32 / 0.9), rgb(4 7 15 / 0.82));
+  box-shadow:
+    0 14px 42px rgb(0 0 0 / 0.42),
+    inset 0 1px rgb(255 255 255 / 0.035);
+  color: rgb(255 255 255 / 0.72);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  backdrop-filter: blur(10px);
+}
+
+.rg-vehicle-camera-status-line,
+.rg-vehicle-camera-status-meta {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 13px;
-  border: 1px solid rgb(255 255 255 / 0.12);
-  border-radius: 999px;
-  background: rgb(5 8 17 / 0.68);
-  box-shadow: 0 8px 28px rgb(0 0 0 / 0.32);
-  color: rgb(255 255 255 / 0.68);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 10px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.13em;
+}
+
+.rg-vehicle-camera-status-line {
+  color: rgb(255 255 255 / 0.58);
+}
+
+.rg-vehicle-camera-status-line [role='status'] {
+  color: rgb(255 255 255 / 0.86);
+}
+
+.rg-vehicle-camera-status-vehicle {
+  padding: 1px 6px;
+  border: 1px solid rgb(165 243 252 / 0.18);
+  border-radius: 999px;
+  color: rgb(207 250 254 / 0.72);
+}
+
+.rg-vehicle-camera-status[data-vehicle-type='train']
+  .rg-vehicle-camera-status-vehicle {
+  border-color: rgb(251 191 36 / 0.2);
+  color: rgb(254 243 199 / 0.76);
+}
+
+.rg-vehicle-camera-status-route {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  color: rgb(255 255 255 / 0.92);
+  font-family: ui-serif, Georgia, 'Songti SC', serif;
+  font-size: 16px;
+  letter-spacing: 0.06em;
   white-space: nowrap;
-  backdrop-filter: blur(10px);
+}
+
+.rg-vehicle-camera-status-route span:not(:nth-child(2)) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rg-vehicle-camera-status-route span:nth-child(2) {
+  color: rgb(165 243 252 / 0.5);
+}
+
+.rg-vehicle-camera-status-meta {
+  justify-content: space-between;
+  color: rgb(255 255 255 / 0.52);
+}
+
+.rg-vehicle-camera-status-meta span:nth-child(2) {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rg-vehicle-camera-status-meta span:last-child {
+  color: rgb(255 255 255 / 0.56);
+}
+
+.rg-vehicle-camera-progress {
+  overflow: hidden;
+  height: 1px;
+  margin-top: 2px;
+  background: rgb(255 255 255 / 0.1);
+}
+
+.rg-vehicle-camera-progress span {
+  display: block;
+  width: var(--rg-route-progress, 0%);
+  height: 100%;
+  background: linear-gradient(90deg, rgb(103 232 249 / 0.5), rgb(165 243 252));
+  box-shadow: 0 0 8px rgb(103 232 249 / 0.45);
+  transition: width 140ms linear;
+}
+
+.rg-vehicle-camera-status[data-vehicle-type='train']
+  .rg-vehicle-camera-progress span {
+  background: linear-gradient(90deg, rgb(251 191 36 / 0.45), rgb(253 230 138));
+  box-shadow: 0 0 8px rgb(251 191 36 / 0.4);
 }
 
 .rg-vehicle-camera-status-dot {
@@ -46,17 +135,14 @@ html[data-vehicle-chase='true'] .rg-chase-vignette {
   box-shadow: 0 0 10px rgb(103 232 249 / 0.7);
 }
 
-.rg-vehicle-marker[data-vehicle-chase='true'] .rg-vehicle-glyph {
+.rg-vehicle-marker[data-vehicle-mode='route'] .rg-vehicle-glyph {
   transform:
     translate(-50%, -50%)
     rotate(var(--rg-vehicle-angle, 0deg))
-    perspective(260px)
-    rotateX(var(--rg-vehicle-pitch, 0deg))
-    rotateZ(var(--rg-vehicle-roll, 0deg))
-    scale(0.88);
+    scale(0.92);
 }
 
-.rg-vehicle-marker[data-vehicle-chase='true'] .rg-vehicle-label {
+.rg-vehicle-marker[data-vehicle-mode='route'] .rg-vehicle-label {
   opacity: 0;
 }
 
@@ -64,21 +150,21 @@ html[data-vehicle-chase='true'] .rg-chase-vignette {
   pointer-events: none;
 }
 
-html[data-vehicle-chase='true'] .rg-city-marker {
-  opacity: 0.38;
+html[data-route-camera='true'] .rg-city-marker {
+  opacity: 0.56;
 }
 
-html[data-vehicle-chase='true'] :is(
+html[data-route-camera='true'] :is(
   .rg-passport,
   .rg-card-in,
   .rg-hero-in,
   .rg-stats-in
 ) {
-  opacity: 0.34;
+  opacity: 0.46;
   transition: opacity 220ms ease;
 }
 
-html[data-motion='calm'] .rg-chase-vignette {
+html[data-motion='calm'] .rg-route-vignette {
   display: none;
 }
 
@@ -86,14 +172,93 @@ html[data-motion='calm'] .rg-chase-vignette {
   .rg-vehicle-camera-status {
     top: 4.75rem;
     max-width: calc(100vw - 2rem);
-    overflow: hidden;
-    padding: 6px 10px;
-    text-overflow: ellipsis;
+    width: calc(100vw - 2rem);
+    padding: 9px 11px 10px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rg-chase-vignette {
+  .rg-route-vignette {
     transition: none;
   }
+}
+
+/* 行程载具：位置由 JS 逐帧写入，图标朝向由 CSS 变量控制 */
+.rg-vehicle-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: opacity 180ms var(--rg-ease-out);
+  will-change: transform, opacity;
+}
+
+.rg-vehicle-glyph {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  transform: translate(-50%, -50%) rotate(var(--rg-vehicle-angle, 0deg));
+  transform-origin: center;
+}
+
+.rg-vehicle-icon {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 4px rgb(0 0 0 / 0.38));
+  pointer-events: none;
+  user-select: none;
+}
+
+.rg-vehicle-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  animation: rg-vehicle-pulse 0.9s ease-in-out infinite;
+}
+
+@keyframes rg-vehicle-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.22);
+  }
+}
+
+.rg-vehicle-label {
+  position: absolute;
+  top: 31px;
+  left: 0;
+  max-width: min(240px, 60vw);
+  overflow: hidden;
+  padding: 4px 8px;
+  border: 1px solid rgb(255 255 255 / 0.13);
+  border-radius: 999px;
+  background: rgb(5 8 17 / 0.76);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.3);
+  color: rgb(255 255 255 / 0.72);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  backdrop-filter: blur(8px);
 }

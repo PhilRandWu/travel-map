@@ -1,6 +1,5 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Globe, { type GlobeMethods } from 'react-globe.gl'
-import { reverseGeocode, formatLatLng, type GeoHit } from '@/lib/geoLookup'
 import type { TravelGlobeProps } from '@/components/globe/TravelGlobe.types'
 import { useGlobeMarkers } from '@/components/globe/hooks/useGlobeMarkers'
 import { useContainerSize } from '@/components/globe/hooks/useContainerSize'
@@ -13,6 +12,7 @@ import { useVehicleScene } from '@/components/globe/hooks/useVehicleScene'
 import { useJourneyReveal } from '@/components/globe/hooks/useJourneyReveal'
 import { useCameraFocus } from '@/components/globe/hooks/useCameraFocus'
 import { useMotion } from '@/components/motion/MotionProvider'
+import { useGlobePicking } from '@/components/globe/hooks/useGlobePicking'
 import VehicleOverlay from '@/components/globe/VehicleOverlay'
 import VehicleCameraStatus from '@/components/globe/VehicleCameraStatus'
 import GlobeFeedback from '@/components/globe/GlobeFeedback'
@@ -40,8 +40,10 @@ export default function TravelGlobe({
   focusPoint,
   tripPlaybackSignal,
   replayRuntime,
+  framing,
   resetSignal,
   onReady,
+  onDirectorCameraChange,
   onSelectCity,
   onSelectTrip,
   region,
@@ -55,9 +57,6 @@ export default function TravelGlobe({
   onPickRef.current = onPick
   onSelectCityRef.current = onSelectCity
   onSelectTripRef.current = onSelectTrip
-  // 点击序号：丢弃过期的反查结果，避免快速连点时结果乱跳
-  const clickSeqRef = useRef(0)
-  const [locating, setLocating] = useState(false)
   const [globeReady, setGlobeReady] = useState(false)
   const { effectiveLevel, pageVisible } = useMotion()
 
@@ -97,21 +96,25 @@ export default function TravelGlobe({
 
   // 大气呼吸、表面 hover 指针样式（详见 useAtmosphereGlow）
   useAtmosphereGlow(globeRef, wrapperRef, [size], { draggingRef, cityHoveringRef })
-  const chaseEnabled = pageVisible && effectiveLevel !== 'calm'
+  const directorEnabled = pageVisible && effectiveLevel !== 'calm'
   const {
     playback: vehiclePlayback,
     runtime: vehicleRuntime,
-    chaseCamera,
+    directorCamera,
   } = useVehicleScene({
     tracks,
     selectedTripId,
     playbackSignal: tripPlaybackSignal,
     replayRuntime,
     pageVisible,
-    chaseEnabled,
+    directorEnabled,
     globeRef,
+    framing,
   })
-  cameraLockedRef.current = chaseCamera.locked
+  useEffect(() => {
+    onDirectorCameraChange?.(directorCamera.locked)
+  }, [directorCamera.locked, onDirectorCameraChange])
+  cameraLockedRef.current = directorCamera.locked
   const flyTo = useCameraFocus({
     globeRef,
     lastInteractRef,
@@ -120,45 +123,14 @@ export default function TravelGlobe({
     selectedCityId,
     focusPoint,
     resetSignal,
-    suppressed: chaseEnabled && vehiclePlayback !== null,
+    suppressed: directorEnabled && vehiclePlayback !== null,
   })
 
-  // 点击地球任意位置 → 离线反查地名
-  const handleGlobeClick = async (coords: { lat: number; lng: number }) => {
-    const { lat, lng } = coords
-    lastInteractRef.current = performance.now()
-    const seq = ++clickSeqRef.current
-    setLocating(true)
-
-    let hit: GeoHit | null = null
-    try {
-      hit = await reverseGeocode(lat, lng)
-    } catch (err) {
-      console.error('[geo] 地名反查失败', err)
-    }
-    if (seq !== clickSeqRef.current) return // 已点击他处，丢弃过期结果
-    setLocating(false)
-
-    if (hit) {
-      onPickRef.current({
-        name: hit.name,
-        detail:
-          hit.kind === 'city'
-            ? `${hit.province ?? ''} · 中国`
-            : hit.kind === 'country'
-              ? (hit.country !== hit.name ? hit.country : undefined)
-              : '中国',
-        lat,
-        lng,
-        boundary: hit.boundary,
-      })
-      // 按区域级别决定最终聚焦高度：地级市近、直辖市稍远、国家保持远景
-      const targetAlt = hit.kind === 'city' ? 1.1 : hit.kind === 'municipality' ? 1.5 : 2.1
-      flyTo(lat, lng, targetAlt)
-    } else {
-      onPickRef.current({ name: '海洋', detail: formatLatLng(lat, lng), lat, lng, ocean: true })
-    }
-  }
+  const { locating, handleGlobeClick } = useGlobePicking({
+    onPickRef,
+    lastInteractRef,
+    flyTo,
+  })
 
   const { trackProps, activeCityIds, visibleTrackCounts } = useTrackPresentation({
     tracks: entrance.routesVisible ? tracks : EMPTY_TRACKS,
@@ -190,13 +162,13 @@ export default function TravelGlobe({
     onSelectCityRef,
     cityHoveringRef,
     lastInteractRef,
-    locked: chaseCamera.locked,
+    locked: directorCamera.locked,
   })
 
   const polygons = region?.boundary ? [region.boundary] : []
   const scenePaused = !pageVisible
     || dragging
-    || chaseCamera.locked
+    || directorCamera.locked
     || replayRuntime?.status === 'playing'
     || selectedCityId !== null
 
@@ -206,7 +178,7 @@ export default function TravelGlobe({
       data-visible-flight-tracks={visibleTrackCounts.flights}
       data-visible-train-tracks={visibleTrackCounts.trains}
       data-visible-stardust-tracks={visibleTrackCounts.stardust}
-      data-camera-locked={chaseCamera.locked}
+      data-camera-locked={directorCamera.locked}
       className="absolute inset-0"
     >
       {size.width > 0 && (
@@ -218,7 +190,7 @@ export default function TravelGlobe({
           globeImageUrl="/textures/earth-night.jpg"
           bumpImageUrl="/textures/earth-topology.png"
           showAtmosphere
-          enablePointerInteraction={!chaseCamera.locked}
+          enablePointerInteraction={!directorCamera.locked}
           atmosphereColor={ATMOSPHERE_COLOR}
           atmosphereAltitude={ATMOSPHERE_ALTITUDE}
           onGlobeReady={() => {
@@ -254,7 +226,7 @@ export default function TravelGlobe({
           htmlElement={(d) => {
             const m = d as GlobeMarker
             return m.kind === 'city'
-              ? buildCityMarker(m, { onSelect: handleSelectCity, onHover: handleHoverCity, locked: chaseCamera.locked })
+              ? buildCityMarker(m, { onSelect: handleSelectCity, onHover: handleHoverCity, locked: directorCamera.locked })
               : m.kind === 'home'
                 ? buildHomeMarker(m)
                 : buildRegionDot(m)
@@ -286,9 +258,8 @@ export default function TravelGlobe({
         globeRef={globeRef}
       />
       <VehicleCameraStatus
-        active={chaseCamera.locked}
-        label={chaseCamera.status?.label ?? null}
-        type={chaseCamera.status?.type ?? null}
+        active={directorCamera.locked}
+        status={directorCamera.status}
       />
       <GlobeFeedback
         region={region}

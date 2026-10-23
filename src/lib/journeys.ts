@@ -1,7 +1,7 @@
 import type { City, Journey, JourneyScope, TravelData, Trip, Visit } from '@/types'
 import { resolveCity, resolveCities } from '@/lib/cities'
 import { tripDistance } from '@/lib/geo'
-import { compareDate } from '@/lib/validate'
+import { compareDate } from '@/lib/date'
 
 export interface JourneyCoverSource {
   visitId: string

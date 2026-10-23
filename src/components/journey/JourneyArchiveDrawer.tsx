@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import type { Journey } from '@/types'
 import { groupJourneysByYear } from '@/lib/journeys'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 
 interface Props {
   journeys: Journey[]
@@ -15,11 +16,11 @@ export default function JourneyArchiveDrawer({
   onOpenJourney,
   onClose,
 }: Props) {
-  const closeRef = useRef<HTMLButtonElement>(null)
+  const drawerRef = useRef<HTMLElement>(null)
   const groups = groupJourneysByYear(journeys)
+  useFocusTrap(drawerRef)
 
   useEffect(() => {
-    closeRef.current?.focus()
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose()
     }
@@ -33,6 +34,7 @@ export default function JourneyArchiveDrawer({
       onClick={onClose}
     >
       <section
+        ref={drawerRef}
         role="dialog"
         aria-modal="true"
         aria-label="全部旅程"
@@ -45,7 +47,6 @@ export default function JourneyArchiveDrawer({
             <h2 className="mt-1 font-serif text-2xl text-white">全部旅程</h2>
           </div>
           <button
-            ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label="关闭全部旅程"

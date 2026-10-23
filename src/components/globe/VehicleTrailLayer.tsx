@@ -14,7 +14,7 @@ export default function VehicleTrailLayer({
   return (
     <>
       <div ref={trailRef} aria-hidden className="pointer-events-none absolute inset-0">
-        {Array.from({ length: 10 }, (_, index) => (
+        {Array.from({ length: 6 }, (_, index) => (
           <span
             key={index}
             data-vehicle-trail-dot={index}
@@ -24,7 +24,7 @@ export default function VehicleTrailLayer({
         ))}
       </div>
       <div ref={frictionRef} aria-hidden className="pointer-events-none absolute inset-0">
-        {Array.from({ length: 6 }, (_, index) => (
+        {Array.from({ length: 3 }, (_, index) => (
           <span
             key={index}
             data-vehicle-friction-dot={index}

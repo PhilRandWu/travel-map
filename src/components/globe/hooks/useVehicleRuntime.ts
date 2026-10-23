@@ -12,12 +12,13 @@ import {
   buildVehicleRuntimeFrame,
   type VehicleRuntimeFrame,
 } from '@/lib/vehicleRuntime'
-import { VEHICLE_ARRIVAL_TOTAL_MS } from '@/lib/vehicleMotion'
+import { vehicleNodeDurationMs } from '@/lib/vehicleMotion'
+import { useSceneClock } from '@/components/scene/SceneClockProvider'
 
 type FrameListener = (frame: VehicleRuntimeFrame | null) => void
 
 export interface VehicleRuntime {
-  subscribe: (listener: FrameListener) => () => void
+  subscribe: (listener: FrameListener, priority?: number) => () => void
   getFrame: () => VehicleRuntimeFrame | null
 }
 
@@ -42,20 +43,25 @@ export function useVehicleRuntime({
   globeRef,
 }: Options): VehicleRuntime {
   const frameRef = useRef<VehicleRuntimeFrame | null>(null)
-  const listenersRef = useRef(new Set<FrameListener>())
+  const listenersRef = useRef(new Map<FrameListener, number>())
   const singleElapsedRef = useRef(0)
   const singleKeyRef = useRef<number | null>(null)
   const replayFollowingRef = useRef<ReplayFollowing | null>(null)
+  const clock = useSceneClock()
 
   const emit = useCallback((frame: VehicleRuntimeFrame | null) => {
     frameRef.current = frame
-    listenersRef.current.forEach((listener) => listener(frame))
+    const listeners = [...listenersRef.current.entries()]
+      .sort((left, right) => left[1] - right[1])
+    for (const [listener] of listeners) listener(frame)
   }, [])
 
-  const subscribe = useCallback((listener: FrameListener) => {
-    listenersRef.current.add(listener)
+  const subscribe = useCallback((listener: FrameListener, priority = 0) => {
+    listenersRef.current.set(listener, priority)
     listener(frameRef.current)
-    return () => listenersRef.current.delete(listener)
+    return () => {
+      listenersRef.current.delete(listener)
+    }
   }, [])
 
   const getFrame = useCallback(() => frameRef.current, [])
@@ -75,7 +81,7 @@ export function useVehicleRuntime({
       ) {
         emit(buildVehicleRuntimeFrame(
           following.playback,
-          following.playback.route.durationMs + VEHICLE_ARRIVAL_TOTAL_MS,
+          vehicleNodeDurationMs(following.playback.route.durationMs),
           replayRuntime.seekRevision,
         ))
         replayFollowingRef.current = null
@@ -85,9 +91,6 @@ export function useVehicleRuntime({
       }
       return
     }
-
-    let raf = 0
-    let cancelled = false
 
     if (replayRuntime && replayRuntime.status !== 'idle') {
       if (replayRuntime.activeIndex < 0) {
@@ -114,7 +117,7 @@ export function useVehicleRuntime({
         if (following && position.index > following.index) {
           const frame = buildVehicleRuntimeFrame(
             following.playback,
-            following.playback.route.durationMs + VEHICLE_ARRIVAL_TOTAL_MS,
+            vehicleNodeDurationMs(following.playback.route.durationMs),
             replayRuntime.seekRevision,
           )
           emit(frame)
@@ -127,26 +130,26 @@ export function useVehicleRuntime({
         return null
       }
 
+      let unsubscribe: (() => void) | null = null
       const replayFrame = () => {
-        if (cancelled) return
         const frame = drawReplay()
-        if (
-          frame?.stage !== 'complete'
-          && replayRuntime.status === 'playing'
-          && pageVisible
-        ) {
-          raf = requestAnimationFrame(replayFrame)
+        if (frame?.stage === 'complete') {
+          unsubscribe?.()
         }
       }
 
       drawReplay()
       if (replayRuntime.status === 'playing' && pageVisible) {
-        raf = requestAnimationFrame(replayFrame)
+        unsubscribe = clock.subscribe(
+          replayFrame,
+          -50,
+        )
+        return () => {
+          unsubscribe?.()
+          unsubscribe = null
+        }
       }
-      return () => {
-        cancelled = true
-        cancelAnimationFrame(raf)
-      }
+      return
     }
 
     if (replayFollowingRef.current) {
@@ -172,30 +175,27 @@ export function useVehicleRuntime({
     }
 
     let lastFrameAt = performance.now()
+    let unsubscribe: (() => void) | null = null
     const singleFrame = (now: number) => {
-      if (cancelled) return
       const delta = Math.min(
         MAX_FRAME_DELTA_MS,
         Math.max(0, now - lastFrameAt),
       )
       lastFrameAt = now
       const frame = drawSingle(delta)
-      if (frame.stage !== 'complete') {
-        raf = requestAnimationFrame(singleFrame)
-      }
+      if (frame.stage === 'complete') unsubscribe?.()
     }
 
     const frame = drawSingle(0)
     if (pageVisible && frame.stage !== 'complete') {
       lastFrameAt = performance.now()
-      raf = requestAnimationFrame(singleFrame)
+      unsubscribe = clock.subscribe(singleFrame, -50)
+      return () => {
+        unsubscribe?.()
+        unsubscribe = null
+      }
     }
-
-    return () => {
-      cancelled = true
-      cancelAnimationFrame(raf)
-    }
-  }, [emit, globeRef, pageVisible, playback, replayRuntime])
+  }, [clock, emit, globeRef, pageVisible, playback, replayRuntime])
 
   useEffect(() => () => emit(null), [emit])
 

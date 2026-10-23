@@ -5,12 +5,24 @@ import {
   type VehiclePosition,
   type VehicleRoute,
 } from '@/lib/vehicle'
+import {
+  FLIGHT_CRUISE_MIN_MS,
+  FLIGHT_FIXED_MS,
+  FLIGHT_PHASE_MS,
+  TRAIN_CRUISE_MIN_MS,
+  TRAIN_FIXED_MS,
+  TRAIN_PHASE_MS,
+} from '@/lib/vehicleTiming'
 
-export const VEHICLE_CHASE_ENTRY_MS = 450
+export const VEHICLE_PRE_ROLL_MS = 650
 export const VEHICLE_ARRIVAL_HOLD_MS = 1000
 export const VEHICLE_ARRIVAL_RETURN_MS = 900
 export const VEHICLE_ARRIVAL_TOTAL_MS =
   VEHICLE_ARRIVAL_HOLD_MS + VEHICLE_ARRIVAL_RETURN_MS
+
+export function vehicleNodeDurationMs(motionDurationMs: number): number {
+  return VEHICLE_PRE_ROLL_MS + motionDurationMs + VEHICLE_ARRIVAL_TOTAL_MS
+}
 
 export type VehicleMotionPhase =
   | 'taxi'
@@ -27,9 +39,6 @@ export type VehicleMotionPhase =
 interface PhaseDefinition {
   phase: Exclude<VehicleMotionPhase, 'arrived'>
   durationMs: number
-  startProgress: number
-  endProgress: number
-  easing: (value: number) => number
 }
 
 export interface VehicleMotionFrame {
@@ -46,36 +55,30 @@ export interface VehicleMotionFrame {
 }
 
 const clamp01 = (value: number) => Math.max(0, Math.min(1, value))
-const linear = (value: number) => value
-const easeInQuad = (value: number) => value * value
-const easeOutCubic = (value: number) => 1 - (1 - value) ** 3
-const easeInOutCubic = (value: number) => (
-  value < 0.5
-    ? 4 * value ** 3
-    : 1 - (-2 * value + 2) ** 3 / 2
-)
 
 function cruiseDuration(route: VehicleRoute): number {
-  const fixed = route.type === 'flight' ? 4700 : 4500
-  return Math.max(2300, route.durationMs - fixed)
+  const flight = route.type === 'flight'
+  const cruiseFloor = flight ? FLIGHT_CRUISE_MIN_MS : TRAIN_CRUISE_MIN_MS
+  const fixed = flight ? FLIGHT_FIXED_MS : TRAIN_FIXED_MS
+  return Math.max(cruiseFloor, route.durationMs - fixed)
 }
 
 function phasesFor(route: VehicleRoute): PhaseDefinition[] {
   if (route.type === 'flight') {
     return [
-      { phase: 'taxi', durationMs: 900, startProgress: 0, endProgress: 0.08, easing: easeInQuad },
-      { phase: 'takeoff', durationMs: 1400, startProgress: 0.08, endProgress: 0.24, easing: easeInOutCubic },
-      { phase: 'cruise', durationMs: cruiseDuration(route), startProgress: 0.24, endProgress: 0.78, easing: linear },
-      { phase: 'descent', durationMs: 1300, startProgress: 0.78, endProgress: 0.93, easing: easeInOutCubic },
-      { phase: 'landing', durationMs: 1100, startProgress: 0.93, endProgress: 1, easing: easeOutCubic },
+      { phase: 'taxi', durationMs: FLIGHT_PHASE_MS.taxi },
+      { phase: 'takeoff', durationMs: FLIGHT_PHASE_MS.takeoff },
+      { phase: 'cruise', durationMs: cruiseDuration(route) },
+      { phase: 'descent', durationMs: FLIGHT_PHASE_MS.descent },
+      { phase: 'landing', durationMs: FLIGHT_PHASE_MS.landing },
     ]
   }
   return [
-    { phase: 'depart', durationMs: 900, startProgress: 0, endProgress: 0.08, easing: easeInQuad },
-    { phase: 'accelerate', durationMs: 1400, startProgress: 0.08, endProgress: 0.24, easing: easeInOutCubic },
-    { phase: 'cruise', durationMs: cruiseDuration(route), startProgress: 0.24, endProgress: 0.8, easing: linear },
-    { phase: 'brake', durationMs: 1200, startProgress: 0.8, endProgress: 0.94, easing: easeInOutCubic },
-    { phase: 'arrive', durationMs: 1000, startProgress: 0.94, endProgress: 1, easing: easeOutCubic },
+    { phase: 'depart', durationMs: TRAIN_PHASE_MS.depart },
+    { phase: 'accelerate', durationMs: TRAIN_PHASE_MS.accelerate },
+    { phase: 'cruise', durationMs: cruiseDuration(route) },
+    { phase: 'brake', durationMs: TRAIN_PHASE_MS.brake },
+    { phase: 'arrive', durationMs: TRAIN_PHASE_MS.arrive },
   ]
 }
 
@@ -150,9 +153,7 @@ export function vehicleMotionAt(
     const end = cursor + definition.durationMs
     if (elapsed < end || definition === phases.at(-1)) {
       const phaseProgress = clamp01((elapsed - cursor) / definition.durationMs)
-      const eased = definition.easing(phaseProgress)
-      const progress = definition.startProgress
-        + (definition.endProgress - definition.startProgress) * eased
+      const progress = clamp01(elapsed / route.durationMs)
       const altitude = route.type === 'train'
         ? TRAIN_ALTITUDE
         : vehicleAltitudeAt(route, progress)

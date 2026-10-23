@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { TimelineNode } from '@/lib/derive'
 import { usePageVisibility } from '@/components/motion/usePageVisibility'
+import { useSceneClock } from '@/components/scene/SceneClockProvider'
 import {
   getReplayProgress,
   seekReplayPlan,
@@ -35,6 +36,7 @@ export function useTimelinePlayback({
   const [activeIndex, setActiveIndex] = useState(-1)
   const [seekRevision, setSeekRevision] = useState(0)
   const pageVisible = usePageVisibility()
+  const clock = useSceneClock()
 
   const planRef = useRef(plan)
   const statusRef = useRef(status)
@@ -118,12 +120,9 @@ export function useTimelinePlayback({
 
   useEffect(() => {
     if (status !== 'playing' || !pageVisible) return
-    let animationFrame = 0
-    let cancelled = false
     frameTimeRef.current = performance.now()
 
     const tick = (now: number) => {
-      if (cancelled) return
       const currentPlan = planRef.current
       const delta = Math.min(
         MAX_FRAME_DELTA_MS,
@@ -166,15 +165,10 @@ export function useTimelinePlayback({
         lastUiUpdateRef.current = now
         setProgress(getReplayProgress(currentPlan, index, elapsedMs))
       }
-      animationFrame = requestAnimationFrame(tick)
     }
 
-    animationFrame = requestAnimationFrame(tick)
-    return () => {
-      cancelled = true
-      cancelAnimationFrame(animationFrame)
-    }
-  }, [pageVisible, status])
+    return clock.subscribe(tick, -300)
+  }, [clock, pageVisible, status])
 
   const getPosition = useCallback(
     (): ReplayPosition => ({ ...positionRef.current }),

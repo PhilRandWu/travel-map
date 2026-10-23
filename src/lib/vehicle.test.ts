@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import data from '@/data/trips.json'
 import type { TravelData } from '@/types'
+import { haversineKm } from '@/lib/geo'
 import { buildTracks } from '@/lib/tracks'
 import { buildVehicleRoute, sampleVehicleRoute } from '@/lib/vehicle'
 
@@ -16,11 +17,23 @@ describe('buildVehicleRoute', () => {
     expect(route.points.at(-1)).toEqual([flights[0].endLat, flights[0].endLng])
   })
 
-  it('高铁使用完整贴地路径', () => {
+  it('高铁使用按累计距离等距采样的贴地路径', () => {
     const route = buildVehicleRoute(trains[0])
     expect(route.type).toBe('train')
     expect(route.altitude).toBe(0.004)
-    expect(route.points).toEqual(trains[0].points)
+    expect(route.points[0]).toEqual(trains[0].points[0])
+    expect(route.points.at(-1)).toEqual(trains[0].points.at(-1))
+
+    const distances = route.points.slice(1).map((point, index) => {
+      const previous = route.points[index]
+      return haversineKm(
+        { lat: previous[0], lng: previous[1] },
+        { lat: point[0], lng: point[1] },
+      )
+    })
+    const shortest = Math.min(...distances)
+    const longest = Math.max(...distances)
+    expect(longest / shortest).toBeLessThan(1.01)
   })
 })
 

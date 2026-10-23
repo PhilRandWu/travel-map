@@ -1,6 +1,6 @@
 import type { MemoryMode, MemorySource, TravelData, Visit } from '@/types'
 import { resolveCity } from '@/lib/cities'
-import { compareDate } from '@/lib/validate'
+import { compareDate } from '@/lib/date'
 
 export interface MemoryPhoto {
   key: string

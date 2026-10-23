@@ -2,7 +2,7 @@ import { findTrip, type TimelineNode } from '@/lib/derive'
 import { resolveCities } from '@/lib/cities'
 import { tripDistance } from '@/lib/geo'
 import { vehicleDurationForDistance } from '@/lib/vehicle'
-import { VEHICLE_ARRIVAL_TOTAL_MS } from '@/lib/vehicleMotion'
+import { vehicleNodeDurationMs } from '@/lib/vehicleMotion'
 import type { TravelData } from '@/types'
 
 export const REPLAY_SPEEDS = [0.5, 1, 2] as const
@@ -53,8 +53,9 @@ export function replayNodeDurationMs(
   const trip = findTrip(data, node.refId)
   if (!trip) return VISIT_DURATION_MS
   const distanceKm = tripDistance(trip, resolveCities(data)) ?? 0
-  return vehicleDurationForDistance(trip.type, distanceKm)
-    + VEHICLE_ARRIVAL_TOTAL_MS
+  return vehicleNodeDurationMs(
+    vehicleDurationForDistance(trip.type, distanceKm),
+  )
 }
 
 export function buildReplayPlan(

@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderHook } from '@testing-library/react'
+import type { ReactNode } from 'react'
 import type { GlobeMethods } from 'react-globe.gl'
 import data from '@/data/trips.json'
 import type { TravelData } from '@/types'
@@ -7,6 +8,8 @@ import { buildTracks } from '@/lib/tracks'
 import { buildVehicleRoute, type VehiclePlayback } from '@/lib/vehicle'
 import type { ReplayRuntime } from '@/lib/replay'
 import { useVehicleRuntime } from '@/components/globe/hooks/useVehicleRuntime'
+import { vehicleNodeDurationMs } from '@/lib/vehicleMotion'
+import { SceneClockProvider } from '@/components/scene/SceneClockProvider'
 
 const { flights } = buildTracks(data as TravelData)
 const route = buildVehicleRoute(flights[0])
@@ -17,6 +20,10 @@ const playback: VehiclePlayback = {
   route,
   label: flights[0].label,
 }
+
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <SceneClockProvider>{children}</SceneClockProvider>
+)
 
 describe('useVehicleRuntime', () => {
   beforeEach(() => {
@@ -35,14 +42,14 @@ describe('useVehicleRuntime', () => {
       replayRuntime: null,
       pageVisible: true,
       globeRef,
-    }))
+    }), { wrapper })
     const listener = vi.fn()
     const unsubscribe = result.current.subscribe(listener)
 
     expect(listener).toHaveBeenCalled()
     expect(listener.mock.calls[0][0]).toMatchObject({
       tripId: playback.tripId,
-      stage: 'moving',
+      stage: 'preparing',
       motion: { progress: 0 },
     })
     unsubscribe()
@@ -62,13 +69,13 @@ describe('useVehicleRuntime', () => {
       replayRuntime,
       pageVisible: true,
       globeRef,
-    }))
+    }), { wrapper })
     const listener = vi.fn()
     result.current.subscribe(listener)
 
     expect(listener).toHaveBeenCalledWith(expect.objectContaining({
       tripId: playback.tripId,
-      stage: 'moving',
+      stage: 'preparing',
       motion: expect.objectContaining({ progress: 0 }),
     }))
   })
@@ -89,13 +96,13 @@ describe('useVehicleRuntime', () => {
             label: '',
           },
           startMs: 0,
-          durationMs: playback.route.durationMs + 1900,
+          durationMs: vehicleNodeDurationMs(playback.route.durationMs),
         }],
-        totalMs: playback.route.durationMs + 1900,
+        totalMs: vehicleNodeDurationMs(playback.route.durationMs),
       },
       getPosition: () => ({
         index: 0,
-        elapsedMs: playback.route.durationMs + 1900,
+        elapsedMs: vehicleNodeDurationMs(playback.route.durationMs),
       }),
     }
     const { result, rerender } = renderHook(
@@ -105,7 +112,7 @@ describe('useVehicleRuntime', () => {
         pageVisible: true,
         globeRef,
       }),
-      { initialProps: { replayRuntime: activeReplay } },
+      { initialProps: { replayRuntime: activeReplay }, wrapper },
     )
     const listener = vi.fn()
     result.current.subscribe(listener)
@@ -147,9 +154,9 @@ describe('useVehicleRuntime', () => {
             label: '',
           },
           startMs: 0,
-          durationMs: playback.route.durationMs + 1900,
+          durationMs: vehicleNodeDurationMs(playback.route.durationMs),
         }],
-        totalMs: playback.route.durationMs + 1900,
+        totalMs: vehicleNodeDurationMs(playback.route.durationMs),
       },
     }
     const initialProps: {
@@ -169,7 +176,7 @@ describe('useVehicleRuntime', () => {
         pageVisible: true,
         globeRef,
       }),
-      { initialProps },
+      { initialProps, wrapper },
     )
     const listener = vi.fn()
     result.current.subscribe(listener)
@@ -182,8 +189,35 @@ describe('useVehicleRuntime', () => {
 
     expect(listener).toHaveBeenLastCalledWith(expect.objectContaining({
       tripId: playback.tripId,
-      stage: 'moving',
+      stage: 'preparing',
       motion: expect.objectContaining({ progress: 0 }),
     }))
+  })
+
+  it('delivers camera listeners before render listeners', () => {
+    const globeRef = { current: {} as GlobeMethods }
+    const { result, rerender } = renderHook(
+      ({ currentPlayback }) => useVehicleRuntime({
+        playback: currentPlayback,
+        replayRuntime: null,
+        pageVisible: true,
+        globeRef,
+      }),
+      { initialProps: { currentPlayback: playback }, wrapper },
+    )
+    const order: string[] = []
+    const cleanupCamera = result.current.subscribe(
+      () => order.push('camera'),
+      -100,
+    )
+    const cleanupRender = result.current.subscribe(
+      () => order.push('render'),
+    )
+
+    order.length = 0
+    rerender({ currentPlayback: { ...playback, key: 2 } })
+    cleanupCamera()
+    cleanupRender()
+    expect(order).toEqual(['camera', 'render'])
   })
 })

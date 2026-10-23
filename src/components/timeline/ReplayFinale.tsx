@@ -19,7 +19,7 @@ export default function ReplayFinale({
   onReplay,
 }: Props) {
   const dialogRef = useRef<HTMLElement>(null)
-  useFocusTrap(dialogRef)
+  useFocusTrap(dialogRef, '[data-replay-toggle]')
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {

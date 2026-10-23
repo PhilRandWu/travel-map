@@ -52,7 +52,7 @@ export default function TimelineControls({
         aria-label={actionLabel}
         title={actionLabel}
         onClick={onToggle}
-        className={`flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border transition ${
+        className={`flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border transition ${
           isPlaying
             ? 'border-cyan-200/55 bg-cyan-300/16 text-cyan-100 shadow-[0_0_18px_rgba(103,232,249,.18)]'
             : 'border-white/13 bg-white/6 text-white/72 hover:border-cyan-200/40 hover:bg-cyan-300/10 hover:text-cyan-100'
@@ -63,10 +63,10 @@ export default function TimelineControls({
 
       <div className="min-w-0 flex-1">
         <div className="mb-1.5 flex items-center justify-between gap-3">
-          <span className="text-[9px] tracking-[0.2em] text-white/38">
+          <span className="text-[10px] tracking-[0.16em] text-white/58">
             {isPlaying ? '正在回放' : status === 'paused' ? '回放暂停' : '旅行回放'}
           </span>
-          <span className="font-mono text-[9px] tracking-wider text-white/32">
+          <span className="font-mono text-[10px] tracking-wider text-white/50">
             {activeIndex >= 0 ? `${activeIndex + 1} / ${total}` : `${total} 个节点`}
           </span>
         </div>
@@ -100,7 +100,7 @@ export default function TimelineControls({
           type="button"
           aria-label="跳过当前地点"
           onClick={onSkip}
-          className="shrink-0 cursor-pointer rounded-full border border-white/10 px-2.5 py-1 text-[9px] text-white/48 transition hover:border-white/22 hover:text-white/75"
+          className="shrink-0 cursor-pointer rounded-full border border-white/10 px-2.5 py-1 text-[10px] text-white/62 transition hover:border-white/22 hover:text-white/80"
         >
           跳过
         </button>
@@ -119,10 +119,10 @@ export default function TimelineControls({
             aria-label={`${value} 倍速`}
             aria-pressed={speed === value}
             onClick={() => onSpeedChange(value)}
-            className={`h-5 min-w-8 cursor-pointer rounded-full px-1.5 text-[9px] font-medium tabular-nums transition ${
+            className={`h-6 min-w-9 cursor-pointer rounded-full px-2 text-[10px] font-medium tabular-nums transition ${
               speed === value
                 ? 'bg-white/13 text-cyan-100'
-                : 'text-white/35 hover:text-white/70'
+                : 'text-white/52 hover:text-white/78'
             }`}
           >
             {value}×

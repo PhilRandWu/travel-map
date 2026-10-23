@@ -1,6 +1,7 @@
 import { useEffect, type RefObject } from 'react'
 import { Color, type Mesh, type ShaderMaterial } from 'three'
 import type { GlobeMethods } from 'react-globe.gl'
+import { useSceneClock } from '@/components/scene/SceneClockProvider'
 
 /** 大气外圈呼吸与 hover 唤醒的基础参数 */
 const BASE_COLOR = '#7fa6f5'
@@ -31,11 +32,12 @@ export function useAtmosphereGlow(
   deps: unknown[],
   { draggingRef, cityHoveringRef }: Options,
 ) {
+  const clock = useSceneClock()
+
   useEffect(() => {
     const el = wrapperRef.current
     if (!el) return
 
-    let raf = 0
     let material: ShaderMaterial | null = null
     let baseColor: Color | null = null
     let retries = 0
@@ -59,10 +61,7 @@ export function useAtmosphereGlow(
 
     const tick = (now: number) => {
       if (disposed) return
-      if (!material && !findAtmosphere() && retries++ < MAX_RETRIES) {
-        raf = requestAnimationFrame(tick)
-        return
-      }
+      if (!material && !findAtmosphere() && retries++ < MAX_RETRIES) return
       if (material && baseColor && !document.hidden) {
         const target = hovering || cityHoveringRef.current ? 1 : 0
         if (Math.abs(wake - target) > 0.0005) wake += (target - wake) * WAKE_LERP
@@ -74,9 +73,8 @@ export function useAtmosphereGlow(
         // wake=1 时也只混入一部分，保持蓝色主调
         u.color.value.copy(baseColor).lerp(HOVER_COLOR, wake * 0.45)
       }
-      raf = requestAnimationFrame(tick)
     }
-    raf = requestAnimationFrame(tick)
+    const unsubscribe = clock.subscribe(tick, -150)
 
     // toGlobeCoords 命中球面才算 hover；拖拽旋转中不改变状态
     const onMove = (e: PointerEvent) => {
@@ -97,12 +95,12 @@ export function useAtmosphereGlow(
     el.addEventListener('pointerleave', onLeave)
     return () => {
       disposed = true
-      cancelAnimationFrame(raf)
+      unsubscribe()
       el.removeEventListener('pointermove', onMove)
       el.removeEventListener('pointerleave', onLeave)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps)
+  }, [clock, ...deps])
 }
 
 export const ATMOSPHERE_COLOR = BASE_COLOR

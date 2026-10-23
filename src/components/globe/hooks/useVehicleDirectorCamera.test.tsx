@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 import { PerspectiveCamera, Vector3 } from 'three'
 import type { GlobeMethods } from 'react-globe.gl'
 import { describe, expect, it, vi } from 'vitest'
@@ -10,7 +10,11 @@ import {
   buildVehicleRuntimeFrame,
   type VehicleRuntimeFrame,
 } from '@/lib/vehicleRuntime'
-import { useVehicleChaseCamera } from '@/components/globe/hooks/useVehicleChaseCamera'
+import {
+  VEHICLE_PRE_ROLL_MS,
+  vehicleNodeDurationMs,
+} from '@/lib/vehicleMotion'
+import { useVehicleDirectorCamera } from '@/components/globe/hooks/useVehicleDirectorCamera'
 
 const { flights } = buildTracks(data as TravelData)
 const route = buildVehicleRoute(flights[0])
@@ -21,6 +25,7 @@ const playback: VehiclePlayback = {
   route,
   label: flights[0].label,
 }
+const framing = { topRatio: 0.06, bottomRatio: 0.8 }
 
 function fakeGlobe() {
   const camera = new PerspectiveCamera()
@@ -48,46 +53,63 @@ function fakeGlobe() {
   return { globe, camera, controls }
 }
 
-describe('useVehicleChaseCamera', () => {
-  it('locks controls while moving and restores them on completion', () => {
-    const { globe, controls } = fakeGlobe()
+describe('useVehicleDirectorCamera', () => {
+  it('locks controls, applies the route view and completes the node', async () => {
+    const { globe, camera, controls } = fakeGlobe()
     const globeRef = { current: globe }
     let listener: (frame: VehicleRuntimeFrame | null) => void = () => undefined
     const runtime = {
       getFrame: () => null,
-      subscribe: vi.fn((next: (frame: VehicleRuntimeFrame | null) => void) => {
+      subscribe: vi.fn((
+        next: (frame: VehicleRuntimeFrame | null) => void,
+        _priority?: number,
+      ) => {
         listener = next
         return () => undefined
       }),
     }
-    const { result } = renderHook(() => useVehicleChaseCamera({
+    const { result } = renderHook(() => useVehicleDirectorCamera({
       globeRef,
       runtime,
       enabled: true,
+      framing,
     }))
+    expect(runtime.subscribe.mock.calls[0][1]).toBe(-100)
 
-    expect(runtime.subscribe).toHaveBeenCalled()
-    act(() => {
+    await act(async () => {
       listener(buildVehicleRuntimeFrame(playback, 0, 0))
     })
+    expect(controls.enabled).toBe(false)
     expect(result.current.locked).toBe(true)
+    expect(result.current.status?.label).toBe('准备起飞')
     expect(controls.enabled).toBe(false)
     expect(controls.autoRotate).toBe(false)
 
-    act(() => {
+    await act(async () => {
       listener(buildVehicleRuntimeFrame(
         playback,
-        route.durationMs + 1900,
+        VEHICLE_PRE_ROLL_MS + route.durationMs / 2,
         0,
       ))
     })
-    expect(result.current.locked).toBe(false)
+    expect(camera.up.toArray()).toEqual([0, 1, 0])
+    expect(camera.matrixWorldInverse.elements.some(Number.isFinite)).toBe(true)
+
+    await act(async () => {
+      listener(buildVehicleRuntimeFrame(
+        playback,
+        vehicleNodeDurationMs(route.durationMs),
+        0,
+      ))
+    })
+    await waitFor(() => expect(result.current.locked).toBe(false))
     expect(controls.enabled).toBe(true)
     expect(controls.autoRotate).toBe(true)
   })
 
   it('restores the exact saved POV when playback stops', () => {
     const { globe, camera, controls } = fakeGlobe()
+    const globeRef = { current: globe }
     camera.position.set(12, 34, 56)
     camera.up.set(0, 1, 0)
     camera.lookAt(4, 5, 6)
@@ -108,17 +130,18 @@ describe('useVehicleChaseCamera', () => {
         return () => undefined
       }),
     }
-    renderHook(() => useVehicleChaseCamera({
-      globeRef: { current: globe },
+    renderHook(() => useVehicleDirectorCamera({
+      globeRef,
       runtime,
       enabled: true,
+      framing,
     }))
 
-    act(() => {
-      listener(buildVehicleRuntimeFrame(playback, route.durationMs / 2, 0))
-    })
-    expect(controls.enabled).toBe(false)
-
+    act(() => listener(buildVehicleRuntimeFrame(
+      playback,
+      VEHICLE_PRE_ROLL_MS + route.durationMs / 2,
+      0,
+    )))
     act(() => listener(null))
 
     expect(camera.position.toArray()).toEqual(saved.position)
@@ -130,8 +153,9 @@ describe('useVehicleChaseCamera', () => {
     expect(controls.update).toHaveBeenCalled()
   })
 
-  it('restores the saved POV when the scene unmounts mid-chase', () => {
+  it('restores the saved POV when the scene unmounts mid-playback', () => {
     const { globe, camera, controls } = fakeGlobe()
+    const globeRef = { current: globe }
     camera.position.set(7, 8, 9)
     camera.lookAt(0, 0, 0)
     const savedPosition = camera.position.toArray()
@@ -143,15 +167,14 @@ describe('useVehicleChaseCamera', () => {
         return () => undefined
       }),
     }
-    const { unmount } = renderHook(() => useVehicleChaseCamera({
-      globeRef: { current: globe },
+    const { unmount } = renderHook(() => useVehicleDirectorCamera({
+      globeRef,
       runtime,
       enabled: true,
+      framing,
     }))
 
-    act(() => {
-      listener(buildVehicleRuntimeFrame(playback, 0, 0))
-    })
+    act(() => listener(buildVehicleRuntimeFrame(playback, 0, 0)))
     unmount()
 
     expect(camera.position.toArray()).toEqual(savedPosition)

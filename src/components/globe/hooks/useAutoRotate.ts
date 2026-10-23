@@ -1,5 +1,6 @@
 import { useEffect, type RefObject } from 'react'
 import type { GlobeMethods } from 'react-globe.gl'
+import { useSceneClock } from '@/components/scene/SceneClockProvider'
 
 /** 自转角速度（度 / ms） */
 const ROTATE_SPEED = 0.006
@@ -24,8 +25,9 @@ export function useAutoRotate(
     cameraLockedRef,
   }: Options,
 ) {
+  const clock = useSceneClock()
+
   useEffect(() => {
-    let raf = 0
     let last = performance.now()
     const tick = (now: number) => {
       // 页面隐藏/标签页节流后，避免恢复时一次补上过大的角度
@@ -44,12 +46,11 @@ export function useAutoRotate(
         const pov = globe.pointOfView()
         globe.pointOfView({ ...pov, lng: pov.lng + dt * ROTATE_SPEED }, 0)
       }
-      raf = requestAnimationFrame(tick)
     }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
+    return clock.subscribe(tick, -200)
   }, [
     cameraLockedRef,
+    clock,
     draggingRef,
     globeRef,
     lastInteractRef,

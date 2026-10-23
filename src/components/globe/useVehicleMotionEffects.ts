@@ -4,12 +4,15 @@ import type { VehicleRoute } from '@/lib/vehicle'
 import { sampleVehicleRoute } from '@/lib/vehicle'
 import { screenPoint } from '@/components/globe/vehicleScreen'
 
+const EFFECT_INTERVAL_MS = 1000 / 30
+
 export function useVehicleMotionEffects(playbackKey?: number) {
   const trailRef = useRef<HTMLDivElement>(null)
   const frictionRef = useRef<HTMLDivElement>(null)
   const arrivalRef = useRef<HTMLDivElement>(null)
   const arrivalPlayedRef = useRef(false)
   const arrivalTimerRef = useRef<number | null>(null)
+  const lastEffectAtRef = useRef(-Infinity)
 
   useEffect(() => {
     if (arrivalTimerRef.current !== null) {
@@ -17,6 +20,7 @@ export function useVehicleMotionEffects(playbackKey?: number) {
       arrivalTimerRef.current = null
     }
     arrivalPlayedRef.current = false
+    lastEffectAtRef.current = -Infinity
     arrivalRef.current?.classList.remove('rg-vehicle-arrival-active')
     trailRef.current?.querySelectorAll<HTMLElement>('[data-vehicle-trail-dot]')
       .forEach((dot) => { dot.style.opacity = '0' })
@@ -52,6 +56,16 @@ export function useVehicleMotionEffects(playbackKey?: number) {
     visible: boolean,
     calm: boolean,
   ) => {
+    const now = performance.now()
+    if (
+      !calm
+      && visible
+      && now - lastEffectAtRef.current < EFFECT_INTERVAL_MS
+    ) {
+      return
+    }
+    lastEffectAtRef.current = now
+
     const trailDots = trailRef.current?.querySelectorAll<HTMLElement>(
       '[data-vehicle-trail-dot]',
     ) ?? []
@@ -83,7 +97,7 @@ export function useVehicleMotionEffects(playbackKey?: number) {
         globe,
         sampleVehicleRoute(route, frictionProgress),
       )
-      const flicker = (Math.sin(performance.now() / 140 - index * 0.9) + 1) / 2
+      const flicker = (Math.sin(now / 140 - index * 0.9) + 1) / 2
       dot.style.transform =
         `translate3d(${frictionScreen.x}px, ${frictionScreen.y}px, 0)`
       dot.style.opacity = String(0.08 + flicker * 0.22)

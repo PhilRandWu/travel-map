@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { downgradeMotionLevel, type MotionLevel } from '@/lib/motion'
+import { useSceneClock } from '@/components/scene/SceneClockProvider'
 
 export function applyPerformanceWindow(
   cap: MotionLevel,
@@ -11,6 +12,7 @@ export function applyPerformanceWindow(
 export function useAdaptiveMotion(userLevel: MotionLevel) {
   const [cap, setCap] = useState<MotionLevel>('immersive')
   const capRef = useRef(cap)
+  const clock = useSceneClock()
   capRef.current = cap
 
   const recordWindow = useCallback((frames: number, durationMs: number) => {
@@ -29,29 +31,18 @@ export function useAdaptiveMotion(userLevel: MotionLevel) {
       setCap('immersive')
       return
     }
-    if (typeof requestAnimationFrame !== 'function') return
-
-    let frame = 0
     let windowStartedAt = performance.now()
     let frameCount = 0
-    const tick = (now: number) => {
-      if (document.hidden) {
+    return clock.subscribe((now) => {
+      frameCount += 1
+      const duration = now - windowStartedAt
+      if (duration >= 2000) {
+        recordWindow(frameCount, duration)
         windowStartedAt = now
         frameCount = 0
-      } else {
-        frameCount += 1
-        const duration = now - windowStartedAt
-        if (duration >= 2000) {
-          recordWindow(frameCount, duration)
-          windowStartedAt = now
-          frameCount = 0
-        }
       }
-      frame = requestAnimationFrame(tick)
-    }
-    frame = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(frame)
-  }, [recordWindow, userLevel])
+    }, -500)
+  }, [clock, recordWindow, userLevel])
 
   return { cap, recordWindow }
 }

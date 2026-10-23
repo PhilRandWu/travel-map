@@ -1,254 +1,274 @@
-.rg-memory-photo[data-photo-direction='next'] .rg-memory-photo-image {
-  animation: rg-memory-next-in 430ms var(--rg-ease-out) both;
+.rg-memory-film-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+  opacity: 0.075;
+  background-image:
+    radial-gradient(rgb(243 233 213 / 0.62) 0.55px, transparent 0.55px),
+    radial-gradient(rgb(255 255 255 / 0.22) 0.4px, transparent 0.4px);
+  background-position: 0 0, 7px 9px;
+  background-size: 3px 3px, 5px 5px;
+  mix-blend-mode: soft-light;
 }
 
-.rg-memory-photo[data-photo-direction='previous'] .rg-memory-photo-image {
-  animation: rg-memory-previous-in 430ms var(--rg-ease-out) both;
+.rg-memory-range {
+  height: 2px;
+  appearance: none;
+  border-radius: 0;
+  outline: none;
+  background: linear-gradient(
+    90deg,
+    var(--rg-memory-brass) 0 var(--rg-memory-progress, 0%),
+    var(--rg-memory-line) var(--rg-memory-progress, 0%) 100%
+  );
+  cursor: pointer;
 }
 
-@keyframes rg-memory-next-in {
-  from {
-    opacity: 0;
-    transform: translate3d(22px, 0, 0) scale(0.975);
-  }
+.rg-memory-range::-webkit-slider-thumb {
+  width: 9px;
+  height: 9px;
+  appearance: none;
+  border: 1px solid var(--rg-memory-paper);
+  border-radius: 50%;
+  background: var(--rg-memory-brass);
+  box-shadow: 0 0 0 5px rgb(215 173 104 / 0.08);
 }
 
-@keyframes rg-memory-previous-in {
-  from {
-    opacity: 0;
-    transform: translate3d(-22px, 0, 0) scale(0.975);
-  }
-}
-
-.rg-memory-arrow {
-  box-shadow: 0 8px 28px rgb(0 0 0 / 0.28);
-}
-
-.rg-memory-thumb {
-  transition:
-    opacity 220ms ease,
-    border-color 220ms ease,
-    transform 220ms var(--rg-ease-out);
-}
-
-.rg-memory-thumb:hover {
-  transform: translateY(-2px);
-}
-
-.rg-memory-constellation-card {
-  animation: rg-memory-constellation-in 520ms var(--rg-ease-out) both;
-}
-
-html[data-motion='immersive'] .rg-memory-constellation-card[data-depth='0'] {
-  translate: calc(var(--rg-depth-x, 0px) / 3)
-    calc(var(--rg-depth-y, 0px) / 3);
-}
-
-html[data-motion='immersive'] .rg-memory-constellation-card[data-depth='1'] {
-  translate: calc(var(--rg-depth-x, 0px) * 0.6)
-    calc(var(--rg-depth-y, 0px) * 0.6);
-}
-
-html[data-motion='immersive'] .rg-memory-constellation-card[data-depth='2'] {
-  translate: var(--rg-depth-x, 0px) var(--rg-depth-y, 0px);
-}
-
-.rg-memory-flight {
-  object-position: center;
-  will-change: left, top, width, height, transform;
-}
-
-@keyframes rg-memory-constellation-in {
-  from {
-    opacity: 0;
-    filter: blur(4px);
-    transform: translate3d(0, 10px, 0) scale(0.92);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
+.rg-memory-range::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--rg-memory-paper);
+  border-radius: 50%;
+  background: var(--rg-memory-brass);
 }
 
 .rg-memory-stage {
-  animation: rg-light-gate var(--rg-chapter) var(--rg-ease-enter) both;
+  animation: rg-memory-stage-in var(--rg-chapter) var(--rg-ease-enter) both;
 }
 
 .rg-memory-stage::before {
   position: absolute;
-  inset: 0 auto 0 50%;
-  width: 2px;
+  top: 0;
+  bottom: 0;
+  left: 72%;
+  z-index: 20;
+  width: 1px;
   content: '';
-  background: linear-gradient(
-    transparent,
-    rgb(245 234 216 / 0.85),
-    transparent
-  );
-  transform: translateX(-50%);
-  animation: rg-light-gate-line 720ms var(--rg-ease-enter) both;
+  pointer-events: none;
+  background: linear-gradient(transparent, rgb(215 173 104 / 0.75), transparent);
+  transform-origin: top;
+  animation: rg-memory-gate-line 760ms 120ms var(--rg-ease-enter) both;
 }
 
-.rg-memory-photo[data-photo-direction='next'] {
-  animation: rg-photo-next var(--rg-photo) var(--rg-ease-enter) both;
+.rg-memory-scene-visual {
+  animation: rg-memory-visual-in 720ms 90ms var(--rg-ease-enter) both;
 }
 
-.rg-memory-photo[data-photo-direction='previous'] {
-  animation: rg-photo-previous var(--rg-photo) var(--rg-ease-enter) both;
+.rg-memory-story {
+  animation: rg-memory-story-in 620ms 180ms var(--rg-ease-enter) both;
+}
+
+.rg-memory-contact {
+  animation: rg-memory-contact-in 560ms 260ms var(--rg-ease-enter) both;
+}
+
+.rg-memory-photo[data-photo-direction='next'] .rg-memory-photo-frame {
+  animation: rg-memory-photo-next 620ms var(--rg-ease-enter) both;
+}
+
+.rg-memory-photo[data-photo-direction='previous'] .rg-memory-photo-frame {
+  animation: rg-memory-photo-previous 620ms var(--rg-ease-enter) both;
+}
+
+.rg-memory-constellation-card {
+  animation: rg-memory-constellation-in 540ms var(--rg-ease-out) backwards;
+  animation-delay: calc(80ms + var(--rg-node-order, 0) * 26ms);
+}
+
+.rg-memory-atlas-heading {
+  animation: rg-memory-atlas-heading-in 680ms 80ms var(--rg-ease-enter) both;
+}
+
+.rg-memory-atlas-chapter {
+  animation: rg-memory-chapter-marker-in 620ms var(--rg-ease-enter) backwards;
+  animation-delay: calc(140ms + var(--rg-chapter-order, 0) * 90ms);
+}
+
+.rg-memory-atlas-route-line {
+  stroke-dasharray: 2 9;
+  animation: rg-memory-route-flow 1.8s linear infinite;
+}
+
+.rg-memory-atlas-route-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rg-memory-route-halo 2.8s ease-out infinite;
+}
+
+.rg-memory-chapter {
+  animation: rg-memory-chapter-gate 880ms var(--rg-ease-enter) both;
 }
 
 .rg-memory-chapter-left {
-  animation: rg-chapter-left 820ms var(--rg-ease-enter) both;
+  animation: rg-memory-chapter-side-left 620ms 100ms var(--rg-ease-enter) both;
 }
 
 .rg-memory-chapter-right {
-  animation: rg-chapter-right 820ms var(--rg-ease-enter) both;
+  animation: rg-memory-chapter-side-right 620ms 100ms var(--rg-ease-enter) both;
+}
+
+.rg-memory-chapter-center {
+  animation: rg-memory-chapter-center 720ms 140ms var(--rg-ease-enter) both;
+}
+
+.rg-memory-chapter-orbit {
+  animation: rg-memory-chapter-orbit 1200ms var(--rg-ease-out) both;
 }
 
 .rg-memory-grain-flash {
   opacity: 0;
-  background-image: radial-gradient(
-    rgb(245 234 216 / 0.2) 0.6px,
-    transparent 0.6px
-  );
+  background-image: radial-gradient(rgb(243 233 213 / 0.18) 0.6px, transparent 0.6px);
   background-size: 3px 3px;
-  animation: rg-grain-flash 120ms 760ms linear both;
-}
-
-.rg-memory-film-grain {
-  pointer-events: none;
-  opacity: 0.06;
-  mix-blend-mode: soft-light;
-  background-image:
-    radial-gradient(rgb(245 234 216 / 0.55) 0.55px, transparent 0.55px),
-    radial-gradient(rgb(255 255 255 / 0.18) 0.4px, transparent 0.4px);
-  background-position: 0 0, 7px 9px;
-  background-size: 3px 3px, 5px 5px;
+  animation: rg-memory-grain-flash 150ms 620ms linear both;
 }
 
 .rg-layer[data-returning='true'] {
   pointer-events: none;
-  animation: rg-layer-return 360ms var(--rg-ease-exit) both;
+  animation: rg-memory-return 360ms var(--rg-ease-exit) both;
 }
 
-@keyframes rg-light-gate {
-  from {
-    opacity: 0;
-    clip-path: inset(0 49.8%);
-    filter: blur(8px);
-  }
-  to {
-    opacity: 1;
-    clip-path: inset(0);
-    filter: none;
-  }
+@keyframes rg-memory-stage-in {
+  from { opacity: 0; filter: blur(7px); }
+  to { opacity: 1; filter: none; }
 }
 
-@keyframes rg-light-gate-line {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) scaleY(0);
-  }
-  35% {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    transform: translateX(-50%) scaleY(1);
-  }
+@keyframes rg-memory-gate-line {
+  from { opacity: 0; transform: scaleY(0); }
+  28% { opacity: 0.85; }
+  to { opacity: 0; transform: scaleY(1); }
 }
 
-@keyframes rg-photo-next {
-  from {
-    opacity: 0;
-    transform: translateX(12px) scale(1.015);
-    filter: blur(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
+@keyframes rg-memory-visual-in {
+  from { opacity: 0; transform: translate3d(-20px, 0, 0) scale(0.985); }
+  to { opacity: 1; transform: none; }
 }
 
-@keyframes rg-photo-previous {
-  from {
-    opacity: 0;
-    transform: translateX(-12px) scale(1.015);
-    filter: blur(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
+@keyframes rg-memory-story-in {
+  from { opacity: 0; transform: translate3d(16px, 0, 0); }
+  to { opacity: 1; transform: none; }
 }
 
-@keyframes rg-chapter-left {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: none;
-  }
+@keyframes rg-memory-contact-in {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to { opacity: 1; transform: none; }
 }
 
-@keyframes rg-chapter-right {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: none;
-  }
+@keyframes rg-memory-photo-next {
+  from { opacity: 0; transform: translate3d(28px, 0, 0) scale(0.975); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
 }
 
-@keyframes rg-grain-flash {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.22;
-  }
+@keyframes rg-memory-photo-previous {
+  from { opacity: 0; transform: translate3d(-28px, 0, 0) scale(0.975); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
 }
 
-@keyframes rg-layer-return {
-  from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: none;
-  }
-  to {
-    opacity: 0;
-    transform: translateY(8px) scale(0.985);
-    filter: blur(1px);
-  }
+@keyframes rg-memory-constellation-in {
+  from { opacity: 0; filter: blur(5px) brightness(0.55); }
+  to { opacity: 1; filter: none; }
+}
+
+@keyframes rg-memory-atlas-heading-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes rg-memory-chapter-marker-in {
+  from { opacity: 0; translate: 0 12px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes rg-memory-route-flow {
+  to { stroke-dashoffset: -22; }
+}
+
+@keyframes rg-memory-route-halo {
+  from { opacity: 0; transform: scale(0.65); }
+  45% { opacity: 0.6; }
+  to { opacity: 0; transform: scale(1.5); }
+}
+
+@keyframes rg-memory-chapter-gate {
+  from { opacity: 0; clip-path: inset(0 50%); }
+  to { opacity: 1; clip-path: inset(0); }
+}
+
+@keyframes rg-memory-chapter-side-left {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes rg-memory-chapter-side-right {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes rg-memory-chapter-center {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes rg-memory-chapter-orbit {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.72) rotate(-8deg); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0); }
+}
+
+@keyframes rg-memory-grain-flash {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.28; }
+}
+
+@keyframes rg-memory-return {
+  to { opacity: 0; transform: translateY(8px) scale(0.988); filter: blur(2px); }
 }
 
 html[data-motion='calm'] .rg-memory-stage,
-html[data-motion='calm'] .rg-memory-photo {
-  animation: rg-calm-fade 200ms ease-out both;
-}
-
-html[data-motion='calm'] .rg-memory-photo-image {
-  animation: rg-calm-fade 200ms ease-out both;
+html[data-motion='calm'] .rg-memory-scene-visual,
+html[data-motion='calm'] .rg-memory-story,
+html[data-motion='calm'] .rg-memory-contact,
+html[data-motion='calm'] .rg-memory-photo-frame,
+html[data-motion='calm'] .rg-memory-constellation-card {
+  animation: rg-calm-fade 180ms ease-out both;
 }
 
 html[data-motion='calm'] .rg-memory-stage::before,
 html[data-motion='calm'] .rg-memory-chapter,
-html[data-motion='calm'] .rg-memory-film-grain {
+html[data-motion='calm'] .rg-memory-atlas-route-halo {
   display: none;
 }
 
-html[data-motion='calm'] .rg-layer[data-returning='true'] {
-  animation: rg-calm-fade 180ms ease-out reverse both;
+html[data-motion='calm'] .rg-memory-atlas-route-line {
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .rg-memory-stage,
   .rg-memory-stage::before,
-  .rg-memory-photo,
+  .rg-memory-scene-visual,
+  .rg-memory-story,
+  .rg-memory-contact,
+  .rg-memory-photo-frame,
+  .rg-memory-constellation-card,
+  .rg-memory-atlas-heading,
+  .rg-memory-atlas-chapter,
+  .rg-memory-atlas-route-line,
+  .rg-memory-atlas-route-halo,
+  .rg-memory-chapter,
   .rg-memory-chapter-left,
   .rg-memory-chapter-right,
+  .rg-memory-chapter-center,
+  .rg-memory-chapter-orbit,
   .rg-memory-grain-flash,
   .rg-layer[data-returning='true'] {
     animation: none;

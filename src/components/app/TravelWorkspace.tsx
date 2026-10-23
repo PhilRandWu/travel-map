@@ -13,12 +13,14 @@ import MotionSettings from '@/components/motion/MotionSettings'
 import PhotoGrouping from '@/components/photos/PhotoGrouping'
 import StatsPanel from '@/components/stats/StatsPanel'
 import ReplayFinale from '@/components/timeline/ReplayFinale'
+import { useGeoDataPreload } from '@/hooks/useGeoDataPreload'
 import { useJourneyMemory } from '@/hooks/useJourneyMemory'
+import { useReplayTakeover } from '@/hooks/useReplayTakeover'
+import { useReplaySafeFrame } from '@/hooks/useReplaySafeFrame'
 import { useScopedTravelData } from '@/hooks/useScopedTravelData'
 import { useTravelNavigation } from '@/hooks/useTravelNavigation'
 import { resolveCity } from '@/lib/cities'
 import { findTrip } from '@/lib/derive'
-import { preloadGeoData } from '@/lib/geoLookup'
 import { getOtherJourneyTrips, summarizeJourney } from '@/lib/journeys'
 import type { ReplayRuntime } from '@/lib/replay'
 import { buildTracks, type Tracks } from '@/lib/tracks'
@@ -50,6 +52,9 @@ export default function TravelWorkspace({ data }: Props) {
   const isArchive = state.scope.kind === 'archive'
   const activeJourneyId = state.scope.kind === 'journey' ? state.scope.journeyId : null
   const memory = useJourneyMemory(data, activeJourneyId ?? 'archive')
+  const replayTakeover = useReplayTakeover(replayRuntime)
+  const replaySafeFrame = useReplaySafeFrame()
+  useGeoDataPreload()
   const activeJourney = activeJourneyId
     ? data.journeys.find((journey) => journey.id === activeJourneyId)
     : undefined
@@ -67,20 +72,6 @@ export default function TravelWorkspace({ data }: Props) {
       visits: [],
     })
   }, [activeJourneyId, data, showOtherJourneys])
-
-  useEffect(() => {
-    const idle = (window as unknown as {
-      requestIdleCallback?: (callback: () => void) => number
-    }).requestIdleCallback
-
-    if (idle) {
-      idle(() => preloadGeoData())
-      return
-    }
-
-    const timer = setTimeout(preloadGeoData, 2500)
-    return () => clearTimeout(timer)
-  }, [])
 
   useEffect(() => {
     setShowOtherJourneys(false)
@@ -152,7 +143,10 @@ export default function TravelWorkspace({ data }: Props) {
   }
 
   return (
-    <div className="relative h-[100svh] w-screen overflow-hidden bg-black font-sans text-white select-none">
+    <div
+      data-replay-takeover={replayTakeover.active}
+      className="relative h-[100svh] w-screen overflow-hidden bg-black font-sans text-white select-none"
+    >
       <Starfield />
       <main id="travel-map-main" aria-label="旅行足迹地图" className="absolute inset-0">
         <Suspense fallback={null}>
@@ -167,8 +161,10 @@ export default function TravelWorkspace({ data }: Props) {
             focusPoint={focusPoint}
             tripPlaybackSignal={tripPlaybackSignal}
             replayRuntime={replayRuntime}
+            framing={replaySafeFrame.frame}
             resetSignal={resetSignal}
             onReady={() => setGlobeReady(true)}
+            onDirectorCameraChange={replayTakeover.onDirectorCameraChange}
             onSelectCity={(cityId) => {
               setRegion(null)
               if (cityId) actions.openCity(cityId)
@@ -186,7 +182,11 @@ export default function TravelWorkspace({ data }: Props) {
       <GlobeLoader ready={globeReady} />
 
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between">
-        <header className="rg-app-reveal flex items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4">
+        <header
+          ref={replaySafeFrame.headerRef}
+          inert={replayTakeover.active || undefined}
+          className="rg-app-reveal flex items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4"
+        >
           <JourneyBreadcrumb
             scope={state.scope}
             journey={activeJourney}
@@ -201,7 +201,10 @@ export default function TravelWorkspace({ data }: Props) {
           </div>
         </header>
 
-        <div className="rg-scroll flex max-h-full flex-1 flex-col items-end gap-3 overflow-y-auto px-4 py-2 sm:px-6">
+        <div
+          inert={replayTakeover.active || undefined}
+          className="rg-scroll flex max-h-full flex-1 flex-col items-end gap-3 overflow-y-auto px-4 py-2 sm:px-6"
+        >
           {activeJourney && scopedData && (
             <JourneyPassport
               data={scopedData}
@@ -225,7 +228,10 @@ export default function TravelWorkspace({ data }: Props) {
           )}
         </div>
 
-        <footer className="rg-app-reveal px-3 pb-3 sm:px-6 sm:pb-5">
+        <footer
+          ref={replaySafeFrame.footerRef}
+          className="rg-app-reveal px-3 pb-3 sm:px-6 sm:pb-5"
+        >
           {isArchive ? (
             <JourneyArchive data={data} onOpenJourney={openJourney} />
           ) : scopedData ? (
@@ -244,7 +250,10 @@ export default function TravelWorkspace({ data }: Props) {
       </div>
 
       {scopedData && state.cardCityId && (
-        <div className="pointer-events-none absolute bottom-40 left-0 top-0 z-20 flex items-center px-3 sm:px-6">
+        <div
+          inert={replayTakeover.active || undefined}
+          className="pointer-events-none absolute bottom-40 left-0 top-0 z-20 flex items-center px-3 sm:px-6"
+        >
           <PlaceChapter
             data={scopedData}
             cityId={state.cardCityId}

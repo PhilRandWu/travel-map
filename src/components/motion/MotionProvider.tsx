@@ -10,6 +10,7 @@ import {
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { useAdaptiveMotion } from '@/components/motion/useAdaptiveMotion'
 import { usePageVisibility } from '@/components/motion/usePageVisibility'
+import { SceneClockProvider } from '@/components/scene/SceneClockProvider'
 import {
   MOTION_STORAGE_KEY,
   normalizeMotionLevel,
@@ -57,7 +58,7 @@ function storedMotionLevel(): MotionLevel {
   }
 }
 
-export function MotionProvider({ children }: { children: ReactNode }) {
+function MotionContextProvider({ children }: { children: ReactNode }) {
   const [userLevel, setUserLevelState] = useState<MotionLevel>(storedMotionLevel)
   const reducedMotion = useReducedMotion()
   const touchDevice = useMedia(COARSE_POINTER_QUERY)
@@ -106,6 +107,14 @@ export function MotionProvider({ children }: { children: ReactNode }) {
     <MotionContext.Provider value={value}>
       {children}
     </MotionContext.Provider>
+  )
+}
+
+export function MotionProvider({ children }: { children: ReactNode }) {
+  return (
+    <SceneClockProvider>
+      <MotionContextProvider>{children}</MotionContextProvider>
+    </SceneClockProvider>
   )
 }
 

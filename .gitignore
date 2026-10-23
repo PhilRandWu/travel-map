@@ -6,5 +6,6 @@ dist-ssr
 *.local
 .DS_Store
 .vite
+.vitest/
 .claude/
 .superpowers/

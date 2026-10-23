@@ -1,6 +1,7 @@
 import type { PickedRegion } from '@/components/globe/pickedRegion'
 import type { LitCity } from '@/lib/derive'
 import type { ReplayRuntime } from '@/lib/replay'
+import type { RouteCameraFraming } from '@/lib/routeCamera'
 import type { Tracks } from '@/lib/tracks'
 import type { City } from '@/types'
 
@@ -25,10 +26,14 @@ export interface TravelGlobeProps {
   tripPlaybackSignal: number
   /** 时间轴回放状态；非 idle 时轨迹按已发生范围显隐 */
   replayRuntime: ReplayRuntime | null
+  /** 桌面回放可用区域，比例基于视口高度 */
+  framing: RouteCameraFraming
   /** 返回总览时的复位信号 */
   resetSignal: number
   /** 地球场景与首屏纹理准备完成 */
   onReady?: () => void
+  /** 路线导演镜头锁定状态变化 */
+  onDirectorCameraChange?: (active: boolean) => void
   /** 城市点击（选中城市，弹出卡片）；null 表示取消 */
   onSelectCity: (cityId: string | null) => void
   /** 轨迹点击（选中 trip） */

@@ -8,12 +8,13 @@ import {
 } from 'react'
 import type { MemoryCollection } from '@/lib/memory'
 import {
-  buildConstellationLayout,
+  buildConstellationMap,
   filterConstellationNodes,
   getConstellationParallax,
 } from '@/lib/constellation'
 import { photoVariantUrl } from '@/lib/photoUrls'
 import { useMotion } from '@/components/motion/MotionProvider'
+import ConstellationBoard from '@/components/memory/ConstellationBoard'
 
 interface Props {
   collection: MemoryCollection
@@ -22,8 +23,14 @@ interface Props {
   onOpenPhoto: (index: number, sourceRect: DOMRect) => void
 }
 
-const CANVAS = { width: 1400, height: 900 }
 const OVERSCAN = 160
+
+function constellationCanvas() {
+  return {
+    width: Math.max(1080, Math.min(1700, window.innerWidth)),
+    height: Math.max(680, Math.min(1040, window.innerHeight - 100)),
+  }
+}
 
 export default function MemoryConstellation({
   collection,
@@ -34,6 +41,7 @@ export default function MemoryConstellation({
   const { effectiveLevel, touchDevice } = useMotion()
   const hostRef = useRef<HTMLDivElement>(null)
   const [mobile, setMobile] = useState(() => window.innerWidth < 640)
+  const [canvas, setCanvas] = useState(constellationCanvas)
   const [viewport, setViewport] = useState({
     left: 0,
     top: initialScrollTop,
@@ -42,13 +50,13 @@ export default function MemoryConstellation({
     overscan: OVERSCAN,
   })
 
-  const nodes = useMemo(
-    () => buildConstellationLayout(collection, CANVAS),
-    [collection],
+  const map = useMemo(
+    () => buildConstellationMap(collection, canvas),
+    [canvas, collection],
   )
   const visibleNodes = useMemo(
-    () => filterConstellationNodes(nodes, viewport),
-    [nodes, viewport],
+    () => filterConstellationNodes(map.nodes, viewport),
+    [map.nodes, viewport],
   )
 
   useEffect(() => {
@@ -58,7 +66,6 @@ export default function MemoryConstellation({
     } else if (host) {
       host.scrollTop = initialScrollTop
     }
-    const updateMode = () => setMobile(window.innerWidth < 640)
     const syncViewport = () => {
       if (!host) return
       const next = {
@@ -71,12 +78,17 @@ export default function MemoryConstellation({
       setViewport(next)
       onScrollTopChange?.(next.top)
     }
+    const handleResize = () => {
+      setMobile(window.innerWidth < 640)
+      setCanvas(constellationCanvas())
+      syncViewport()
+    }
 
-    window.addEventListener('resize', updateMode)
+    window.addEventListener('resize', handleResize)
     host?.addEventListener('scroll', syncViewport, { passive: true })
     syncViewport()
     return () => {
-      window.removeEventListener('resize', updateMode)
+      window.removeEventListener('resize', handleResize)
       host?.removeEventListener('scroll', syncViewport)
     }
   }, [initialScrollTop, onScrollTopChange])
@@ -160,63 +172,13 @@ export default function MemoryConstellation({
       onScroll={handleScroll}
       onPointerMove={handlePointerMove}
       onPointerLeave={resetPointerDepth}
-      className="rg-memory-constellation relative min-h-0 flex-1 overflow-auto"
+      className="rg-memory-constellation rg-scroll relative min-h-0 flex-1 overflow-auto"
     >
-      <div
-        className="relative mx-auto h-[900px] w-[1400px]"
-        style={{
-          background:
-            'radial-gradient(circle at 50% 45%,rgba(126,92,49,.15),transparent 34%),radial-gradient(circle at 20% 70%,rgba(46,90,111,.12),transparent 30%)',
-        }}
-      >
-        <svg aria-hidden viewBox="0 0 1400 900" className="absolute inset-0 h-full w-full">
-          {visibleNodes.slice(1).map((node, index) => (
-            <line
-              key={node.photo.key}
-              x1={visibleNodes[index].x}
-              y1={visibleNodes[index].y}
-              x2={node.x}
-              y2={node.y}
-              stroke="rgba(245,234,216,.09)"
-            />
-          ))}
-        </svg>
-        {visibleNodes.map((node) => {
-          const index = collection.photos.findIndex(
-            (photo) => photo.key === node.photo.key,
-          )
-          return (
-            <button
-              key={node.photo.key}
-              type="button"
-              data-photo-key={node.photo.key}
-              data-depth={node.chapterIndex % 3}
-              aria-label={`打开${node.photo.cityName}照片：${node.photo.caption ?? node.photo.file}`}
-              onClick={(event) => onOpenPhoto(
-                index,
-                event.currentTarget.getBoundingClientRect(),
-              )}
-              className="rg-memory-constellation-card absolute w-28 overflow-hidden rounded-lg border border-white/12 bg-black/40 shadow-[0_12px_36px_rgba(0,0,0,.45)]"
-              style={{
-                left: node.x - 56,
-                top: node.y - 38,
-                transform: `rotate(${node.rotation}deg) scale(${node.scale})`,
-                zIndex: Math.round(node.y),
-              }}
-            >
-              <img
-                src={photoVariantUrl(node.photo.visitId, node.photo.file, 'md')}
-                alt=""
-                loading="lazy"
-                className="aspect-[4/3] w-full object-cover"
-              />
-              <span className="block truncate px-2 py-1 text-left text-[9px] text-[#f5ead8]/65">
-                {node.photo.cityName}
-              </span>
-            </button>
-          )
-        })}
-      </div>
+      <ConstellationBoard
+        map={map}
+        visibleNodes={visibleNodes}
+        onOpenPhoto={onOpenPhoto}
+      />
     </div>
   )
 }

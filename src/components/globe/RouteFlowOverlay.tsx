@@ -4,6 +4,7 @@ import { useMotion } from '@/components/motion/MotionProvider'
 import type { SceneRoute } from '@/lib/journeyScene'
 import { getRouteFlowWindow, getTrackBreathOpacity } from '@/lib/routeFlow'
 import { createSceneLine } from '@/lib/sceneLine'
+import { useSceneClock } from '@/components/scene/SceneClockProvider'
 
 interface Props {
   routes: SceneRoute[]
@@ -23,6 +24,7 @@ export default function RouteFlowOverlay({
   globeRef,
 }: Props) {
   const { effectiveLevel } = useMotion()
+  const clock = useSceneClock()
   const route = routes.find((item) => item.id === activeRouteId) ?? routes[0]
   const breathRoute = activeRouteId
     ? routes.find((item) => item.id === activeRouteId) ?? null
@@ -35,30 +37,20 @@ export default function RouteFlowOverlay({
       color: route.type === 'flight' ? 0xe0f7ff : 0xffe6ad,
       opacity: 0.78,
     })
-    let frame = 0
-    let interval = 0
-    let first = 0
-
-    const run = () => {
-      const start = performance.now()
-      const tick = (now: number) => {
-        const progress = Math.min(1, (now - start) / FLOW_DURATION_MS)
-        const window = getRouteFlowWindow(route.points.length, progress, 0.18)
-        line.setWindow(window.start, window.length)
-        if (progress < 1) frame = requestAnimationFrame(tick)
-      }
-      frame = requestAnimationFrame(tick)
-    }
-
-    first = window.setTimeout(run, FLOW_DELAY_MS)
-    interval = window.setInterval(run, FLOW_INTERVAL_MS)
+    const firstRunAt = performance.now() + FLOW_DELAY_MS
+    const unsubscribe = clock.subscribe((now) => {
+      if (now < firstRunAt) return
+      const elapsed = (now - firstRunAt) % FLOW_INTERVAL_MS
+      if (elapsed > FLOW_DURATION_MS) return
+      const progress = elapsed / FLOW_DURATION_MS
+      const window = getRouteFlowWindow(route.points.length, progress, 0.18)
+      line.setWindow(window.start, window.length)
+    }, -120)
     return () => {
-      window.clearTimeout(first)
-      window.clearInterval(interval)
-      cancelAnimationFrame(frame)
+      unsubscribe()
       line.dispose()
     }
-  }, [effectiveLevel, globeRef, paused, route])
+  }, [clock, effectiveLevel, globeRef, paused, route])
 
   useEffect(() => {
     const globe = globeRef.current
@@ -67,18 +59,15 @@ export default function RouteFlowOverlay({
       color: breathRoute.type === 'flight' ? 0xa5f3fc : 0xfbbf24,
       opacity: 0.55,
     })
-    let frame = 0
     const startedAt = performance.now()
-    const tick = (now: number) => {
+    const unsubscribe = clock.subscribe((now) => {
       line.setOpacity(getTrackBreathOpacity(now - startedAt, effectiveLevel))
-      frame = requestAnimationFrame(tick)
-    }
-    frame = requestAnimationFrame(tick)
+    }, -110)
     return () => {
-      cancelAnimationFrame(frame)
+      unsubscribe()
       line.dispose()
     }
-  }, [breathRoute, effectiveLevel, globeRef, paused])
+  }, [breathRoute, clock, effectiveLevel, globeRef, paused])
 
   return null
 }

@@ -1,6 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useState } from 'react'
+import { StrictMode, useState } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import dataJson from '@/data/trips.json'
 import type { TravelData } from '@/types'
@@ -10,7 +10,10 @@ import { MotionProvider } from '@/components/motion/MotionProvider'
 
 const data = dataJson as TravelData
 
-afterEach(() => vi.unstubAllGlobals())
+afterEach(() => {
+  vi.useRealTimers()
+  vi.unstubAllGlobals()
+})
 
 describe('MemoryStage', () => {
   it('switches photos and closes with Escape', async () => {
@@ -46,6 +49,41 @@ describe('MemoryStage', () => {
     expect(screen.getByText('西湖暮色')).toBeTruthy()
     await userEvent.keyboard('{Escape}')
     await waitFor(() => expect(onClose).toHaveBeenCalled())
+  })
+
+  it('clears the chapter transition after StrictMode replays effects', () => {
+    vi.useFakeTimers()
+    const collection = buildMemoryCollection(data, { kind: 'journey', journeyId: 'j001' })
+    function Harness() {
+      const [index, setIndex] = useState(0)
+      return (
+        <MemoryStage
+          collection={collection}
+          mode="all"
+          view="stage"
+          photoIndex={index}
+          onPhotoIndex={setIndex}
+          onMode={() => undefined}
+          onView={() => undefined}
+          onClose={() => undefined}
+        />
+      )
+    }
+
+    render(
+      <StrictMode>
+        <MotionProvider>
+          <Harness />
+        </MotionProvider>
+      </StrictMode>,
+    )
+
+    expect(screen.getByText('CHAPTER TRANSITION')).toBeTruthy()
+    act(() => vi.advanceTimersByTime(1000))
+    expect(screen.queryByText('CHAPTER TRANSITION')).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: '下一张' }))
+    expect(screen.getByText('西湖暮色')).toBeTruthy()
   })
 
   it('opens the stage immediately from a constellation card', async () => {

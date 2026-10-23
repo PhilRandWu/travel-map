@@ -1,20 +1,9 @@
 import type { JourneyTheme, TravelData } from '@/types'
 import type { ValidationIssue } from '@/lib/validate'
+import { isValidISODate as validDate } from '@/lib/date'
 
 const JOURNEY_THEMES: JourneyTheme[] = ['amber', 'cyan', 'sage', 'rose']
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const ISO_DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:\d{2})$/
-
-function validDate(value: unknown): value is string {
-  if (typeof value !== 'string' || !ISO_DATE.test(value)) return false
-
-  const [year, month, day] = value.split('-').map(Number)
-  const date = new Date(Date.UTC(year, month - 1, day))
-
-  return date.getUTCFullYear() === year
-    && date.getUTCMonth() === month - 1
-    && date.getUTCDate() === day
-}
 
 function inRange(date: string, start: string, end: string): boolean {
   return validDate(date) && date >= start && date <= end
@@ -26,7 +15,11 @@ export function validateJourneyData(
 ): ValidationIssue[] {
   const issues: ValidationIssue[] = []
   const journeyMap = new Map<string, TravelData['journeys'][number]>()
-  const visitMap = new Map(data.visits.map((visit) => [visit.id, visit]))
+  const visitMap = new Map(
+    data.visits
+      .filter((visit) => visit && typeof visit.id === 'string')
+      .map((visit) => [visit.id, visit]),
+  )
 
   if (data.meta.version !== 2) {
     issues.push({
@@ -65,6 +58,14 @@ export function validateJourneyData(
     }
 
     journey.coverPhotos.forEach((cover, index) => {
+      if (!cover || typeof cover !== 'object') {
+        issues.push({
+          level: 'error',
+          subject,
+          message: `coverPhotos[${index}] 必须是对象`,
+        })
+        return
+      }
       const visit = visitMap.get(cover.visitId)
 
       if (!visit) {
@@ -83,7 +84,10 @@ export function validateJourneyData(
         })
         return
       }
-      if (!visit.photos.some((photo) => photo.file === cover.file)) {
+      const visitPhotos = Array.isArray(visit.photos) ? visit.photos : []
+      if (!visitPhotos.some((photo) => (
+        photo && typeof photo === 'object' && photo.file === cover.file
+      ))) {
         issues.push({
           level: 'error',
           subject,
@@ -94,6 +98,14 @@ export function validateJourneyData(
   }
 
   for (const trip of data.trips) {
+    if (!trip || typeof trip !== 'object') {
+      issues.push({
+        level: 'error',
+        subject: 'trip:(无 id)',
+        message: '行程记录必须是对象',
+      })
+      continue
+    }
     const subject = `trip:${trip.id}`
     const journey = journeyMap.get(trip.journeyId)
 
@@ -114,6 +126,14 @@ export function validateJourneyData(
   }
 
   for (const visit of data.visits) {
+    if (!visit || typeof visit !== 'object') {
+      issues.push({
+        level: 'error',
+        subject: 'visit:(无 id)',
+        message: '到访记录必须是对象',
+      })
+      continue
+    }
     const subject = `visit:${visit.id}`
     const journey = journeyMap.get(visit.journeyId)
 
@@ -141,7 +161,16 @@ export function validateJourneyData(
       })
     }
 
+    if (!Array.isArray(visit.photos)) continue
     visit.photos.forEach((photo, index) => {
+      if (!photo || typeof photo !== 'object') {
+        issues.push({
+          level: 'error',
+          subject,
+          message: `photos[${index}] 必须是对象`,
+        })
+        return
+      }
       if (photo.takenAt !== undefined && !ISO_DATE_TIME.test(photo.takenAt)) {
         issues.push({
           level: 'error',
@@ -156,7 +185,7 @@ export function validateJourneyData(
           message: `photos[${index}].featured 必须是布尔值`,
         })
       }
-      if (photo.focalPoint) {
+      if (photo.focalPoint && typeof photo.focalPoint === 'object') {
         const { x, y } = photo.focalPoint
         if (typeof x !== 'number' || typeof y !== 'number'
           || x < 0 || x > 1 || y < 0 || y > 1) {

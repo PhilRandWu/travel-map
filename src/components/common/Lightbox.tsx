@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 
 export interface LightboxPhoto {
   url: string
@@ -20,9 +21,10 @@ interface Props {
  * - 仅挂载时渲染 <img>，即「打开才请求原图」。
  */
 export default function Lightbox({ photos, index, onClose, onIndexChange }: Props) {
-  const closeRef = useRef<HTMLButtonElement>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
   const closeTimerRef = useRef<number | null>(null)
   const [closing, setClosing] = useState(false)
+  useFocusTrap(rootRef)
   const photo = photos[index]
   const total = photos.length
 
@@ -38,7 +40,6 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }: Prop
   }, [closing, onClose])
 
   useEffect(() => {
-    closeRef.current?.focus()
     return () => {
       if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current)
     }
@@ -65,6 +66,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }: Prop
 
   return (
     <div
+      ref={rootRef}
       role="dialog"
       aria-modal="true"
       aria-label={photo.caption || '照片浏览'}
@@ -107,7 +109,6 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }: Prop
         </div>
 
         <button
-          ref={closeRef}
           type="button"
           aria-label="关闭"
           onClick={requestClose}

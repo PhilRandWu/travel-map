@@ -69,7 +69,7 @@ export default function TimelineNode({
         <time
           dateTime={item.date}
           className={`block font-mono text-[10px] tracking-[0.14em] ${
-            active ? 'text-cyan-100/75' : 'text-white/38'
+            active ? 'text-cyan-100/80' : 'text-white/52'
           }`}
         >
           {item.meta}
@@ -78,7 +78,7 @@ export default function TimelineNode({
           {item.headline}
         </span>
         {item.detail && (
-          <span className="mt-0.5 block truncate text-[10px] text-white/38">
+          <span className="mt-0.5 block truncate text-[10px] text-white/48">
             {item.detail}
           </span>
         )}

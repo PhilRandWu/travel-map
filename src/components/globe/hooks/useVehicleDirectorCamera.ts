@@ -7,17 +7,19 @@ import {
 } from 'react'
 import type { GlobeMethods } from 'react-globe.gl'
 import {
-  buildChaseCameraPose,
-  buildOverviewPose,
+  buildDestinationPose,
+  buildRouteCameraPose,
+  interpolatePose,
   type CameraPose,
-} from '@/lib/chaseCamera'
+  type RouteCameraFraming,
+} from '@/lib/routeCamera'
 import {
   VEHICLE_ARRIVAL_HOLD_MS,
   VEHICLE_ARRIVAL_RETURN_MS,
-  VEHICLE_CHASE_ENTRY_MS,
 } from '@/lib/vehicleMotion'
 import type { VehicleRuntime } from '@/components/globe/hooks/useVehicleRuntime'
 import type { VehicleRuntimeFrame } from '@/lib/vehicleRuntime'
+import type { VehicleCameraStatusData } from '@/components/globe/VehicleCameraStatus'
 
 interface SavedCamera {
   position: [number, number, number]
@@ -28,71 +30,43 @@ interface SavedCamera {
   autoRotate: boolean
 }
 
-interface CameraStatus {
-  label: string
-  type: 'flight' | 'train'
-}
-
 interface Options {
   globeRef: RefObject<GlobeMethods | undefined>
   runtime: VehicleRuntime
   enabled: boolean
+  framing: RouteCameraFraming
 }
 
-const smoothstep = (value: number) => {
-  const t = Math.max(0, Math.min(1, value))
-  return t * t * (3 - 2 * t)
-}
+const CAMERA_PRIORITY = -100
 
 function applyPose(globe: GlobeMethods, pose: CameraPose): void {
   const camera = globe.camera()
   camera.position.set(...pose.position)
   camera.up.set(...pose.up)
   camera.lookAt(...pose.target)
+  // DOM projection reads matrixWorldInverse later in the same frame.
+  camera.updateMatrixWorld(true)
 }
 
-function interpolatePose(
-  from: CameraPose,
-  to: CameraPose,
-  value: number,
-): CameraPose {
-  const t = smoothstep(value)
-  const mix = (start: number, end: number) => start + (end - start) * t
-  return {
-    position: [
-      mix(from.position[0], to.position[0]),
-      mix(from.position[1], to.position[1]),
-      mix(from.position[2], to.position[2]),
-    ],
-    target: [
-      mix(from.target[0], to.target[0]),
-      mix(from.target[1], to.target[1]),
-      mix(from.target[2], to.target[2]),
-    ],
-    up: [
-      mix(from.up[0], to.up[0]),
-      mix(from.up[1], to.up[1]),
-      mix(from.up[2], to.up[2]),
-    ],
-  }
+function preparationLabel(type: 'flight' | 'train'): string {
+  return type === 'flight' ? '准备起飞' : '准备发车'
 }
 
-export function useVehicleChaseCamera({
+export function useVehicleDirectorCamera({
   globeRef,
   runtime,
   enabled,
+  framing,
 }: Options) {
   const [locked, setLocked] = useState(false)
-  const [status, setStatus] = useState<CameraStatus | null>(null)
+  const [status, setStatus] = useState<VehicleCameraStatusData | null>(null)
   const savedRef = useRef<SavedCamera | null>(null)
+  const entryPoseRef = useRef<CameraPose | null>(null)
   const activeRef = useRef(false)
   const completedRef = useRef(false)
-  const entryStartedRef = useRef(0)
-  const entryPoseRef = useRef<CameraPose | null>(null)
-  const lastRevisionRef = useRef<number | null>(null)
   const lastTripRef = useRef<string | null>(null)
-  const lastFrameRef = useRef<VehicleRuntimeFrame | null>(null)
   const lastLabelRef = useRef('')
+  const lastProgressBucketRef = useRef(-1)
 
   const restore = useCallback((completed: boolean) => {
     const globe = globeRef.current
@@ -114,16 +88,16 @@ export function useVehicleChaseCamera({
       camera.up.set(...saved.up)
       controls.target.set(...saved.target)
     }
+    camera.updateMatrixWorld(true)
     controls.enabled = saved.enabled
     controls.autoRotate = saved.autoRotate
     controls.update()
     savedRef.current = null
     entryPoseRef.current = null
     activeRef.current = false
-    lastFrameRef.current = null
     lastTripRef.current = null
-    lastRevisionRef.current = null
     lastLabelRef.current = ''
+    lastProgressBucketRef.current = -1
     setLocked(false)
     setStatus(null)
   }, [globeRef])
@@ -158,9 +132,9 @@ export function useVehicleChaseCamera({
         target: [controls.target.x, controls.target.y, controls.target.z],
         up: [camera.up.x, camera.up.y, camera.up.z],
       }
-      entryStartedRef.current = performance.now()
-      lastRevisionRef.current = frame.revision
       lastTripRef.current = frame.tripId
+      lastLabelRef.current = ''
+      lastProgressBucketRef.current = -1
       activeRef.current = true
       completedRef.current = false
       controls.enabled = false
@@ -168,25 +142,38 @@ export function useVehicleChaseCamera({
       setLocked(true)
     }
 
-    const seeked = lastRevisionRef.current !== null
-      && lastRevisionRef.current !== frame.revision
-    lastRevisionRef.current = frame.revision
-    lastFrameRef.current = frame
-
-    if (frame.motion.phaseLabel !== lastLabelRef.current) {
-      lastLabelRef.current = frame.motion.phaseLabel
-      setStatus({ label: frame.motion.phaseLabel, type: frame.playback.type })
+    const nextLabel = frame.stage === 'preparing'
+      ? preparationLabel(frame.playback.type)
+      : frame.motion.phaseLabel
+    const progressBucket = Math.round(
+      (frame.stage === 'preparing' ? 0 : frame.motion.progress) * 100,
+    )
+    if (
+      nextLabel !== lastLabelRef.current
+      || progressBucket !== lastProgressBucketRef.current
+    ) {
+      lastLabelRef.current = nextLabel
+      lastProgressBucketRef.current = progressBucket
+      setStatus({
+        label: nextLabel,
+        type: frame.playback.type,
+        routeLabel: frame.playback.label,
+        progress: progressBucket / 100,
+      })
     }
 
-    const chasePose = buildChaseCameraPose(
+    const routePose = buildRouteCameraPose(
       globe,
       frame.playback.route,
       frame.motion,
+      framing,
     )
-    let pose = chasePose
+    let pose = entryPoseRef.current && frame.entryProgress < 1
+      ? interpolatePose(entryPoseRef.current, routePose, frame.entryProgress)
+      : routePose
 
     if (frame.stage === 'returning') {
-      const destination = buildOverviewPose(
+      const destination = buildDestinationPose(
         globe,
         frame.motion.position.lat,
         frame.motion.position.lng,
@@ -194,19 +181,7 @@ export function useVehicleChaseCamera({
       const progress = (
         frame.arrivalElapsedMs - VEHICLE_ARRIVAL_HOLD_MS
       ) / VEHICLE_ARRIVAL_RETURN_MS
-      pose = interpolatePose(chasePose, destination, progress)
-    }
-
-    if (
-      !seeked
-      && frame.stage === 'moving'
-      && entryPoseRef.current
-      && performance.now() - entryStartedRef.current < VEHICLE_CHASE_ENTRY_MS
-    ) {
-      const progress = (
-        performance.now() - entryStartedRef.current
-      ) / VEHICLE_CHASE_ENTRY_MS
-      pose = interpolatePose(entryPoseRef.current, chasePose, progress)
+      pose = interpolatePose(routePose, destination, progress)
     }
 
     if (!pose.position.every(Number.isFinite)) {
@@ -216,21 +191,20 @@ export function useVehicleChaseCamera({
     applyPose(globe, pose)
 
     if (frame.stage === 'complete') {
-      const destination = buildOverviewPose(
+      applyPose(globe, buildDestinationPose(
         globe,
         frame.motion.position.lat,
         frame.motion.position.lng,
-      )
-      applyPose(globe, destination)
+      ))
       completedRef.current = true
       restore(true)
     }
-  }, [globeRef, restore])
+  }, [framing, globeRef, restore])
 
   useEffect(() => {
-    document.documentElement.dataset.vehicleChase = String(locked)
+    document.documentElement.dataset.routeCamera = String(locked)
     return () => {
-      delete document.documentElement.dataset.vehicleChase
+      delete document.documentElement.dataset.routeCamera
     }
   }, [locked])
 
@@ -239,7 +213,7 @@ export function useVehicleChaseCamera({
       if (activeRef.current) restore(false)
       return
     }
-    const unsubscribe = runtime.subscribe(onFrame)
+    const unsubscribe = runtime.subscribe(onFrame, CAMERA_PRIORITY)
     return () => {
       unsubscribe()
       if (activeRef.current) restore(false)

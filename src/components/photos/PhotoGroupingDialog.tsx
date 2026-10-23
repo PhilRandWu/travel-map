@@ -17,6 +17,7 @@ import {
   collectSelectedPhotos,
 } from '@/lib/photoFiles'
 import type { TravelData } from '@/types'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 
 interface Props {
   data: TravelData
@@ -32,7 +33,9 @@ export default function PhotoGroupingDialog({ data, onClose }: Props) {
   const photos = usePhotoGrouping(data)
   const photoInputRef = useRef<HTMLInputElement>(null)
   const folderInputRef = useRef<HTMLInputElement>(null)
+  const dialogRef = useRef<HTMLElement>(null)
   const [dragging, setDragging] = useState(false)
+  useFocusTrap(dialogRef)
 
   const visits = useMemo<VisitOption[]>(() => {
     const cityMap = resolveCities(data)
@@ -106,7 +109,10 @@ export default function PhotoGroupingDialog({ data, onClose }: Props) {
         if (event.target === event.currentTarget && !photos.scanning) onClose()
       }}
     >
-      <section className="rg-card-in flex max-h-[min(90vh,760px)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-white/12 bg-[rgba(6,10,20,.94)] shadow-[0_28px_100px_rgba(0,0,0,.72)]">
+      <section
+        ref={dialogRef}
+        className="rg-card-in flex max-h-[min(90vh,760px)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-white/12 bg-[rgba(6,10,20,.94)] shadow-[0_28px_100px_rgba(0,0,0,.72)]"
+      >
         <header className="flex items-start justify-between gap-4 border-b border-white/8 px-5 py-4">
           <div>
             <p className="text-[9px] tracking-[0.24em] text-cyan-200/48">EXIF IMPORT</p>

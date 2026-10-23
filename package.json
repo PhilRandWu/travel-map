@@ -11,9 +11,16 @@
     "build:media": "node scripts/build-photo-assets.mjs",
     "build:thumbs": "pnpm build:media",
     "build:geo": "node scripts/build-geo.mjs",
-    "test": "vitest run"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "validate:data": "vitest run src/lib/journeyValidation.test.ts",
+    "check": "pnpm typecheck && pnpm test"
   },
   "packageManager": "pnpm@10.34.3",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=10.0.0"
+  },
   "devDependencies": {
     "@mapbox/geojson-rewind": "^0.5.2",
     "@tailwindcss/vite": "^4.3.3",

@@ -19,7 +19,7 @@ export default function MemoryFlight({ src, from, to }: Props) {
       aria-hidden="true"
       src={src}
       alt=""
-      className="rg-memory-flight pointer-events-none fixed z-[85] rounded-xl object-cover shadow-[0_30px_100px_rgba(0,0,0,.7)]"
+      className="rg-memory-flight pointer-events-none fixed z-[85] border border-[var(--rg-memory-line)] object-cover shadow-[0_30px_100px_rgba(0,0,0,.7)]"
       style={{
         ...(active ? to : from),
         transition:

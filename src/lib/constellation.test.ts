@@ -3,6 +3,7 @@ import dataJson from '@/data/trips.json'
 import type { TravelData } from '@/types'
 import { buildMemoryCollection } from '@/lib/memory'
 import {
+  buildConstellationMap,
   buildConstellationLayout,
   filterConstellationNodes,
   getConstellationParallax,
@@ -33,6 +34,18 @@ describe('constellation layout', () => {
     expect(layout.map((node) => node.photo.chapterKey)).toEqual(
       collection.photos.map((photo) => photo.chapterKey),
     )
+  })
+
+  it('builds an editorial atlas with chapter markers and stable photo order', () => {
+    const collection = buildMemoryCollection(data, { kind: 'journey', journeyId: 'j001' })
+    const map = buildConstellationMap(collection, { width: 1080, height: 800 })
+
+    expect(map.width).toBe(1080)
+    expect(map.height).toBe(800)
+    expect(map.chapters).toHaveLength(2)
+    expect(map.path.startsWith('M ')).toBe(true)
+    expect(map.nodes.map((node) => node.globalIndex)).toEqual([0, 1, 2, 3, 4])
+    expect(map.nodes.every((node) => node.width > 0 && node.height > 0)).toBe(true)
   })
 
   it('mounts only nodes inside the viewport plus overscan', () => {

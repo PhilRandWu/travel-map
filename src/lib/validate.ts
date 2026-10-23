@@ -2,6 +2,9 @@ import type { City, TravelData, Trip, Visit } from '@/types'
 import { resolveCities } from '@/lib/cities'
 import { validateJourneyData } from '@/lib/journeyValidation'
 import { photoVariantUrl } from '@/lib/photoUrls'
+import { compareDate, isValidISODate } from '@/lib/date'
+
+export { compareDate, isValidISODate } from '@/lib/date'
 
 /**
  * 数据校验（PRD 第 4 节「校验要求」）：
@@ -17,21 +20,6 @@ export interface ValidationIssue {
   /** 出错对象 id，如 trip:t002 */
   subject: string
   message: string
-}
-
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
-
-/** 严格校验 YYYY-MM-DD 且为真实日历日（排除 2025-02-30） */
-export function isValidISODate(s: unknown): s is string {
-  if (typeof s !== 'string' || !ISO_DATE.test(s)) return false
-  const [y, m, d] = s.split('-').map(Number)
-  const dt = new Date(Date.UTC(y, m - 1, d))
-  return dt.getUTCFullYear() === y && dt.getUTCMonth() === m - 1 && dt.getUTCDate() === d
-}
-
-/** 比较两个 YYYY-MM-DD：a < b → -1 */
-export function compareDate(a: string, b: string): number {
-  return a < b ? -1 : a > b ? 1 : 0
 }
 
 function isObject(v: unknown): v is Record<string, unknown> {
@@ -153,11 +141,15 @@ export function validateTravelData(input: unknown): ValidationIssue[] {
       && compareDate(v.arriveDate, v.leaveDate) > 0) {
       issues.push({ level: 'error', subject, message: `arriveDate(${v.arriveDate}) 晚于 leaveDate(${v.leaveDate})` })
     }
-    if (!Array.isArray(v.photos) || v.photos.length === 0) {
+    if (!Array.isArray(v.photos)) {
+      issues.push({ level: 'error', subject, message: 'photos 必须是数组' })
+    } else if (v.photos.length === 0) {
       issues.push({ level: 'warning', subject, message: '没有挂任何照片（至少 1 张占位图）' })
     } else {
       v.photos.forEach((p, i) => {
-        if (typeof p.file !== 'string' || p.file === '') {
+        if (!p || typeof p !== 'object') {
+          issues.push({ level: 'error', subject, message: `photos[${i}] 必须是对象` })
+        } else if (typeof p.file !== 'string' || p.file === '') {
           issues.push({ level: 'error', subject, message: `photos[${i}] 缺少 file` })
         }
       })
@@ -173,7 +165,8 @@ export async function checkPhotoFiles(data: TravelData): Promise<ValidationIssue
   const issues: ValidationIssue[] = []
   await Promise.all(
     data.visits.flatMap((v) =>
-      v.photos.map(async (p) => {
+      (Array.isArray(v.photos) ? v.photos : []).map(async (p) => {
+        if (!p || typeof p !== 'object' || typeof p.file !== 'string') return
         const url = photoVariantUrl(v.id, p.file, 'blur')
         try {
           const res = await fetch(url, { method: 'HEAD' })

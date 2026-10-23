@@ -1,6 +1,6 @@
 import type { City, TravelData, Trip } from '@/types'
 import { resolveCities } from '@/lib/cities'
-import { compareDate } from '@/lib/validate'
+import { compareDate } from '@/lib/date'
 import { flightArcAltitude, greatCirclePoints, haversineKm } from '@/lib/geo'
 
 /**

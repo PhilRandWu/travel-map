@@ -10,7 +10,7 @@ function wrapper({ children }: { children: ReactNode }) {
 }
 
 describe('useCameraFocus', () => {
-  it('does not start point focus while vehicle chase is active', () => {
+  it('does not start point focus while route direction is active', () => {
     const pointOfView = vi.fn(() => ({ lat: 0, lng: 0, altitude: 2.3 }))
     const globeRef = {
       current: { pointOfView } as unknown as GlobeMethods,

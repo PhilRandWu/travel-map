@@ -69,4 +69,34 @@ describe('journey validation', () => {
       subject: 'visit:v001',
     }))
   })
+
+  it('reports a non-array photos field without throwing', () => {
+    const data = sample()
+    ;(data.visits[0] as unknown as { photos: unknown }).photos = null
+
+    expect(() => validateTravelData(data)).not.toThrow()
+    expect(validateTravelData(data)).toContainEqual(expect.objectContaining({
+      level: 'error',
+      subject: 'visit:v001',
+      message: 'photos 必须是数组',
+    }))
+  })
+
+  it('reports invalid cover and photo entries without dereferencing them', () => {
+    const data = sample()
+    ;(data.journeys[0].coverPhotos as unknown as unknown[])[0] = null
+    ;(data.visits[0].photos as unknown as unknown[])[0] = null
+
+    expect(() => validateTravelData(data)).not.toThrow()
+    expect(validateTravelData(data)).toContainEqual(expect.objectContaining({
+      level: 'error',
+      subject: 'journey:j001',
+      message: 'coverPhotos[0] 必须是对象',
+    }))
+    expect(validateTravelData(data)).toContainEqual(expect.objectContaining({
+      level: 'error',
+      subject: 'visit:v001',
+      message: 'photos[0] 必须是对象',
+    }))
+  })
 })

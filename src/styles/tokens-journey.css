@@ -1,0 +1,60 @@
+[data-journey-theme='amber'] {
+  --rg-journey-accent: #f3c579;
+  --rg-journey-glow: rgb(243 197 121 / 0.3);
+}
+
+[data-journey-theme='cyan'] {
+  --rg-journey-accent: #7dd3e8;
+  --rg-journey-glow: rgb(125 211 232 / 0.28);
+}
+
+[data-journey-theme='sage'] {
+  --rg-journey-accent: #b8d6b2;
+  --rg-journey-glow: rgb(184 214 178 / 0.26);
+}
+
+[data-journey-theme='rose'] {
+  --rg-journey-accent: #e8b1b8;
+  --rg-journey-glow: rgb(232 177 184 / 0.26);
+}
+
+.rg-journey-card {
+  --rg-journey-accent: #7dd3e8;
+  --rg-journey-glow: rgb(125 211 232 / 0.28);
+  isolation: isolate;
+}
+
+.rg-journey-card::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(135deg, transparent 55%, var(--rg-journey-glow), transparent 82%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 18px,
+      rgb(255 255 255 / 0.012) 18px 19px
+    );
+  content: '';
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.rg-journey-spark {
+  position: absolute;
+  top: -1px;
+  left: 18px;
+  right: 42%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--rg-journey-accent), transparent);
+  box-shadow: 0 0 14px var(--rg-journey-glow);
+  opacity: 0.72;
+}
+
+.rg-passport-action {
+  border-color: color-mix(in srgb, var(--rg-journey-accent) 32%, transparent);
+}
+
+.rg-passport-action:hover {
+  border-color: color-mix(in srgb, var(--rg-journey-accent) 58%, transparent);
+}
