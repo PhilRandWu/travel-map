@@ -1,0 +1,28 @@
+.rg-command-palette {
+  animation: rg-command-palette-in 220ms var(--rg-ease-out) both;
+}
+
+@keyframes rg-command-palette-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.985);
+  }
+}
+
+.rg-tools-in {
+  animation: rg-tools-in 180ms var(--rg-ease-out) both;
+}
+
+@keyframes rg-tools-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-command-palette,
+  .rg-tools-in {
+    animation: none;
+  }
+}

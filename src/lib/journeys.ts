@@ -19,6 +19,12 @@ export interface JourneySummary {
   coverSources: JourneyCoverSource[]
 }
 
+export interface JourneyCoverVisual {
+  visitId: string
+  file: string
+  focalPoint?: { x: number; y: number }
+}
+
 export function sortJourneysNewestFirst(journeys: Journey[]): Journey[] {
   return [...journeys].sort((a, b) => {
     const byEnd = compareDate(b.endDate, a.endDate)
@@ -114,6 +120,17 @@ export function summarizeJourney(data: TravelData, journey: Journey): JourneySum
     distanceKm: getJourneyDistanceKm(data, journey.id),
     coverSources: getJourneyCoverSources(data, journey),
   }
+}
+
+export function getJourneyCoverVisuals(
+  summary: JourneySummary,
+): JourneyCoverVisual[] {
+  return summary.coverSources.flatMap(({ visitId, file, visit }) => {
+    const photo = visit.photos.find((item) => item.file === file)
+    return photo
+      ? [{ visitId, file, focalPoint: photo.focalPoint }]
+      : []
+  })
 }
 
 export function scopeTravelData(data: TravelData, scope: JourneyScope): TravelData {

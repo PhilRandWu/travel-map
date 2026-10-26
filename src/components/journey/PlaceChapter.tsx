@@ -1,9 +1,14 @@
-import { useMemo, type CSSProperties } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import type { MemorySource, Selection, TravelData } from '@/types'
 import { getCityTrips, getCityVisits } from '@/lib/derive'
 import { resolveCity, resolveCities } from '@/lib/cities'
-import { photoObjectPosition, photoVariantUrl } from '@/lib/photoUrls'
+import {
+  photoObjectPosition,
+  photoOriginalUrl,
+  photoVariantUrl,
+} from '@/lib/photoUrls'
 import { useLayerReturn } from '@/components/motion/useLayerReturn'
+import Lightbox from '@/components/common/Lightbox'
 
 interface Props {
   data: TravelData
@@ -29,6 +34,7 @@ export default function PlaceChapter({
   onClose,
 }: Props) {
   const { returning, requestClose } = useLayerReturn(onClose)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const city = resolveCity(data, cityId)
   const cities = useMemo(() => resolveCities(data), [data])
   const visits = useMemo(() => getCityVisits(data, cityId), [data, cityId])
@@ -37,6 +43,16 @@ export default function PlaceChapter({
   const hero = active?.photos.find((photo) => photo.featured) ?? active?.photos[0]
   const auxiliaries = active?.photos.filter((photo) => photo !== hero).slice(0, 4) ?? []
   const selectedTripId = selection.kind === 'trip' ? selection.tripId : null
+  const heroIndex = active && hero ? active.photos.indexOf(hero) : 0
+  const lightboxPhotos = active?.photos.map((photo) => ({
+    url: photoOriginalUrl(active.id, photo.file),
+    caption: photo.caption,
+    meta: `${date(active.arriveDate)} · ${city?.name ?? cityId}`,
+  })) ?? []
+
+  useEffect(() => {
+    setLightboxIndex(null)
+  }, [active?.id])
 
   if (!city) return null
 
@@ -96,24 +112,36 @@ export default function PlaceChapter({
 
             {hero ? (
               <div className="mt-3 grid h-44 grid-cols-3 grid-rows-2 gap-1.5 overflow-hidden rounded-xl">
-                <img
-                  src={photoVariantUrl(active.id, hero.file, 'md')}
-                  alt={hero.caption || `${city.name}主图`}
-                  style={{ objectPosition: photoObjectPosition(hero.focalPoint) }}
-                  className="rg-photo-reveal col-span-2 row-span-2 h-full w-full object-cover"
-                />
-                {auxiliaries.map((photo, index) => (
+                <button
+                  type="button"
+                  aria-label={`查看照片：${hero.caption || hero.file}`}
+                  onClick={() => setLightboxIndex(heroIndex)}
+                  className="rg-photo-reveal col-span-2 row-span-2 overflow-hidden"
+                >
                   <img
-                    key={photo.file}
-                    src={photoVariantUrl(active.id, photo.file, 'md')}
-                    alt={photo.caption ?? ''}
-                    loading="lazy"
-                    style={{
-                      objectPosition: photoObjectPosition(photo.focalPoint),
-                      '--rg-index': index + 1,
-                    } as CSSProperties}
-                    className="rg-photo-reveal h-full w-full object-cover"
+                    src={photoVariantUrl(active.id, hero.file, 'md')}
+                    alt={hero.caption || `${city.name}主图`}
+                    style={{ objectPosition: photoObjectPosition(hero.focalPoint) }}
+                    className="h-full w-full object-cover transition duration-500 hover:scale-[1.025]"
                   />
+                </button>
+                {auxiliaries.map((photo, index) => (
+                  <button
+                    key={photo.file}
+                    type="button"
+                    aria-label={`查看照片：${photo.caption || photo.file}`}
+                    onClick={() => setLightboxIndex(active.photos.indexOf(photo))}
+                    className="rg-photo-reveal overflow-hidden"
+                    style={{ '--rg-index': index + 1 } as CSSProperties}
+                  >
+                    <img
+                      src={photoVariantUrl(active.id, photo.file, 'md')}
+                      alt={photo.caption ?? ''}
+                      loading="lazy"
+                      style={{ objectPosition: photoObjectPosition(photo.focalPoint) }}
+                      className="h-full w-full object-cover transition duration-500 hover:scale-[1.025]"
+                    />
+                  </button>
                 ))}
               </div>
             ) : (
@@ -169,6 +197,14 @@ export default function PlaceChapter({
           </section>
         )}
       </div>
+      {lightboxIndex !== null && lightboxPhotos.length > 0 && (
+        <Lightbox
+          photos={lightboxPhotos}
+          index={lightboxIndex}
+          onIndexChange={setLightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
     </aside>
   )
 }

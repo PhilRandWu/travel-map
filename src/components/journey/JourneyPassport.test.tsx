@@ -23,6 +23,8 @@ describe('JourneyPassport', () => {
     expect(screen.getByRole('heading', { name: '江南春行' })).toBeTruthy()
     expect(screen.getByText('2 个地点')).toBeTruthy()
     expect(screen.getByText('5 张照片')).toBeTruthy()
+    expect(screen.queryByText('段交通')).toBeNull()
+    expect(screen.queryByText('处停留')).toBeNull()
   })
 
   it('keeps other journeys off by default and exposes an explicit toggle', async () => {
@@ -61,5 +63,21 @@ describe('JourneyPassport', () => {
     await userEvent.click(screen.getByRole('button', { name: '全部照片' }))
 
     expect(onOpenMemory).toHaveBeenCalledWith('stage', 'all')
+  })
+
+  it('uses a compact layout while a place chapter is open', () => {
+    const { container } = render(
+      <JourneyPassport
+        data={data}
+        journey={data.journeys[0]}
+        onStartReplay={() => undefined}
+        onOpenMemory={() => undefined}
+        showOtherJourneys={false}
+        onShowOtherJourneysChange={() => undefined}
+        compact
+      />,
+    )
+
+    expect(container.querySelector('[data-compact="true"]')).toBeTruthy()
   })
 })

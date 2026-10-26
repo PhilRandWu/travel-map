@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import dataJson from '@/data/trips.json'
@@ -29,6 +29,28 @@ describe('PlaceChapter', () => {
     expect(screen.getByAltText('西湖暮色')).toBeTruthy()
     await userEvent.click(screen.getByRole('button', { name: '进入照片回忆' }))
     expect(onOpenMemory).toHaveBeenCalledWith({ kind: 'visit', visitId: 'v001' }, 0)
+  })
+
+  it('opens any collage photo in the Lightbox', async () => {
+    render(
+      <MotionProvider>
+        <PlaceChapter
+          data={data}
+          cityId="hangzhou"
+          activeVisitId="v001"
+          selection={{ kind: 'visit', visitId: 'v001' }}
+          onSelectVisit={() => undefined}
+          onSelectTrip={() => undefined}
+          onOpenMemory={() => undefined}
+          onClose={() => undefined}
+        />
+      </MotionProvider>,
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: '查看照片：西湖暮色' }))
+
+    const dialog = screen.getByRole('dialog', { name: '西湖暮色' })
+    expect(within(dialog).getByAltText('西湖暮色')).toBeTruthy()
   })
 
   it('disables the memory action when the visit has no photos', () => {

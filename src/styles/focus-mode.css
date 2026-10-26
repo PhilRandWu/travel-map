@@ -1,0 +1,56 @@
+[data-focus-mode='true'] .rg-focus-chrome {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+}
+
+[data-focus-mode='true'] .rg-focus-footer {
+  opacity: 0.08;
+  pointer-events: none;
+  transform: translateY(38%);
+}
+
+[data-focus-mode='true'] .rg-focus-place {
+  opacity: 0.58;
+  transform: translateX(-10px);
+}
+
+[data-focus-mode='true'][data-focus-idle='true'] .rg-focus-place {
+  opacity: 0.16;
+}
+
+[data-focus-mode='true'][data-focus-idle='true'] .rg-focus-bar {
+  opacity: 0.3;
+}
+
+.rg-focus-chrome,
+.rg-focus-footer,
+.rg-focus-place {
+  transition:
+    opacity 320ms var(--rg-ease-out),
+    transform 320ms var(--rg-ease-out);
+}
+
+.rg-focus-bar {
+  animation: rg-focus-bar-in 260ms var(--rg-ease-out) both;
+  transition: opacity 420ms var(--rg-ease-out);
+}
+
+@keyframes rg-focus-bar-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-focus-chrome,
+  .rg-focus-footer,
+  .rg-focus-place {
+    transition: none;
+  }
+
+  .rg-focus-bar {
+    animation: none;
+  }
+}

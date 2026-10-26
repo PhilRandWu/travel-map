@@ -28,6 +28,7 @@ import { buildJourneySceneRoutes } from '@/lib/journeyScene'
 import type { Tracks } from '@/lib/tracks'
 
 const EMPTY_TRACKS: Tracks = { flights: [], trains: [] }
+const TEXTURE_BASE = `${import.meta.env.BASE_URL}textures/`
 
 export default function TravelGlobe({
   litCities,
@@ -187,8 +188,8 @@ export default function TravelGlobe({
           width={size.width}
           height={size.height}
           backgroundColor="rgba(0,0,0,0)"
-          globeImageUrl="/textures/earth-night.jpg"
-          bumpImageUrl="/textures/earth-topology.png"
+          globeImageUrl={`${TEXTURE_BASE}earth-night.webp`}
+          bumpImageUrl={`${TEXTURE_BASE}earth-topology.webp`}
           showAtmosphere
           enablePointerInteraction={!directorCamera.locked}
           atmosphereColor={ATMOSPHERE_COLOR}

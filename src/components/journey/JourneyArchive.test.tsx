@@ -13,7 +13,7 @@ describe('JourneyArchive', () => {
     const onOpen = vi.fn()
     render(
       <MotionProvider>
-        <JourneyArchive data={data} onOpenJourney={onOpen} />
+        <JourneyArchive data={data} onOpenJourney={onOpen} onNewJourney={() => undefined} />
       </MotionProvider>,
     )
 
@@ -27,7 +27,11 @@ describe('JourneyArchive', () => {
   it('opens the all-journeys drawer grouped by year', async () => {
     render(
       <MotionProvider>
-        <JourneyArchive data={data} onOpenJourney={() => undefined} />
+        <JourneyArchive
+          data={data}
+          onOpenJourney={() => undefined}
+          onNewJourney={() => undefined}
+        />
       </MotionProvider>,
     )
 
@@ -35,5 +39,43 @@ describe('JourneyArchive', () => {
 
     expect(screen.getByRole('dialog', { name: '全部旅程' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: '2025' })).toBeTruthy()
+    expect(screen.getByText('2 个地点 · 5 张照片')).toBeTruthy()
+  })
+
+  it('opens the editor from the empty archive state', async () => {
+    const onNewJourney = vi.fn()
+    const empty = { ...data, journeys: [], visits: [], trips: [] }
+    render(
+      <MotionProvider>
+        <JourneyArchive
+          data={empty}
+          onOpenJourney={() => undefined}
+          onNewJourney={onNewJourney}
+        />
+      </MotionProvider>,
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: '新增第一段旅程' }))
+
+    expect(onNewJourney).toHaveBeenCalledTimes(1)
+    expect(screen.queryByText(/trips\.json/)).toBeNull()
+  })
+
+  it('offers a new-journey action from the full archive', async () => {
+    const onNewJourney = vi.fn()
+    render(
+      <MotionProvider>
+        <JourneyArchive
+          data={data}
+          onOpenJourney={() => undefined}
+          onNewJourney={onNewJourney}
+        />
+      </MotionProvider>,
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: '全部旅程' }))
+    await userEvent.click(screen.getByRole('button', { name: '新增旅程' }))
+
+    expect(onNewJourney).toHaveBeenCalledTimes(1)
   })
 })

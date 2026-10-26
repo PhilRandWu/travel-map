@@ -1,4 +1,5 @@
 import type { PhotoVariant } from '@/types'
+import { localPhotoUrl } from '@/lib/localPhotoDrafts'
 
 const VARIANT_FILES: Record<PhotoVariant, string> = {
   blur: 'blur.webp',
@@ -14,11 +15,17 @@ export function photoVariantUrl(
   file: string,
   variant: PhotoVariant,
 ): string {
+  const local = localPhotoUrl(visitId, file)
+  if (local) return local
+
   const base = import.meta.env.BASE_URL
   return `${base}media/${segment(visitId)}/${segment(file)}/${VARIANT_FILES[variant]}`
 }
 
 export function photoOriginalUrl(visitId: string, file: string): string {
+  const local = localPhotoUrl(visitId, file)
+  if (local) return local
+
   const base = import.meta.env.BASE_URL
   return `${base}photos/${segment(visitId)}/${segment(file)}`
 }

@@ -2,6 +2,7 @@ import type { City, TravelData, Trip, Visit } from '@/types'
 import { resolveCities } from '@/lib/cities'
 import { validateJourneyData } from '@/lib/journeyValidation'
 import { photoVariantUrl } from '@/lib/photoUrls'
+import { hasLocalPhotoDraft } from '@/lib/localPhotoDrafts'
 import { compareDate, isValidISODate } from '@/lib/date'
 
 export { compareDate, isValidISODate } from '@/lib/date'
@@ -167,6 +168,7 @@ export async function checkPhotoFiles(data: TravelData): Promise<ValidationIssue
     data.visits.flatMap((v) =>
       (Array.isArray(v.photos) ? v.photos : []).map(async (p) => {
         if (!p || typeof p !== 'object' || typeof p.file !== 'string') return
+        if (hasLocalPhotoDraft(v.id, p.file)) return
         const url = photoVariantUrl(v.id, p.file, 'blur')
         try {
           const res = await fetch(url, { method: 'HEAD' })
@@ -174,7 +176,7 @@ export async function checkPhotoFiles(data: TravelData): Promise<ValidationIssue
           const type = res.headers.get('content-type') ?? ''
           if (!res.ok || type.includes('text/html')) {
             issues.push({
-              level: 'error',
+              level: 'warning',
               subject: `visit:${v.id}`,
               message: `照片派生资产不存在：${url}（HTTP ${res.status}${type ? `, ${type}` : ''}）`,
             })

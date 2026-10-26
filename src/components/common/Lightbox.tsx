@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useFocusTrap } from '@/hooks/useFocusTrap'
 
 export interface LightboxPhoto {
@@ -64,7 +65,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }: Prop
 
   if (!photo) return null
 
-  return (
+  return createPortal(
     <div
       ref={rootRef}
       role="dialog"
@@ -138,6 +139,7 @@ export default function Lightbox({ photos, index, onClose, onIndexChange }: Prop
           </>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

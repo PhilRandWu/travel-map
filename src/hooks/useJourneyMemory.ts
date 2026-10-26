@@ -19,10 +19,25 @@ export function useJourneyMemory(data: TravelData, scopeKey: string) {
     [collection, memory.overlay],
   )
 
-  const openMemory = useCallback((source: MemorySource, photoIndex = 0) => {
+  const openMemory = useCallback((
+    source: MemorySource,
+    photoIndex = 0,
+    mode?: MemoryMode,
+  ) => {
     const next = buildMemoryCollection(data, source)
     memory.open(source, {
-      mode: initialMemoryMode(next),
+      mode: mode ?? initialMemoryMode(next),
+      view: 'stage',
+      photoIndex,
+    })
+  }, [data, memory.open])
+
+  const openMemoryPhoto = useCallback((source: MemorySource, file: string) => {
+    const next = buildMemoryCollection(data, source)
+    const photos = filterMemoryPhotos(next, 'all')
+    const photoIndex = Math.max(0, photos.findIndex((photo) => photo.file === file))
+    memory.open(source, {
+      mode: 'all',
       view: 'stage',
       photoIndex,
     })
@@ -47,6 +62,7 @@ export function useJourneyMemory(data: TravelData, scopeKey: string) {
     collection,
     photos,
     openMemory,
+    openMemoryPhoto,
     openJourneyMemory,
     close: memory.close,
     setMode: memory.setMode,

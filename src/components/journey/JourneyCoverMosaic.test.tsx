@@ -21,4 +21,20 @@ describe('JourneyCoverMosaic', () => {
     render(<JourneyCoverMosaic covers={[]} title="江南春行" theme="cyan" />)
     expect(screen.getByText('江南春行')).toBeTruthy()
   })
+
+  it('applies the saved focal point to cover crops', () => {
+    const { container } = render(
+      <JourneyCoverMosaic
+        covers={[{
+          visitId: 'v001',
+          file: '01.svg',
+          focalPoint: { x: 0.2, y: 0.8 },
+        }]}
+        title="江南春行"
+        theme="cyan"
+      />,
+    )
+
+    expect(container.querySelector('img')?.style.objectPosition).toBe('20% 80%')
+  })
 })

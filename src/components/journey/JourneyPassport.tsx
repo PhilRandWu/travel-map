@@ -1,5 +1,5 @@
 import type { Journey, MemoryMode, MemoryView, TravelData } from '@/types'
-import { summarizeJourney } from '@/lib/journeys'
+import { getJourneyCoverVisuals, summarizeJourney } from '@/lib/journeys'
 import JourneyCoverMosaic from '@/components/journey/JourneyCoverMosaic'
 import AmbientDust from '@/components/motion/AmbientDust'
 
@@ -10,6 +10,7 @@ interface Props {
   onOpenMemory: (view: MemoryView, mode?: MemoryMode) => void
   showOtherJourneys: boolean
   onShowOtherJourneysChange: (visible: boolean) => void
+  compact?: boolean
 }
 
 const formatDate = (date: string) => date.replaceAll('-', '.')
@@ -21,13 +22,17 @@ export default function JourneyPassport({
   onOpenMemory,
   showOtherJourneys,
   onShowOtherJourneysChange,
+  compact = false,
 }: Props) {
   const summary = summarizeJourney(data, journey)
 
   return (
     <aside
       data-journey-theme={journey.theme}
-      className="rg-passport pointer-events-auto w-[min(340px,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-white/12 bg-[rgba(6,10,22,.84)] p-4 shadow-[0_18px_60px_rgba(0,0,0,.55)] backdrop-blur-xl"
+      data-compact={compact ? 'true' : undefined}
+      className={`rg-passport pointer-events-auto w-[min(340px,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-white/12 bg-[rgba(6,10,22,.84)] shadow-[0_18px_60px_rgba(0,0,0,.55)] backdrop-blur-xl ${
+        compact ? 'p-3.5' : 'p-4'
+      }`}
     >
       <AmbientDust />
       <div className="flex items-start justify-between gap-4">
@@ -42,13 +47,15 @@ export default function JourneyPassport({
         </span>
       </div>
 
-      <p className="mt-2 text-xs leading-relaxed text-white/50">
+      <p className={`mt-2 text-xs leading-relaxed text-white/50 ${
+        compact ? 'line-clamp-1' : ''
+      }`}>
         {journey.epigraph ?? journey.summary}
       </p>
 
-      <div className="mt-3 h-36">
+      <div className={compact ? 'mt-3 h-24' : 'mt-3 h-32'}>
         <JourneyCoverMosaic
-          covers={summary.coverSources.map(({ visitId, file }) => ({ visitId, file }))}
+          covers={getJourneyCoverVisuals(summary)}
           title={journey.title}
           theme={journey.theme}
           large
@@ -65,12 +72,6 @@ export default function JourneyPassport({
         <span className="rounded-full border border-white/8 bg-white/[.035] px-2.5 py-1 text-[10px] text-white/58">
           {summary.distanceKm.toLocaleString()} km
         </span>
-      </div>
-
-      <div className="mt-3 grid grid-cols-3 gap-2 border-y border-white/8 py-3 text-center">
-        <Metric value={summary.tripCount} label="段交通" />
-        <Metric value={summary.visitCount} label="处停留" />
-        <Metric value={summary.coverSources.length} label="帧封面" />
       </div>
 
       <button
@@ -122,14 +123,5 @@ export default function JourneyPassport({
         </button>
       </div>
     </aside>
-  )
-}
-
-function Metric({ value, label }: { value: number; label: string }) {
-  return (
-    <div>
-      <div className="font-serif text-lg tabular-nums text-white/88">{value}</div>
-      <div className="text-[9px] tracking-[0.12em] text-white/35">{label}</div>
-    </div>
   )
 }

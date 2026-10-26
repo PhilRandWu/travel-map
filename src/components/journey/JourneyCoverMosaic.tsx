@@ -1,9 +1,10 @@
 import type { CSSProperties } from 'react'
-import type { JourneyCoverPhoto, JourneyTheme } from '@/types'
-import { photoVariantUrl } from '@/lib/photoUrls'
+import type { JourneyTheme } from '@/types'
+import type { JourneyCoverVisual } from '@/lib/journeys'
+import { photoObjectPosition, photoVariantUrl } from '@/lib/photoUrls'
 
 interface Props {
-  covers: JourneyCoverPhoto[]
+  covers: JourneyCoverVisual[]
   title: string
   theme: JourneyTheme
   large?: boolean
@@ -63,7 +64,10 @@ export default function JourneyCoverMosaic({
             alt=""
             loading="lazy"
             className="rg-stagger-item h-full w-full object-cover transition duration-700 group-hover:scale-105"
-            style={{ '--rg-index': index } as CSSProperties}
+            style={{
+              '--rg-index': index,
+              objectPosition: photoObjectPosition(cover.focalPoint),
+            } as CSSProperties}
           />
           <span className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
         </span>

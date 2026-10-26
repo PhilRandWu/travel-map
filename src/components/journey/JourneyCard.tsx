@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import type { JourneySummary } from '@/lib/journeys'
+import { getJourneyCoverVisuals } from '@/lib/journeys'
 import JourneyCoverMosaic from '@/components/journey/JourneyCoverMosaic'
 import { useJourneyCardMotion } from '@/components/motion/useJourneyCardMotion'
 
@@ -12,7 +13,7 @@ interface Props {
 const formatDate = (date: string) => date.replaceAll('-', '.')
 
 export default function JourneyCard({ summary, featured = false, onOpen }: Props) {
-  const { journey, coverSources, destinationCityIds, photoCount, tripCount } = summary
+  const { journey, destinationCityIds, photoCount, tripCount } = summary
   const cardRef = useRef<HTMLButtonElement>(null)
   useJourneyCardMotion(cardRef)
 
@@ -30,7 +31,7 @@ export default function JourneyCard({ summary, featured = false, onOpen }: Props
       <span className="rg-journey-spark" aria-hidden="true" />
       <div className={`p-2 ${featured ? 'h-36' : 'h-24'}`}>
         <JourneyCoverMosaic
-          covers={coverSources.map(({ visitId, file }) => ({ visitId, file }))}
+          covers={getJourneyCoverVisuals(summary)}
           title={journey.title}
           theme={journey.theme}
           large={featured}

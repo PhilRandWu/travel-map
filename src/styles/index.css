@@ -15,3 +15,28 @@
 @import './motion-replay.css';
 @import './motion-runtime.css';
 @import './motion-vehicle.css';
+@import './editor.css';
+@import './focus-mode.css';
+@import './search.css';
+
+html {
+  color-scheme: dark;
+}
+
+.rg-safe-top {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+.rg-safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+@media (min-width: 40rem) {
+  .rg-safe-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+
+  .rg-safe-bottom {
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+  }
+}

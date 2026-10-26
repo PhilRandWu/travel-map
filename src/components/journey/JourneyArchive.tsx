@@ -7,13 +7,20 @@ import JourneyArchiveDrawer from '@/components/journey/JourneyArchiveDrawer'
 interface Props {
   data: TravelData
   onOpenJourney: (journeyId: string) => void
+  onNewJourney: () => void
+  onRandomMemory?: () => void
 }
 
-export default function JourneyArchive({ data, onOpenJourney }: Props) {
+export default function JourneyArchive({
+  data,
+  onOpenJourney,
+  onNewJourney,
+  onRandomMemory,
+}: Props) {
   const [allOpen, setAllOpen] = useState(false)
-  const summaries = sortJourneysNewestFirst(data.journeys)
-    .slice(0, 3)
+  const allSummaries = sortJourneysNewestFirst(data.journeys)
     .map((journey) => summarizeJourney(data, journey))
+  const summaries = allSummaries.slice(0, 3)
 
   if (summaries.length === 0) {
     return (
@@ -21,8 +28,15 @@ export default function JourneyArchive({ data, onOpenJourney }: Props) {
         <p className="text-[10px] tracking-[0.24em] text-cyan-100/45">TRAVEL ARCHIVE</p>
         <h2 className="mt-2 font-serif text-2xl text-white">建立第一段旅程</h2>
         <p className="mt-2 text-sm leading-relaxed text-white/50">
-          在 trips.json 中新增 journeys 记录，并为交通与到访填写 journeyId。
+          给一段时间一个名字，再放进第一座城市与第一张照片。
         </p>
+        <button
+          type="button"
+          onClick={onNewJourney}
+          className="mt-4 min-h-10 cursor-pointer rounded-full border border-cyan-200/24 bg-cyan-200/[.07] px-5 text-xs tracking-[0.1em] text-cyan-50/85 transition hover:border-cyan-200/45 hover:bg-cyan-200/12"
+        >
+          新增第一段旅程
+        </button>
       </section>
     )
   }
@@ -35,13 +49,24 @@ export default function JourneyArchive({ data, onOpenJourney }: Props) {
             <p className="text-[10px] tracking-[0.24em] text-cyan-100/45">TRAVEL ARCHIVE</p>
             <h2 className="mt-1 font-serif text-lg text-white">选择一段旅程，重新走一遍</h2>
           </div>
-          <button
-            type="button"
-            onClick={() => setAllOpen(true)}
-            className="shrink-0 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs tracking-[0.12em] text-white/62 transition hover:border-white/25 hover:text-white"
-          >
-            全部旅程
-          </button>
+          <div className="flex shrink-0 items-center gap-2">
+            {onRandomMemory && (
+              <button
+                type="button"
+                onClick={onRandomMemory}
+                className="min-h-9 rounded-full border border-amber-100/12 px-3 text-[11px] text-amber-50/55 transition hover:border-amber-100/28 hover:text-amber-50/85"
+              >
+                拾起回忆
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setAllOpen(true)}
+              className="min-h-9 rounded-full border border-white/10 bg-white/5 px-4 text-xs tracking-[0.12em] text-white/62 transition hover:border-white/25 hover:text-white"
+            >
+              全部旅程
+            </button>
+          </div>
         </div>
         <div className="rg-scroll flex gap-3 overflow-x-auto pb-2">
           {summaries.map((summary, index) => (
@@ -57,7 +82,11 @@ export default function JourneyArchive({ data, onOpenJourney }: Props) {
 
       {allOpen && (
         <JourneyArchiveDrawer
-          journeys={data.journeys}
+          summaries={allSummaries}
+          onNewJourney={() => {
+            setAllOpen(false)
+            onNewJourney()
+          }}
           onOpenJourney={(journeyId) => {
             setAllOpen(false)
             onOpenJourney(journeyId)
