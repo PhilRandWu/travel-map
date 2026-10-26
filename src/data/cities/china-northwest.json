@@ -1,0 +1,972 @@
+[
+  {
+    "city": {
+      "id": "lan-zhou",
+      "name": "兰州",
+      "lat": 36.058039,
+      "lng": 103.823557,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Lanzhou",
+    "aliases": [
+      "兰州",
+      "兰州市",
+      "lan-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "wu-lu-mu-qi",
+      "name": "乌鲁木齐",
+      "lat": 43.792818,
+      "lng": 87.617733,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Wulumuqi",
+    "aliases": [
+      "乌鲁木齐",
+      "乌鲁木齐市",
+      "wu-lu-mu-qi"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "xian",
+      "name": "西安",
+      "lat": 34.263161,
+      "lng": 108.948024,
+      "province": "陕西",
+      "country": "中国"
+    },
+    "nameEn": "Xian",
+    "aliases": [
+      "西安",
+      "西安市",
+      "xian"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "xi-ning",
+      "name": "西宁",
+      "lat": 36.623178,
+      "lng": 101.778916,
+      "province": "青海",
+      "country": "中国"
+    },
+    "nameEn": "Xining",
+    "aliases": [
+      "西宁",
+      "西宁市",
+      "xi-ning"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "yin-chuan",
+      "name": "银川",
+      "lat": 38.46637,
+      "lng": 106.278179,
+      "province": "宁夏回族自治区",
+      "country": "中国"
+    },
+    "nameEn": "Yinchuan",
+    "aliases": [
+      "银川",
+      "银川市",
+      "yin-chuan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "a-ke-su-di-qu",
+      "name": "阿克苏地区",
+      "lat": 41.170712,
+      "lng": 80.265068,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Akesudiqu",
+    "aliases": [
+      "阿克苏地区",
+      "阿克苏地区市",
+      "a-ke-su-di-qu"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "a-le-tai-di-qu",
+      "name": "阿勒泰地区",
+      "lat": 47.848393,
+      "lng": 88.13963,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Aletaidiqu",
+    "aliases": [
+      "阿勒泰地区",
+      "阿勒泰地区市",
+      "a-le-tai-di-qu"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "an-kang",
+      "name": "安康",
+      "lat": 32.6903,
+      "lng": 109.029273,
+      "province": "陕西",
+      "country": "中国"
+    },
+    "nameEn": "Ankang",
+    "aliases": [
+      "安康",
+      "安康市",
+      "an-kang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ba-yin-guo-leng-meng-gu-zi-zhi-zhou",
+      "name": "巴音郭楞蒙古自治州",
+      "lat": 41.768552,
+      "lng": 86.150969,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Bayinguolengmengguzizhizhou",
+    "aliases": [
+      "巴音郭楞蒙古自治州",
+      "巴音郭楞蒙古自治州市",
+      "ba-yin-guo-leng-meng-gu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "bai-yin",
+      "name": "白银",
+      "lat": 36.54568,
+      "lng": 104.173606,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Baiyin",
+    "aliases": [
+      "白银",
+      "白银市",
+      "bai-yin"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "bao-ji",
+      "name": "宝鸡",
+      "lat": 34.369315,
+      "lng": 107.14487,
+      "province": "陕西",
+      "country": "中国"
+    },
+    "nameEn": "Baoji",
+    "aliases": [
+      "宝鸡",
+      "宝鸡市",
+      "bao-ji"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "bo-er-ta-la-meng-gu-zi-zhi-zhou",
+      "name": "博尔塔拉蒙古自治州",
+      "lat": 44.903258,
+      "lng": 82.074778,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Boertalamengguzizhizhou",
+    "aliases": [
+      "博尔塔拉蒙古自治州",
+      "博尔塔拉蒙古自治州市",
+      "bo-er-ta-la-meng-gu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "chang-ji-hui-zu-zi-zhi-zhou",
+      "name": "昌吉回族自治州",
+      "lat": 44.014577,
+      "lng": 87.304012,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Changjihuizuzizhizhou",
+    "aliases": [
+      "昌吉回族自治州",
+      "昌吉回族自治州市",
+      "chang-ji-hui-zu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ding-xi",
+      "name": "定西",
+      "lat": 35.579578,
+      "lng": 104.626294,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Dingxi",
+    "aliases": [
+      "定西",
+      "定西市",
+      "ding-xi"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "gan-nan-zang-zu-zi-zhi-zhou",
+      "name": "甘南藏族自治州",
+      "lat": 34.986354,
+      "lng": 102.911008,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Gannanzangzuzizhizhou",
+    "aliases": [
+      "甘南藏族自治州",
+      "甘南藏族自治州市",
+      "gan-nan-zang-zu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "gu-yuan",
+      "name": "固原",
+      "lat": 36.004561,
+      "lng": 106.285241,
+      "province": "宁夏回族自治区",
+      "country": "中国"
+    },
+    "nameEn": "Guyuan",
+    "aliases": [
+      "固原",
+      "固原市",
+      "gu-yuan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "guo-luo-zang-zu-zi-zhi-zhou",
+      "name": "果洛藏族自治州",
+      "lat": 34.4736,
+      "lng": 100.242143,
+      "province": "青海",
+      "country": "中国"
+    },
+    "nameEn": "Guoluozangzuzizhizhou",
+    "aliases": [
+      "果洛藏族自治州",
+      "果洛藏族自治州市",
+      "guo-luo-zang-zu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ha-mi",
+      "name": "哈密",
+      "lat": 42.833248,
+      "lng": 93.51316,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Hami",
+    "aliases": [
+      "哈密",
+      "哈密市",
+      "ha-mi"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "hai-bei-zang-zu-zi-zhi-zhou",
+      "name": "海北藏族自治州",
+      "lat": 36.959435,
+      "lng": 100.901059,
+      "province": "青海",
+      "country": "中国"
+    },
+    "nameEn": "Haibeizangzuzizhizhou",
+    "aliases": [
+      "海北藏族自治州",
+      "海北藏族自治州市",
+      "hai-bei-zang-zu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "hai-dong",
+      "name": "海东",
+      "lat": 36.502916,
+      "lng": 102.10327,
+      "province": "青海",
+      "country": "中国"
+    },
+    "nameEn": "Haidong",
+    "aliases": [
+      "海东",
+      "海东市",
+      "hai-dong"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "hai-nan-zang-zu-zi-zhi-zhou",
+      "name": "海南藏族自治州",
+      "lat": 36.280353,
+      "lng": 100.619542,
+      "province": "青海",
+      "country": "中国"
+    },
+    "nameEn": "Hainanzangzuzizhizhou",
+    "aliases": [
+      "海南藏族自治州",
+      "海南藏族自治州市",
+      "hai-nan-zang-zu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "hai-xi-meng-gu-zu-zang-zu-zi-zhi-zhou",
+      "name": "海西蒙古族藏族自治州",
+      "lat": 37.374663,
+      "lng": 97.370785,
+      "province": "青海",
+      "country": "中国"
+    },
+    "nameEn": "Haiximengguzuzangzuzizhizhou",
+    "aliases": [
+      "海西蒙古族藏族自治州",
+      "海西蒙古族藏族自治州市",
+      "hai-xi-meng-gu-zu-zang-zu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "han-zhong",
+      "name": "汉中",
+      "lat": 33.077668,
+      "lng": 107.028621,
+      "province": "陕西",
+      "country": "中国"
+    },
+    "nameEn": "Hanzhong",
+    "aliases": [
+      "汉中",
+      "汉中市",
+      "han-zhong"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "he-tian-di-qu",
+      "name": "和田地区",
+      "lat": 37.110687,
+      "lng": 79.92533,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Hetiandiqu",
+    "aliases": [
+      "和田地区",
+      "和田地区市",
+      "he-tian-di-qu"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "huang-nan-zang-zu-zi-zhi-zhou",
+      "name": "黄南藏族自治州",
+      "lat": 35.517744,
+      "lng": 102.019988,
+      "province": "青海",
+      "country": "中国"
+    },
+    "nameEn": "Huangnanzangzuzizhizhou",
+    "aliases": [
+      "黄南藏族自治州",
+      "黄南藏族自治州市",
+      "huang-nan-zang-zu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jia-yu-guan",
+      "name": "嘉峪关",
+      "lat": 39.786529,
+      "lng": 98.277304,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Jiayuguan",
+    "aliases": [
+      "嘉峪关",
+      "嘉峪关市",
+      "jia-yu-guan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jin-chang",
+      "name": "金昌",
+      "lat": 38.514238,
+      "lng": 102.187888,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Jinchang",
+    "aliases": [
+      "金昌",
+      "金昌市",
+      "jin-chang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jiu-quan",
+      "name": "酒泉",
+      "lat": 39.744023,
+      "lng": 98.510795,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Jiuquan",
+    "aliases": [
+      "酒泉",
+      "酒泉市",
+      "jiu-quan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ka-shen-di-qu",
+      "name": "喀什地区",
+      "lat": 39.467664,
+      "lng": 75.989138,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Kashendiqu",
+    "aliases": [
+      "喀什地区",
+      "喀什地区市",
+      "ka-shen-di-qu"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ke-la-ma-yi",
+      "name": "克拉玛依",
+      "lat": 45.595886,
+      "lng": 84.873946,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Kelamayi",
+    "aliases": [
+      "克拉玛依",
+      "克拉玛依市",
+      "ke-la-ma-yi"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ke-zi-le-su-ke-er-ke-zi-zi-zhi-zhou",
+      "name": "克孜勒苏柯尔克孜自治州",
+      "lat": 39.713431,
+      "lng": 76.172825,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Kezilesukeerkezizizhizhou",
+    "aliases": [
+      "克孜勒苏柯尔克孜自治州",
+      "克孜勒苏柯尔克孜自治州市",
+      "ke-zi-le-su-ke-er-ke-zi-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "lin-xia-hui-zu-zi-zhi-zhou",
+      "name": "临夏回族自治州",
+      "lat": 35.599446,
+      "lng": 103.212006,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Linxiahuizuzizhizhou",
+    "aliases": [
+      "临夏回族自治州",
+      "临夏回族自治州市",
+      "lin-xia-hui-zu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "long-nan",
+      "name": "陇南",
+      "lat": 33.388598,
+      "lng": 104.929379,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Longnan",
+    "aliases": [
+      "陇南",
+      "陇南市",
+      "long-nan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ping-liang",
+      "name": "平凉",
+      "lat": 35.54279,
+      "lng": 106.684691,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Pingliang",
+    "aliases": [
+      "平凉",
+      "平凉市",
+      "ping-liang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "qing-yang",
+      "name": "庆阳",
+      "lat": 35.734218,
+      "lng": 107.638372,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Qingyang",
+    "aliases": [
+      "庆阳",
+      "庆阳市",
+      "qing-yang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "shang-luo",
+      "name": "商洛",
+      "lat": 33.868319,
+      "lng": 109.939776,
+      "province": "陕西",
+      "country": "中国"
+    },
+    "nameEn": "Shangluo",
+    "aliases": [
+      "商洛",
+      "商洛市",
+      "shang-luo"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "shi-zui-shan",
+      "name": "石嘴山",
+      "lat": 39.01333,
+      "lng": 106.376173,
+      "province": "宁夏回族自治区",
+      "country": "中国"
+    },
+    "nameEn": "Shizuishan",
+    "aliases": [
+      "石嘴山",
+      "石嘴山市",
+      "shi-zui-shan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ta-cheng-di-qu",
+      "name": "塔城地区",
+      "lat": 46.746301,
+      "lng": 82.985732,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Tachengdiqu",
+    "aliases": [
+      "塔城地区",
+      "塔城地区市",
+      "ta-cheng-di-qu"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tian-shui",
+      "name": "天水",
+      "lat": 34.578529,
+      "lng": 105.724998,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Tianshui",
+    "aliases": [
+      "天水",
+      "天水市",
+      "tian-shui"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tong-chuan",
+      "name": "铜川",
+      "lat": 34.916582,
+      "lng": 108.979608,
+      "province": "陕西",
+      "country": "中国"
+    },
+    "nameEn": "Tongchuan",
+    "aliases": [
+      "铜川",
+      "铜川市",
+      "tong-chuan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tu-lu-fan",
+      "name": "吐鲁番",
+      "lat": 42.947613,
+      "lng": 89.184078,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Tulufan",
+    "aliases": [
+      "吐鲁番",
+      "吐鲁番市",
+      "tu-lu-fan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "wei-nan",
+      "name": "渭南",
+      "lat": 34.499381,
+      "lng": 109.502882,
+      "province": "陕西",
+      "country": "中国"
+    },
+    "nameEn": "Weinan",
+    "aliases": [
+      "渭南",
+      "渭南市",
+      "wei-nan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "wu-zhong",
+      "name": "吴忠",
+      "lat": 37.986165,
+      "lng": 106.199409,
+      "province": "宁夏回族自治区",
+      "country": "中国"
+    },
+    "nameEn": "Wuzhong",
+    "aliases": [
+      "吴忠",
+      "吴忠市",
+      "wu-zhong"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "wu-wei",
+      "name": "武威",
+      "lat": 37.929996,
+      "lng": 102.634697,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Wuwei",
+    "aliases": [
+      "武威",
+      "武威市",
+      "wu-wei"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "xian-yang",
+      "name": "咸阳",
+      "lat": 34.333439,
+      "lng": 108.705117,
+      "province": "陕西",
+      "country": "中国"
+    },
+    "nameEn": "Xianyang",
+    "aliases": [
+      "咸阳",
+      "咸阳市",
+      "xian-yang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yan-an",
+      "name": "延安",
+      "lat": 36.596537,
+      "lng": 109.49081,
+      "province": "陕西",
+      "country": "中国"
+    },
+    "nameEn": "Yanan",
+    "aliases": [
+      "延安",
+      "延安市",
+      "yan-an"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yi-li-ha-sa-ke-zi-zhi-zhou",
+      "name": "伊犁哈萨克自治州",
+      "lat": 43.92186,
+      "lng": 81.317946,
+      "province": "新疆维吾尔自治区",
+      "country": "中国"
+    },
+    "nameEn": "Yilihasakezizhizhou",
+    "aliases": [
+      "伊犁哈萨克自治州",
+      "伊犁哈萨克自治州市",
+      "yi-li-ha-sa-ke-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yu-lin-2",
+      "name": "榆林",
+      "lat": 38.290162,
+      "lng": 109.741193,
+      "province": "陕西",
+      "country": "中国"
+    },
+    "nameEn": "Yulin",
+    "aliases": [
+      "榆林",
+      "榆林市",
+      "yu-lin",
+      "yu-lin-2"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yu-shu-zang-zu-zi-zhi-zhou",
+      "name": "玉树藏族自治州",
+      "lat": 33.004049,
+      "lng": 97.008522,
+      "province": "青海",
+      "country": "中国"
+    },
+    "nameEn": "Yushuzangzuzizhizhou",
+    "aliases": [
+      "玉树藏族自治州",
+      "玉树藏族自治州市",
+      "yu-shu-zang-zu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "zhang-ye",
+      "name": "张掖",
+      "lat": 38.932897,
+      "lng": 100.455472,
+      "province": "甘肃",
+      "country": "中国"
+    },
+    "nameEn": "Zhangye",
+    "aliases": [
+      "张掖",
+      "张掖市",
+      "zhang-ye"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "zhong-wei",
+      "name": "中卫",
+      "lat": 37.514951,
+      "lng": 105.189568,
+      "province": "宁夏回族自治区",
+      "country": "中国"
+    },
+    "nameEn": "Zhongwei",
+    "aliases": [
+      "中卫",
+      "中卫市",
+      "zhong-wei"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  }
+]

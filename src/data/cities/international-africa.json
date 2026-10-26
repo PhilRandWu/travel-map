@@ -1,0 +1,1208 @@
+[
+  {
+    "city": {
+      "id": "marrakesh-ma",
+      "name": "马拉喀什",
+      "lat": 31.631939,
+      "lng": -8.001933,
+      "province": "Marrakech - Tensift - Al Haouz",
+      "country": "摩洛哥"
+    },
+    "nameEn": "Marrakesh",
+    "aliases": [
+      "Marrakesh",
+      "马拉喀什",
+      "馬拉喀什",
+      "Marrakech",
+      "marrakesh-ma"
+    ],
+    "countryCode": "MA",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "zanzibar-tz",
+      "name": "桑给巴尔",
+      "lat": -6.16,
+      "lng": 39.200026,
+      "province": "Zanzibar West",
+      "country": "坦桑尼亚"
+    },
+    "nameEn": "Zanzibar City",
+    "aliases": [
+      "Zanzibar",
+      "Zanzibar City",
+      "桑给巴尔",
+      "桑给巴尔市",
+      "zanzibar-tz"
+    ],
+    "countryCode": "TZ",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "abidjan-ci",
+      "name": "阿比让",
+      "lat": 5.323126,
+      "lng": -4.020207,
+      "province": "Lagunes",
+      "country": "科特迪瓦"
+    },
+    "nameEn": "Abidjan",
+    "aliases": [
+      "Abidjan",
+      "阿比让",
+      "阿必尚",
+      "abidjan-ci"
+    ],
+    "countryCode": "CI",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "abuja-ng",
+      "name": "阿布贾",
+      "lat": 9.05462,
+      "lng": 7.489505,
+      "province": "Federal Capital Territory",
+      "country": "尼日利亚"
+    },
+    "nameEn": "Abuja",
+    "aliases": [
+      "Abuja",
+      "阿布贾",
+      "阿布加",
+      "abuja-ng"
+    ],
+    "countryCode": "NG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "algiers-dz",
+      "name": "阿尔及尔",
+      "lat": 36.765011,
+      "lng": 3.048607,
+      "province": "Alger",
+      "country": "阿尔及利亚"
+    },
+    "nameEn": "Algiers",
+    "aliases": [
+      "Algiers",
+      "阿尔及尔",
+      "阿爾及爾",
+      "El Djazacr",
+      "algiers-dz"
+    ],
+    "countryCode": "DZ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "accra-gh",
+      "name": "阿克拉",
+      "lat": 5.55198,
+      "lng": -0.218662,
+      "province": "Greater Accra",
+      "country": "加纳"
+    },
+    "nameEn": "Accra",
+    "aliases": [
+      "Accra",
+      "阿克拉",
+      "accra-gh"
+    ],
+    "countryCode": "GH",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "asmara-er",
+      "name": "阿斯马拉",
+      "lat": 15.333339,
+      "lng": 38.933324,
+      "province": "Anseba",
+      "country": "厄立特里亚"
+    },
+    "nameEn": "Asmara",
+    "aliases": [
+      "Asmara",
+      "阿斯马拉",
+      "阿斯馬拉",
+      "asmara-er"
+    ],
+    "countryCode": "ER",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bamako-ml",
+      "name": "巴马科",
+      "lat": 12.65196,
+      "lng": -8.001985,
+      "province": "Bamako",
+      "country": "马里"
+    },
+    "nameEn": "Bamako",
+    "aliases": [
+      "Bamako",
+      "巴马科",
+      "巴馬科",
+      "bamako-ml"
+    ],
+    "countryCode": "ML",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bangui-cf",
+      "name": "班吉",
+      "lat": 4.366644,
+      "lng": 18.558288,
+      "province": "Bangui",
+      "country": "中非共和国"
+    },
+    "nameEn": "Bangui",
+    "aliases": [
+      "Bangui",
+      "班吉",
+      "班基",
+      "bangui-cf"
+    ],
+    "countryCode": "CF",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "banjul-gm",
+      "name": "班竹",
+      "lat": 13.453876,
+      "lng": -16.591701,
+      "province": "Banjul",
+      "country": "冈比亚"
+    },
+    "nameEn": "Banjul",
+    "aliases": [
+      "Banjul",
+      "班竹",
+      "banjul-gm"
+    ],
+    "countryCode": "GM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "pretoria-za",
+      "name": "比勒陀利亚",
+      "lat": -25.704975,
+      "lng": 28.227483,
+      "province": "Gauteng",
+      "country": "南非"
+    },
+    "nameEn": "Pretoria",
+    "aliases": [
+      "Pretoria",
+      "比勒陀利亚",
+      "普利托利亞",
+      "pretoria-za"
+    ],
+    "countryCode": "ZA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bissau-gw",
+      "name": "比绍",
+      "lat": 11.865024,
+      "lng": -15.598361,
+      "province": "Bissau",
+      "country": "几内亚比绍"
+    },
+    "nameEn": "Bissau",
+    "aliases": [
+      "Bissau",
+      "比绍",
+      "比索",
+      "bissau-gw"
+    ],
+    "countryCode": "GW",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "brazzaville-cg",
+      "name": "布拉柴维尔",
+      "lat": -4.25724,
+      "lng": 15.282744,
+      "province": "Pool",
+      "country": "刚果"
+    },
+    "nameEn": "Brazzaville",
+    "aliases": [
+      "Brazzaville",
+      "布拉柴维尔",
+      "布拉柴維爾",
+      "brazzaville-cg"
+    ],
+    "countryCode": "CG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bloemfontein-za",
+      "name": "布隆方丹",
+      "lat": -29.119994,
+      "lng": 26.229913,
+      "province": "Orange Free State",
+      "country": "南非"
+    },
+    "nameEn": "Bloemfontein",
+    "aliases": [
+      "Bloemfontein",
+      "布隆方丹",
+      "bloemfontein-za"
+    ],
+    "countryCode": "ZA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bujumbura-bi",
+      "name": "布琼布拉",
+      "lat": -3.376087,
+      "lng": 29.360006,
+      "province": "Bujumbura Mairie",
+      "country": "布隆迪"
+    },
+    "nameEn": "Bujumbura",
+    "aliases": [
+      "Bujumbura",
+      "布琼布拉",
+      "bujumbura-bi"
+    ],
+    "countryCode": "BI",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "dakar-sn",
+      "name": "达喀尔",
+      "lat": 14.717778,
+      "lng": -17.475076,
+      "province": "Dakar",
+      "country": "塞内加尔"
+    },
+    "nameEn": "Dakar",
+    "aliases": [
+      "Dakar",
+      "达喀尔",
+      "達卡",
+      "dakar-sn"
+    ],
+    "countryCode": "SN",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tripoli-ly",
+      "name": "的黎波里",
+      "lat": 32.8925,
+      "lng": 13.180012,
+      "province": "Tajura' wa an Nawahi al Arba",
+      "country": "利比亚"
+    },
+    "nameEn": "Tripoli",
+    "aliases": [
+      "Tripoli",
+      "的黎波里",
+      "tripoli-ly"
+    ],
+    "countryCode": "LY",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "ndjamena-td",
+      "name": "恩贾梅纳",
+      "lat": 12.115042,
+      "lng": 15.047202,
+      "province": "Hadjer-Lamis",
+      "country": "乍得"
+    },
+    "nameEn": "N'Djamena",
+    "aliases": [
+      "N'Djamena",
+      "Ndjamena",
+      "恩贾梅纳",
+      "恩賈梅納",
+      "N'Djamnna",
+      "ndjamena-td"
+    ],
+    "countryCode": "TD",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "freetown-sl",
+      "name": "弗里敦",
+      "lat": 8.471957,
+      "lng": -13.236162,
+      "province": "Western",
+      "country": "塞拉利昂"
+    },
+    "nameEn": "Freetown",
+    "aliases": [
+      "Freetown",
+      "弗里敦",
+      "自由城",
+      "freetown-sl"
+    ],
+    "countryCode": "SL",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "hargeysa-xs",
+      "name": "哈尔格萨",
+      "lat": 9.560022,
+      "lng": 44.06531,
+      "province": "索马里兰",
+      "country": "索马里兰"
+    },
+    "nameEn": "Hargeisa",
+    "aliases": [
+      "Hargeisa",
+      "Hargeysa",
+      "哈尔格萨",
+      "哈爾格薩",
+      "hargeysa-xs"
+    ],
+    "countryCode": "XS",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "harare-zw",
+      "name": "哈拉雷",
+      "lat": -17.815844,
+      "lng": 31.042764,
+      "province": "Harare",
+      "country": "津巴布韦"
+    },
+    "nameEn": "Harare",
+    "aliases": [
+      "Harare",
+      "哈拉雷",
+      "harare-zw"
+    ],
+    "countryCode": "ZW",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "djibouti-dj",
+      "name": "吉布地",
+      "lat": 11.595014,
+      "lng": 43.148002,
+      "province": "Djibouti",
+      "country": "吉布提"
+    },
+    "nameEn": "Djibouti",
+    "aliases": [
+      "Djibouti",
+      "吉布地",
+      "吉布地市",
+      "djibouti-dj"
+    ],
+    "countryCode": "DJ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kigali-rw",
+      "name": "吉佳利",
+      "lat": -1.951644,
+      "lng": 30.058586,
+      "province": "Kigali City",
+      "country": "卢旺达"
+    },
+    "nameEn": "Kigali",
+    "aliases": [
+      "Kigali",
+      "吉佳利",
+      "kigali-rw"
+    ],
+    "countryCode": "RW",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "gaborone-bw",
+      "name": "嘉柏隆里",
+      "lat": -24.646314,
+      "lng": 25.911948,
+      "province": "South-East",
+      "country": "博茨瓦纳"
+    },
+    "nameEn": "Gaborone",
+    "aliases": [
+      "Gaborone",
+      "嘉柏隆里",
+      "gaborone-bw"
+    ],
+    "countryCode": "BW",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kinshasa-cd",
+      "name": "金沙萨",
+      "lat": -4.327778,
+      "lng": 15.313026,
+      "province": "Kinshasa City",
+      "country": "民主刚果"
+    },
+    "nameEn": "Kinshasa",
+    "aliases": [
+      "Kinshasa",
+      "金沙萨",
+      "金夏沙",
+      "kinshasa-cd"
+    ],
+    "countryCode": "CD",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "khartoum-sd",
+      "name": "喀土穆",
+      "lat": 15.590024,
+      "lng": 32.532233,
+      "province": "Khartoum",
+      "country": "苏丹"
+    },
+    "nameEn": "Khartoum",
+    "aliases": [
+      "Khartoum",
+      "喀土穆",
+      "卡土穆",
+      "Al-Khartum",
+      "khartoum-sd"
+    ],
+    "countryCode": "SD",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "cairo-eg",
+      "name": "开罗",
+      "lat": 30.051906,
+      "lng": 31.248022,
+      "province": "Al Qahirah",
+      "country": "埃及"
+    },
+    "nameEn": "Cairo",
+    "aliases": [
+      "Cairo",
+      "开罗",
+      "開羅",
+      "Al-Qahirah",
+      "cairo-eg"
+    ],
+    "countryCode": "EG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "cape-town-za",
+      "name": "开普敦",
+      "lat": -33.918065,
+      "lng": 18.433042,
+      "province": "Western Cape",
+      "country": "南非"
+    },
+    "nameEn": "Cape Town",
+    "aliases": [
+      "Cape Town",
+      "开普敦",
+      "開普敦",
+      "cape-town-za"
+    ],
+    "countryCode": "ZA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kampala-ug",
+      "name": "坎帕拉",
+      "lat": 0.318605,
+      "lng": 32.581378,
+      "province": "Kampala",
+      "country": "乌干达"
+    },
+    "nameEn": "Kampala",
+    "aliases": [
+      "Kampala",
+      "坎帕拉",
+      "康培拉",
+      "kampala-ug"
+    ],
+    "countryCode": "UG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "conakry-gn",
+      "name": "科纳克里",
+      "lat": 9.533469,
+      "lng": -13.682181,
+      "province": "Conakry",
+      "country": "几内亚"
+    },
+    "nameEn": "Conakry",
+    "aliases": [
+      "Conakry",
+      "科纳克里",
+      "柯那克里",
+      "conakry-gn"
+    ],
+    "countryCode": "GN",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "cotonou-bj",
+      "name": "科托努",
+      "lat": 6.36298,
+      "lng": 2.404355,
+      "province": "Ouémé",
+      "country": "贝宁"
+    },
+    "nameEn": "Cotonou",
+    "aliases": [
+      "Cotonou",
+      "科托努",
+      "cotonou-bj"
+    ],
+    "countryCode": "BJ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "rabat-ma",
+      "name": "拉巴特",
+      "lat": 34.025307,
+      "lng": -6.836408,
+      "province": "Rabat - Salé - Zemmour - Zaer",
+      "country": "摩洛哥"
+    },
+    "nameEn": "Rabat",
+    "aliases": [
+      "Rabat",
+      "拉巴特",
+      "rabat-ma"
+    ],
+    "countryCode": "MA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "libreville-ga",
+      "name": "利伯维尔",
+      "lat": 0.385389,
+      "lng": 9.457965,
+      "province": "Estuaire",
+      "country": "加蓬"
+    },
+    "nameEn": "Libreville",
+    "aliases": [
+      "Libreville",
+      "利伯维尔",
+      "自由市",
+      "libreville-ga"
+    ],
+    "countryCode": "GA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "lilongwe-mw",
+      "name": "利隆圭",
+      "lat": -13.983295,
+      "lng": 33.783302,
+      "province": "Lilongwe",
+      "country": "马拉维"
+    },
+    "nameEn": "Lilongwe",
+    "aliases": [
+      "Lilongwe",
+      "利隆圭",
+      "lilongwe-mw"
+    ],
+    "countryCode": "MW",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "lusaka-zm",
+      "name": "卢萨卡",
+      "lat": -15.414698,
+      "lng": 28.281382,
+      "province": "Lusaka",
+      "country": "赞比亚"
+    },
+    "nameEn": "Lusaka",
+    "aliases": [
+      "Lusaka",
+      "卢萨卡",
+      "路沙卡",
+      "lusaka-zm"
+    ],
+    "countryCode": "ZM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "port-louis-mu",
+      "name": "路易港",
+      "lat": -20.166639,
+      "lng": 57.499994,
+      "province": "毛里求斯",
+      "country": "毛里求斯"
+    },
+    "nameEn": "Port Louis",
+    "aliases": [
+      "Port Louis",
+      "路易港",
+      "port-louis-mu"
+    ],
+    "countryCode": "MU",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "luanda-ao",
+      "name": "罗安达",
+      "lat": -8.83634,
+      "lng": 13.232481,
+      "province": "Luanda",
+      "country": "安哥拉"
+    },
+    "nameEn": "Luanda",
+    "aliases": [
+      "Luanda",
+      "罗安达",
+      "羅安達",
+      "luanda-ao"
+    ],
+    "countryCode": "AO",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "lome-tg",
+      "name": "洛美",
+      "lat": 6.133883,
+      "lng": 1.220811,
+      "province": "Maritime",
+      "country": "多哥"
+    },
+    "nameEn": "Lomé",
+    "aliases": [
+      "Lomé",
+      "Lome",
+      "洛美",
+      "lome-tg"
+    ],
+    "countryCode": "TG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "malabo-gq",
+      "name": "马拉博",
+      "lat": 3.750015,
+      "lng": 8.783278,
+      "province": "Bioko Norte",
+      "country": "赤道几内亚"
+    },
+    "nameEn": "Malabo",
+    "aliases": [
+      "Malabo",
+      "马拉博",
+      "馬拉博",
+      "malabo-gq"
+    ],
+    "countryCode": "GQ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "maputo-mz",
+      "name": "马普托",
+      "lat": -25.953332,
+      "lng": 32.587217,
+      "province": "Maputo",
+      "country": "莫桑比克"
+    },
+    "nameEn": "Maputo",
+    "aliases": [
+      "Maputo",
+      "马普托",
+      "馬普托",
+      "maputo-mz"
+    ],
+    "countryCode": "MZ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "maseru-ls",
+      "name": "马塞卢",
+      "lat": -29.316674,
+      "lng": 27.483273,
+      "province": "Maseru",
+      "country": "莱索托"
+    },
+    "nameEn": "Maseru",
+    "aliases": [
+      "Maseru",
+      "马塞卢",
+      "maseru-ls"
+    ],
+    "countryCode": "LS",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "monrovia-lr",
+      "name": "蒙罗维亚",
+      "lat": 6.314582,
+      "lng": -10.79966,
+      "province": "Montserrado",
+      "country": "利比里亚"
+    },
+    "nameEn": "Monrovia",
+    "aliases": [
+      "Monrovia",
+      "蒙罗维亚",
+      "蒙羅維亞",
+      "monrovia-lr"
+    ],
+    "countryCode": "LR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "mogadishu-so",
+      "name": "摩加迪休",
+      "lat": 2.068627,
+      "lng": 45.364732,
+      "province": "Banaadir",
+      "country": "索马里"
+    },
+    "nameEn": "Mogadishu",
+    "aliases": [
+      "Mogadishu",
+      "摩加迪休",
+      "Muqdisho",
+      "mogadishu-so"
+    ],
+    "countryCode": "SO",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "moroni-km",
+      "name": "莫洛尼",
+      "lat": -11.704158,
+      "lng": 43.240244,
+      "province": "科摩罗",
+      "country": "科摩罗"
+    },
+    "nameEn": "Moroni",
+    "aliases": [
+      "Moroni",
+      "莫洛尼",
+      "moroni-km"
+    ],
+    "countryCode": "KM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "mbabane-sz",
+      "name": "墨巴本",
+      "lat": -26.316651,
+      "lng": 31.133335,
+      "province": "Hhohho",
+      "country": "斯威士兰"
+    },
+    "nameEn": "Mbabane",
+    "aliases": [
+      "Mbabane",
+      "墨巴本",
+      "mbabane-sz"
+    ],
+    "countryCode": "SZ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "nairobi-ke",
+      "name": "内罗毕",
+      "lat": -1.281401,
+      "lng": 36.814711,
+      "province": "Nairobi",
+      "country": "肯尼亚"
+    },
+    "nameEn": "Nairobi",
+    "aliases": [
+      "Nairobi",
+      "内罗毕",
+      "奈洛比",
+      "nairobi-ke"
+    ],
+    "countryCode": "KE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "niamey-ne",
+      "name": "尼亚美",
+      "lat": 13.518652,
+      "lng": 2.11471,
+      "province": "Niamey",
+      "country": "尼日尔"
+    },
+    "nameEn": "Niamey",
+    "aliases": [
+      "Niamey",
+      "尼亚美",
+      "尼阿美",
+      "niamey-ne"
+    ],
+    "countryCode": "NE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "nouakchott-mr",
+      "name": "努瓦克肖特",
+      "lat": 18.086427,
+      "lng": -15.97534,
+      "province": "Nouakchott",
+      "country": "毛里塔尼亚"
+    },
+    "nameEn": "Nouakchott",
+    "aliases": [
+      "Nouakchott",
+      "努瓦克肖特",
+      "nouakchott-mr"
+    ],
+    "countryCode": "MR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "praia-cv",
+      "name": "培亞",
+      "lat": 14.916698,
+      "lng": -23.516689,
+      "province": "佛得角",
+      "country": "佛得角"
+    },
+    "nameEn": "Praia",
+    "aliases": [
+      "Praia",
+      "培亞",
+      "praia-cv"
+    ],
+    "countryCode": "CV",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "dar-es-salaam-tz",
+      "name": "三蘭港",
+      "lat": -6.798067,
+      "lng": 39.266396,
+      "province": "Dar-Es-Salaam",
+      "country": "坦桑尼亚"
+    },
+    "nameEn": "Dar es Salaam",
+    "aliases": [
+      "Dar es Salaam",
+      "三蘭港",
+      "dar-es-salaam-tz"
+    ],
+    "countryCode": "TZ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "sao-tome-st",
+      "name": "圣多美",
+      "lat": 0.337466,
+      "lng": 6.72965,
+      "province": "圣多美和普林西比",
+      "country": "圣多美和普林西比"
+    },
+    "nameEn": "São Tomé",
+    "aliases": [
+      "São Tomé",
+      "Sao Tome",
+      "圣多美",
+      "sao-tome-st"
+    ],
+    "countryCode": "ST",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "antananarivo-mg",
+      "name": "塔那那利佛",
+      "lat": -18.914691,
+      "lng": 47.514678,
+      "province": "Antananarivo",
+      "country": "马达加斯加"
+    },
+    "nameEn": "Antananarivo",
+    "aliases": [
+      "Antananarivo",
+      "塔那那利佛",
+      "安塔那那利佛",
+      "antananarivo-mg"
+    ],
+    "countryCode": "MG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tunis-tn",
+      "name": "突尼斯",
+      "lat": 36.802778,
+      "lng": 10.179678,
+      "province": "Tunis",
+      "country": "突尼斯"
+    },
+    "nameEn": "Tunis",
+    "aliases": [
+      "Tunis",
+      "突尼斯",
+      "突尼斯市",
+      "tunis-tn"
+    ],
+    "countryCode": "TN",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "ouagadougou-bf",
+      "name": "瓦加杜古",
+      "lat": 12.372262,
+      "lng": -1.52667,
+      "province": "Kadiogo",
+      "country": "布基纳法索"
+    },
+    "nameEn": "Ouagadougou",
+    "aliases": [
+      "Ouagadougou",
+      "瓦加杜古",
+      "ouagadougou-bf"
+    ],
+    "countryCode": "BF",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "victoria-sc",
+      "name": "維多利亞",
+      "lat": -4.616632,
+      "lng": 55.44999,
+      "province": "塞舌尔",
+      "country": "塞舌尔"
+    },
+    "nameEn": "Victoria",
+    "aliases": [
+      "Victoria",
+      "維多利亞",
+      "victoria-sc"
+    ],
+    "countryCode": "SC",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "windhoek-na",
+      "name": "温得和克",
+      "lat": -22.570006,
+      "lng": 17.083546,
+      "province": "Khomas",
+      "country": "纳米比亚"
+    },
+    "nameEn": "Windhoek",
+    "aliases": [
+      "Windhoek",
+      "温得和克",
+      "溫得和克",
+      "windhoek-na"
+    ],
+    "countryCode": "NA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "yaounde-cm",
+      "name": "雅温得",
+      "lat": 3.868647,
+      "lng": 11.514705,
+      "province": "Centre",
+      "country": "喀麦隆"
+    },
+    "nameEn": "Yaoundé",
+    "aliases": [
+      "Yaoundé",
+      "Yaounde",
+      "雅温得",
+      "yaounde-cm"
+    ],
+    "countryCode": "CM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "addis-ababa-et",
+      "name": "亚的斯亚贝巴",
+      "lat": 9.035256,
+      "lng": 38.698059,
+      "province": "Addis Ababa",
+      "country": "埃塞俄比亚"
+    },
+    "nameEn": "Addis Ababa",
+    "aliases": [
+      "Addis Ababa",
+      "亚的斯亚贝巴",
+      "阿迪斯阿貝巴",
+      "addis-ababa-et"
+    ],
+    "countryCode": "ET",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "yamoussoukro-ci",
+      "name": "亚穆苏克罗",
+      "lat": 6.818381,
+      "lng": -5.275503,
+      "province": "Lacs",
+      "country": "科特迪瓦"
+    },
+    "nameEn": "Yamoussoukro",
+    "aliases": [
+      "Yamoussoukro",
+      "亚穆苏克罗",
+      "yamoussoukro-ci"
+    ],
+    "countryCode": "CI",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "johannesburg-za",
+      "name": "约翰内斯堡",
+      "lat": -26.168099,
+      "lng": 28.028064,
+      "province": "Gauteng",
+      "country": "南非"
+    },
+    "nameEn": "Johannesburg",
+    "aliases": [
+      "Johannesburg",
+      "约翰内斯堡",
+      "約翰尼斯堡",
+      "johannesburg-za"
+    ],
+    "countryCode": "ZA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "juba-ss",
+      "name": "朱巴",
+      "lat": 4.829975,
+      "lng": 31.580026,
+      "province": "Central Equatoria",
+      "country": "南苏丹"
+    },
+    "nameEn": "Juba",
+    "aliases": [
+      "Juba",
+      "朱巴",
+      "juba-ss"
+    ],
+    "countryCode": "SS",
+    "kind": "capital",
+    "priority": 70
+  }
+]

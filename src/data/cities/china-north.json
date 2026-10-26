@@ -1,0 +1,686 @@
+[
+  {
+    "city": {
+      "id": "beijing",
+      "name": "北京",
+      "lat": 39.904989,
+      "lng": 116.405285,
+      "province": "北京",
+      "country": "中国"
+    },
+    "nameEn": "Beijing",
+    "aliases": [
+      "北京",
+      "北京市",
+      "beijing"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 100
+  },
+  {
+    "city": {
+      "id": "tian-jin",
+      "name": "天津",
+      "lat": 39.125596,
+      "lng": 117.190182,
+      "province": "天津",
+      "country": "中国"
+    },
+    "nameEn": "Tianjin",
+    "aliases": [
+      "天津",
+      "天津市",
+      "tian-jin"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 100
+  },
+  {
+    "city": {
+      "id": "hu-he-hao-te",
+      "name": "呼和浩特",
+      "lat": 40.818311,
+      "lng": 111.670801,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Huhehaote",
+    "aliases": [
+      "呼和浩特",
+      "呼和浩特市",
+      "hu-he-hao-te"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "shi-jia-zhuang",
+      "name": "石家庄",
+      "lat": 38.045474,
+      "lng": 114.502461,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Shijiazhuang",
+    "aliases": [
+      "石家庄",
+      "石家庄市",
+      "shi-jia-zhuang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "tai-yuan",
+      "name": "太原",
+      "lat": 37.857014,
+      "lng": 112.549248,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Taiyuan",
+    "aliases": [
+      "太原",
+      "太原市",
+      "tai-yuan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "a-la-shan-meng",
+      "name": "阿拉善盟",
+      "lat": 38.844814,
+      "lng": 105.706422,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Alashanmeng",
+    "aliases": [
+      "阿拉善盟",
+      "阿拉善盟市",
+      "a-la-shan-meng"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ba-yan-nao-er",
+      "name": "巴彦淖尔",
+      "lat": 40.757402,
+      "lng": 107.416959,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Bayannaoer",
+    "aliases": [
+      "巴彦淖尔",
+      "巴彦淖尔市",
+      "ba-yan-nao-er"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "bao-tou",
+      "name": "包头",
+      "lat": 40.658168,
+      "lng": 109.840405,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Baotou",
+    "aliases": [
+      "包头",
+      "包头市",
+      "bao-tou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "bao-ding",
+      "name": "保定",
+      "lat": 38.867657,
+      "lng": 115.482331,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Baoding",
+    "aliases": [
+      "保定",
+      "保定市",
+      "bao-ding"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "cang-zhou",
+      "name": "沧州",
+      "lat": 38.310582,
+      "lng": 116.857461,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Cangzhou",
+    "aliases": [
+      "沧州",
+      "沧州市",
+      "cang-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "cheng-de",
+      "name": "承德",
+      "lat": 40.976204,
+      "lng": 117.939152,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Chengde",
+    "aliases": [
+      "承德",
+      "承德市",
+      "cheng-de"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "chi-feng",
+      "name": "赤峰",
+      "lat": 42.275317,
+      "lng": 118.956806,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Chifeng",
+    "aliases": [
+      "赤峰",
+      "赤峰市",
+      "chi-feng"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "da-tong",
+      "name": "大同",
+      "lat": 40.09031,
+      "lng": 113.295259,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Datong",
+    "aliases": [
+      "大同",
+      "大同市",
+      "da-tong"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "e-er-duo-si",
+      "name": "鄂尔多斯",
+      "lat": 39.817179,
+      "lng": 109.99029,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Eerduosi",
+    "aliases": [
+      "鄂尔多斯",
+      "鄂尔多斯市",
+      "e-er-duo-si"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "han-dan",
+      "name": "邯郸",
+      "lat": 36.612273,
+      "lng": 114.490686,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Handan",
+    "aliases": [
+      "邯郸",
+      "邯郸市",
+      "han-dan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "heng-shui",
+      "name": "衡水",
+      "lat": 37.735097,
+      "lng": 115.665993,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Hengshui",
+    "aliases": [
+      "衡水",
+      "衡水市",
+      "heng-shui"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "hu-lun-bei-er",
+      "name": "呼伦贝尔",
+      "lat": 49.215333,
+      "lng": 119.758168,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Hulunbeier",
+    "aliases": [
+      "呼伦贝尔",
+      "呼伦贝尔市",
+      "hu-lun-bei-er"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jin-cheng",
+      "name": "晋城",
+      "lat": 35.497553,
+      "lng": 112.851274,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Jincheng",
+    "aliases": [
+      "晋城",
+      "晋城市",
+      "jin-cheng"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jin-zhong",
+      "name": "晋中",
+      "lat": 37.696495,
+      "lng": 112.736465,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Jinzhong",
+    "aliases": [
+      "晋中",
+      "晋中市",
+      "jin-zhong"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "lang-fang",
+      "name": "廊坊",
+      "lat": 39.523927,
+      "lng": 116.704441,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Langfang",
+    "aliases": [
+      "廊坊",
+      "廊坊市",
+      "lang-fang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "lin-fen",
+      "name": "临汾",
+      "lat": 36.08415,
+      "lng": 111.517973,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Linfen",
+    "aliases": [
+      "临汾",
+      "临汾市",
+      "lin-fen"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "lu-liang",
+      "name": "吕梁",
+      "lat": 37.524366,
+      "lng": 111.134335,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Lliang",
+    "aliases": [
+      "吕梁",
+      "吕梁市",
+      "lu-liang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "qin-huang-dao",
+      "name": "秦皇岛",
+      "lat": 39.942531,
+      "lng": 119.586579,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Qinhuangdao",
+    "aliases": [
+      "秦皇岛",
+      "秦皇岛市",
+      "qin-huang-dao"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "shuo-zhou",
+      "name": "朔州",
+      "lat": 39.331261,
+      "lng": 112.433387,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Shuozhou",
+    "aliases": [
+      "朔州",
+      "朔州市",
+      "shuo-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tang-shan",
+      "name": "唐山",
+      "lat": 39.635113,
+      "lng": 118.175393,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Tangshan",
+    "aliases": [
+      "唐山",
+      "唐山市",
+      "tang-shan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tong-liao",
+      "name": "通辽",
+      "lat": 43.617429,
+      "lng": 122.263119,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Tongliao",
+    "aliases": [
+      "通辽",
+      "通辽市",
+      "tong-liao"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "wu-hai",
+      "name": "乌海",
+      "lat": 39.673734,
+      "lng": 106.825563,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Wuhai",
+    "aliases": [
+      "乌海",
+      "乌海市",
+      "wu-hai"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "wu-lan-cha-bu",
+      "name": "乌兰察布",
+      "lat": 41.034126,
+      "lng": 113.114543,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Wulanchabu",
+    "aliases": [
+      "乌兰察布",
+      "乌兰察布市",
+      "wu-lan-cha-bu"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "xi-lin-guo-le-meng",
+      "name": "锡林郭勒盟",
+      "lat": 43.944018,
+      "lng": 116.090996,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Xilinguolemeng",
+    "aliases": [
+      "锡林郭勒盟",
+      "锡林郭勒盟市",
+      "xi-lin-guo-le-meng"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "xin-zhou",
+      "name": "忻州",
+      "lat": 38.41769,
+      "lng": 112.733538,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Xinzhou",
+    "aliases": [
+      "忻州",
+      "忻州市",
+      "xin-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "xing-tai",
+      "name": "邢台",
+      "lat": 37.0682,
+      "lng": 114.508851,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Xingtai",
+    "aliases": [
+      "邢台",
+      "邢台市",
+      "xing-tai"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "xing-an-meng",
+      "name": "兴安盟",
+      "lat": 46.076268,
+      "lng": 122.070317,
+      "province": "内蒙古自治区",
+      "country": "中国"
+    },
+    "nameEn": "Xinganmeng",
+    "aliases": [
+      "兴安盟",
+      "兴安盟市",
+      "xing-an-meng"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yang-quan",
+      "name": "阳泉",
+      "lat": 37.861188,
+      "lng": 113.583285,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Yangquan",
+    "aliases": [
+      "阳泉",
+      "阳泉市",
+      "yang-quan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yun-cheng",
+      "name": "运城",
+      "lat": 35.022778,
+      "lng": 111.003957,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Yuncheng",
+    "aliases": [
+      "运城",
+      "运城市",
+      "yun-cheng"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "zhang-jia-kou",
+      "name": "张家口",
+      "lat": 40.811901,
+      "lng": 114.884091,
+      "province": "河北",
+      "country": "中国"
+    },
+    "nameEn": "Zhangjiakou",
+    "aliases": [
+      "张家口",
+      "张家口市",
+      "zhang-jia-kou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "chang-zhi",
+      "name": "长治",
+      "lat": 36.191112,
+      "lng": 113.113556,
+      "province": "山西",
+      "country": "中国"
+    },
+    "nameEn": "Changzhi",
+    "aliases": [
+      "长治",
+      "长治市",
+      "chang-zhi"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  }
+]

@@ -1,0 +1,686 @@
+[
+  {
+    "city": {
+      "id": "ha-er-bin",
+      "name": "哈尔滨",
+      "lat": 45.756967,
+      "lng": 126.642464,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Haerbin",
+    "aliases": [
+      "哈尔滨",
+      "哈尔滨市",
+      "ha-er-bin"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "shen-yang",
+      "name": "沈阳",
+      "lat": 41.796767,
+      "lng": 123.429096,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Shenyang",
+    "aliases": [
+      "沈阳",
+      "沈阳市",
+      "shen-yang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "changchun",
+      "name": "长春",
+      "lat": 43.886841,
+      "lng": 125.3245,
+      "province": "吉林",
+      "country": "中国"
+    },
+    "nameEn": "Changchun",
+    "aliases": [
+      "长春",
+      "长春市",
+      "changchun"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "an-shan",
+      "name": "鞍山",
+      "lat": 41.110626,
+      "lng": 122.995632,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Anshan",
+    "aliases": [
+      "鞍山",
+      "鞍山市",
+      "an-shan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "bai-cheng",
+      "name": "白城",
+      "lat": 45.619026,
+      "lng": 122.841114,
+      "province": "吉林",
+      "country": "中国"
+    },
+    "nameEn": "Baicheng",
+    "aliases": [
+      "白城",
+      "白城市",
+      "bai-cheng"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "bai-shan",
+      "name": "白山",
+      "lat": 41.942505,
+      "lng": 126.427839,
+      "province": "吉林",
+      "country": "中国"
+    },
+    "nameEn": "Baishan",
+    "aliases": [
+      "白山",
+      "白山市",
+      "bai-shan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ben-xi",
+      "name": "本溪",
+      "lat": 41.297909,
+      "lng": 123.770519,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Benxi",
+    "aliases": [
+      "本溪",
+      "本溪市",
+      "ben-xi"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "chao-yang",
+      "name": "朝阳",
+      "lat": 41.576758,
+      "lng": 120.451176,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Chaoyang",
+    "aliases": [
+      "朝阳",
+      "朝阳市",
+      "chao-yang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "da-lian",
+      "name": "大连",
+      "lat": 38.91459,
+      "lng": 121.618622,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Dalian",
+    "aliases": [
+      "大连",
+      "大连市",
+      "da-lian"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "da-qing",
+      "name": "大庆",
+      "lat": 46.590734,
+      "lng": 125.11272,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Daqing",
+    "aliases": [
+      "大庆",
+      "大庆市",
+      "da-qing"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "da-xing-an-ling-di-qu",
+      "name": "大兴安岭地区",
+      "lat": 52.335262,
+      "lng": 124.711526,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Daxinganlingdiqu",
+    "aliases": [
+      "大兴安岭地区",
+      "大兴安岭地区市",
+      "da-xing-an-ling-di-qu"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "dan-dong",
+      "name": "丹东",
+      "lat": 40.124296,
+      "lng": 124.383044,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Dandong",
+    "aliases": [
+      "丹东",
+      "丹东市",
+      "dan-dong"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "fu-shun",
+      "name": "抚顺",
+      "lat": 41.875956,
+      "lng": 123.921109,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Fushun",
+    "aliases": [
+      "抚顺",
+      "抚顺市",
+      "fu-shun"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "fu-xin",
+      "name": "阜新",
+      "lat": 42.011796,
+      "lng": 121.648962,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Fuxin",
+    "aliases": [
+      "阜新",
+      "阜新市",
+      "fu-xin"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "he-gang",
+      "name": "鹤岗",
+      "lat": 47.332085,
+      "lng": 130.277487,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Hegang",
+    "aliases": [
+      "鹤岗",
+      "鹤岗市",
+      "he-gang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "hei-he",
+      "name": "黑河",
+      "lat": 50.249585,
+      "lng": 127.499023,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Heihe",
+    "aliases": [
+      "黑河",
+      "黑河市",
+      "hei-he"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "hu-lu-dao",
+      "name": "葫芦岛",
+      "lat": 40.755572,
+      "lng": 120.856394,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Huludao",
+    "aliases": [
+      "葫芦岛",
+      "葫芦岛市",
+      "hu-lu-dao"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ji-xi",
+      "name": "鸡西",
+      "lat": 45.300046,
+      "lng": 130.975966,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Jixi",
+    "aliases": [
+      "鸡西",
+      "鸡西市",
+      "ji-xi"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ji-lin",
+      "name": "吉林",
+      "lat": 43.843577,
+      "lng": 126.55302,
+      "province": "吉林",
+      "country": "中国"
+    },
+    "nameEn": "Jilin",
+    "aliases": [
+      "吉林",
+      "吉林市",
+      "ji-lin"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jia-mu-si",
+      "name": "佳木斯",
+      "lat": 46.809606,
+      "lng": 130.361634,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Jiamusi",
+    "aliases": [
+      "佳木斯",
+      "佳木斯市",
+      "jia-mu-si"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jin-zhou",
+      "name": "锦州",
+      "lat": 41.119269,
+      "lng": 121.135742,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Jinzhou",
+    "aliases": [
+      "锦州",
+      "锦州市",
+      "jin-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "liao-yang",
+      "name": "辽阳",
+      "lat": 41.269402,
+      "lng": 123.18152,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Liaoyang",
+    "aliases": [
+      "辽阳",
+      "辽阳市",
+      "liao-yang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "liao-yuan",
+      "name": "辽源",
+      "lat": 42.902692,
+      "lng": 125.145349,
+      "province": "吉林",
+      "country": "中国"
+    },
+    "nameEn": "Liaoyuan",
+    "aliases": [
+      "辽源",
+      "辽源市",
+      "liao-yuan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "mu-dan-jiang",
+      "name": "牡丹江",
+      "lat": 44.582962,
+      "lng": 129.618602,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Mudanjiang",
+    "aliases": [
+      "牡丹江",
+      "牡丹江市",
+      "mu-dan-jiang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "pan-jin",
+      "name": "盘锦",
+      "lat": 41.124484,
+      "lng": 122.06957,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Panjin",
+    "aliases": [
+      "盘锦",
+      "盘锦市",
+      "pan-jin"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "qi-tai-he",
+      "name": "七台河",
+      "lat": 45.771266,
+      "lng": 131.015584,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Qitaihe",
+    "aliases": [
+      "七台河",
+      "七台河市",
+      "qi-tai-he"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "qi-qi-ha-er",
+      "name": "齐齐哈尔",
+      "lat": 47.342081,
+      "lng": 123.95792,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Qiqihaer",
+    "aliases": [
+      "齐齐哈尔",
+      "齐齐哈尔市",
+      "qi-qi-ha-er"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "shuang-ya-shan",
+      "name": "双鸭山",
+      "lat": 46.643442,
+      "lng": 131.157304,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Shuangyashan",
+    "aliases": [
+      "双鸭山",
+      "双鸭山市",
+      "shuang-ya-shan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "si-ping",
+      "name": "四平",
+      "lat": 43.170344,
+      "lng": 124.370785,
+      "province": "吉林",
+      "country": "中国"
+    },
+    "nameEn": "Siping",
+    "aliases": [
+      "四平",
+      "四平市",
+      "si-ping"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "song-yuan",
+      "name": "松原",
+      "lat": 45.118243,
+      "lng": 124.823608,
+      "province": "吉林",
+      "country": "中国"
+    },
+    "nameEn": "Songyuan",
+    "aliases": [
+      "松原",
+      "松原市",
+      "song-yuan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "sui-hua",
+      "name": "绥化",
+      "lat": 46.637393,
+      "lng": 126.99293,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Suihua",
+    "aliases": [
+      "绥化",
+      "绥化市",
+      "sui-hua"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tie-ling",
+      "name": "铁岭",
+      "lat": 42.290585,
+      "lng": 123.844279,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Tieling",
+    "aliases": [
+      "铁岭",
+      "铁岭市",
+      "tie-ling"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tong-hua",
+      "name": "通化",
+      "lat": 41.721177,
+      "lng": 125.936501,
+      "province": "吉林",
+      "country": "中国"
+    },
+    "nameEn": "Tonghua",
+    "aliases": [
+      "通化",
+      "通化市",
+      "tong-hua"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yan-bian-chao-xian-zu-zi-zhi-zhou",
+      "name": "延边朝鲜族自治州",
+      "lat": 42.904823,
+      "lng": 129.513228,
+      "province": "吉林",
+      "country": "中国"
+    },
+    "nameEn": "Yanbianchaoxianzuzizhizhou",
+    "aliases": [
+      "延边朝鲜族自治州",
+      "延边朝鲜族自治州市",
+      "yan-bian-chao-xian-zu-zi-zhi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yi-chun",
+      "name": "伊春",
+      "lat": 47.724775,
+      "lng": 128.899396,
+      "province": "黑龙江",
+      "country": "中国"
+    },
+    "nameEn": "Yichun",
+    "aliases": [
+      "伊春",
+      "伊春市",
+      "yi-chun"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ying-kou",
+      "name": "营口",
+      "lat": 40.667432,
+      "lng": 122.235151,
+      "province": "辽宁",
+      "country": "中国"
+    },
+    "nameEn": "Yingkou",
+    "aliases": [
+      "营口",
+      "营口市",
+      "ying-kou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  }
+]

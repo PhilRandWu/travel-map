@@ -1,0 +1,1291 @@
+[
+  {
+    "city": {
+      "id": "antalya-tr",
+      "name": "安塔利亚",
+      "lat": 36.891928,
+      "lng": 30.69803,
+      "province": "Antalya",
+      "country": "土耳其"
+    },
+    "nameEn": "Antalya",
+    "aliases": [
+      "Antalya",
+      "安塔利亚",
+      "安塔利亞",
+      "antalya-tr"
+    ],
+    "countryCode": "TR",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "bengaluru-in",
+      "name": "班加罗尔",
+      "lat": 12.971941,
+      "lng": 77.558064,
+      "province": "Karnataka",
+      "country": "印度"
+    },
+    "nameEn": "Bengaluru",
+    "aliases": [
+      "Bengaluru",
+      "班加罗尔",
+      "邦加羅爾",
+      "Bangalore",
+      "bengaluru-in"
+    ],
+    "countryCode": "IN",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "osaka-jp",
+      "name": "大阪",
+      "lat": 34.691095,
+      "lng": 135.503754,
+      "province": "Osaka",
+      "country": "日本"
+    },
+    "nameEn": "Osaka",
+    "aliases": [
+      "Ōsaka",
+      "Osaka",
+      "大阪",
+      "大阪市",
+      "Osaka-Kobe",
+      "osaka-jp"
+    ],
+    "countryCode": "JP",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "delhi-in",
+      "name": "德里",
+      "lat": 28.671939,
+      "lng": 77.228058,
+      "province": "Delhi",
+      "country": "印度"
+    },
+    "nameEn": "Delhi",
+    "aliases": [
+      "Delhi",
+      "德里",
+      "delhi-in"
+    ],
+    "countryCode": "IN",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "kuta-id",
+      "name": "登巴萨",
+      "lat": -8.715113,
+      "lng": 115.184121,
+      "province": "Bali",
+      "country": "印度尼西亚"
+    },
+    "nameEn": "Denpasar",
+    "aliases": [
+      "Kuta",
+      "Denpasar",
+      "登巴萨",
+      "丹帕沙",
+      "kuta-id"
+    ],
+    "countryCode": "ID",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "dubai-ae",
+      "name": "迪拜",
+      "lat": 25.214912,
+      "lng": 55.286946,
+      "province": "Dubay",
+      "country": "阿拉伯联合酋长国"
+    },
+    "nameEn": "Dubai",
+    "aliases": [
+      "Dubai",
+      "迪拜",
+      "Dubayy",
+      "dubai-ae"
+    ],
+    "countryCode": "AE",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "busan-kr",
+      "name": "釜山",
+      "lat": 35.096999,
+      "lng": 129.008102,
+      "province": "Busan",
+      "country": "韩国"
+    },
+    "nameEn": "Busan",
+    "aliases": [
+      "Busan",
+      "釜山",
+      "釜山廣域市",
+      "Pusan",
+      "busan-kr"
+    ],
+    "countryCode": "KR",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "ho-chi-minh-city-vn",
+      "name": "胡志明",
+      "lat": 10.762125,
+      "lng": 106.702985,
+      "province": "H? Chí Minh city",
+      "country": "越南"
+    },
+    "nameEn": "Ho Chi Minh City",
+    "aliases": [
+      "Ho Chi Minh City",
+      "胡志明",
+      "胡志明市",
+      "Th nh Pho Ho Chy Minh",
+      "ho-chi-minh-city-vn"
+    ],
+    "countryCode": "VN",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "jeddah-sa",
+      "name": "吉达",
+      "lat": 21.518835,
+      "lng": 39.217252,
+      "province": "Makkah",
+      "country": "沙特阿拉伯"
+    },
+    "nameEn": "Jeddah",
+    "aliases": [
+      "Jeddah",
+      "吉达",
+      "吉達",
+      "Jiddah",
+      "jeddah-sa"
+    ],
+    "countryCode": "SA",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "jeju-kr",
+      "name": "济州",
+      "lat": 33.510137,
+      "lng": 126.521931,
+      "province": "Jeju",
+      "country": "韩国"
+    },
+    "nameEn": "Jeju",
+    "aliases": [
+      "Jeju",
+      "济州",
+      "Cheju",
+      "jeju-kr"
+    ],
+    "countryCode": "KR",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "kolkata-in",
+      "name": "加尔各答",
+      "lat": 22.569579,
+      "lng": 88.369126,
+      "province": "West Bengal",
+      "country": "印度"
+    },
+    "nameEn": "Kolkata",
+    "aliases": [
+      "Kolkata",
+      "加尔各答",
+      "加爾各答",
+      "Calcutta",
+      "kolkata-in"
+    ],
+    "countryCode": "IN",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "kyoto-jp",
+      "name": "京都",
+      "lat": 35.031938,
+      "lng": 135.748052,
+      "province": "Kyoto",
+      "country": "日本"
+    },
+    "nameEn": "Kyoto",
+    "aliases": [
+      "Kyoto",
+      "京都",
+      "京都市",
+      "kyoto-jp"
+    ],
+    "countryCode": "JP",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "mumbai-in",
+      "name": "孟买",
+      "lat": 19.068408,
+      "lng": 72.875839,
+      "province": "Maharashtra",
+      "country": "印度"
+    },
+    "nameEn": "Mumbai",
+    "aliases": [
+      "Mumbai",
+      "孟买",
+      "孟買",
+      "Bombay",
+      "mumbai-in"
+    ],
+    "countryCode": "IN",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "nagoya-jp",
+      "name": "名古屋",
+      "lat": 35.156943,
+      "lng": 136.913046,
+      "province": "Aichi",
+      "country": "日本"
+    },
+    "nameEn": "Nagoya",
+    "aliases": [
+      "Nagoya",
+      "名古屋",
+      "名古屋市",
+      "nagoya-jp"
+    ],
+    "countryCode": "JP",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "chiang-mai-th",
+      "name": "清迈",
+      "lat": 18.799975,
+      "lng": 98.980046,
+      "province": "Chiang Mai",
+      "country": "泰国"
+    },
+    "nameEn": "Chiang Mai",
+    "aliases": [
+      "Chiang Mai",
+      "清迈",
+      "清邁",
+      "chiang-mai-th"
+    ],
+    "countryCode": "TH",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "tel-aviv-yafo-il",
+      "name": "特拉维夫",
+      "lat": 32.081937,
+      "lng": 34.768066,
+      "province": "Tel Aviv",
+      "country": "以色列"
+    },
+    "nameEn": "Tel Aviv",
+    "aliases": [
+      "Tel Aviv",
+      "Tel Aviv-Yafo",
+      "特拉维夫",
+      "特拉維夫",
+      "Tel Aviv-Jaffa",
+      "tel-aviv-yafo-il"
+    ],
+    "countryCode": "IL",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "da-nang-vn",
+      "name": "岘港",
+      "lat": 16.060039,
+      "lng": 108.249971,
+      "province": "Ðà N?ng",
+      "country": "越南"
+    },
+    "nameEn": "Da Nang",
+    "aliases": [
+      "Da Nang",
+      "岘港",
+      "峴港市",
+      "da-nang-vn"
+    ],
+    "countryCode": "VN",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "istanbul-tr",
+      "name": "伊斯坦布尔",
+      "lat": 41.017602,
+      "lng": 28.974277,
+      "province": "Istanbul",
+      "country": "土耳其"
+    },
+    "nameEn": "Istanbul",
+    "aliases": [
+      "Istanbul",
+      "伊斯坦布尔",
+      "伊斯坦堡",
+      "istanbul-tr"
+    ],
+    "countryCode": "TR",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "abu-dhabi-ae",
+      "name": "阿布扎比",
+      "lat": 24.466684,
+      "lng": 54.366593,
+      "province": "Abu Dhabi",
+      "country": "阿拉伯联合酋长国"
+    },
+    "nameEn": "Abu Dhabi",
+    "aliases": [
+      "Abu Dhabi",
+      "阿布扎比",
+      "阿布達比",
+      "abu-dhabi-ae"
+    ],
+    "countryCode": "AE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "ashgabat-tm",
+      "name": "阿什哈巴德",
+      "lat": 37.949995,
+      "lng": 58.383299,
+      "province": "Ahal",
+      "country": "土库曼斯坦"
+    },
+    "nameEn": "Ashgabat",
+    "aliases": [
+      "Ashgabat",
+      "阿什哈巴德",
+      "阿什哈巴特",
+      "ashgabat-tm"
+    ],
+    "countryCode": "TM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "yerevan-am",
+      "name": "埃里温",
+      "lat": 40.183097,
+      "lng": 44.511606,
+      "province": "Erevan",
+      "country": "亚美尼亚"
+    },
+    "nameEn": "Yerevan",
+    "aliases": [
+      "Yerevan",
+      "埃里温",
+      "葉里溫",
+      "yerevan-am"
+    ],
+    "countryCode": "AM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "ankara-tr",
+      "name": "安卡拉",
+      "lat": 39.929184,
+      "lng": 32.862446,
+      "province": "Ankara",
+      "country": "土耳其"
+    },
+    "nameEn": "Ankara",
+    "aliases": [
+      "Ankara",
+      "安卡拉",
+      "ankara-tr"
+    ],
+    "countryCode": "TR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "amman-jo",
+      "name": "安曼",
+      "lat": 31.951971,
+      "lng": 35.931354,
+      "province": "Amman",
+      "country": "约旦"
+    },
+    "nameEn": "Amman",
+    "aliases": [
+      "Amman",
+      "安曼",
+      "amman-jo"
+    ],
+    "countryCode": "JO",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "baghdad-iq",
+      "name": "巴格达",
+      "lat": 33.340594,
+      "lng": 44.391923,
+      "province": "Baghdad",
+      "country": "伊拉克"
+    },
+    "nameEn": "Baghdad",
+    "aliases": [
+      "Baghdad",
+      "巴格达",
+      "巴格達",
+      "baghdad-iq"
+    ],
+    "countryCode": "IQ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "baku-az",
+      "name": "巴库",
+      "lat": 40.397218,
+      "lng": 49.860271,
+      "province": "Baki",
+      "country": "阿塞拜疆"
+    },
+    "nameEn": "Baku",
+    "aliases": [
+      "Baku",
+      "巴库",
+      "巴庫",
+      "baku-az"
+    ],
+    "countryCode": "AZ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "beirut-lb",
+      "name": "贝鲁特",
+      "lat": 33.873921,
+      "lng": 35.507762,
+      "province": "Beirut",
+      "country": "黎巴嫩"
+    },
+    "nameEn": "Beirut",
+    "aliases": [
+      "Beirut",
+      "贝鲁特",
+      "貝魯特",
+      "Bayrut",
+      "beirut-lb"
+    ],
+    "countryCode": "LB",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bishkek-kg",
+      "name": "比什凯克",
+      "lat": 42.875025,
+      "lng": 74.583258,
+      "province": "Bishkek",
+      "country": "吉尔吉斯斯坦"
+    },
+    "nameEn": "Bishkek",
+    "aliases": [
+      "Bishkek",
+      "比什凯克",
+      "比斯凱克",
+      "bishkek-kg"
+    ],
+    "countryCode": "KG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "dhaka-bd",
+      "name": "达卡",
+      "lat": 23.725006,
+      "lng": 90.406634,
+      "province": "Dhaka",
+      "country": "孟加拉国"
+    },
+    "nameEn": "Dhaka",
+    "aliases": [
+      "Dhaka",
+      "达卡",
+      "達卡",
+      "dhaka-bd"
+    ],
+    "countryCode": "BD",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "damascus-sy",
+      "name": "大马士革",
+      "lat": 33.50198,
+      "lng": 36.29805,
+      "province": "Damascus",
+      "country": "叙利亚"
+    },
+    "nameEn": "Damascus",
+    "aliases": [
+      "Damascus",
+      "大马士革",
+      "大馬士革",
+      "Dimashq",
+      "damascus-sy"
+    ],
+    "countryCode": "SY",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tehran-ir",
+      "name": "德黑兰",
+      "lat": 35.673889,
+      "lng": 51.422398,
+      "province": "Tehran",
+      "country": "伊朗"
+    },
+    "nameEn": "Tehran",
+    "aliases": [
+      "Tehran",
+      "德黑兰",
+      "德黑蘭",
+      "tehran-ir"
+    ],
+    "countryCode": "IR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "dili-tl",
+      "name": "帝力",
+      "lat": -8.559388,
+      "lng": 125.579456,
+      "province": "Dili",
+      "country": "东帝汶"
+    },
+    "nameEn": "Dili",
+    "aliases": [
+      "Dili",
+      "帝力",
+      "dili-tl"
+    ],
+    "countryCode": "TL",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tbilisi-ge",
+      "name": "第比利斯",
+      "lat": 41.726956,
+      "lng": 44.78885,
+      "province": "Tbilisi",
+      "country": "格鲁吉亚"
+    },
+    "nameEn": "Tbilisi",
+    "aliases": [
+      "Tbilisi",
+      "第比利斯",
+      "提比里斯",
+      "T'Bilisi",
+      "tbilisi-ge"
+    ],
+    "countryCode": "GE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tokyo-jp",
+      "name": "东京",
+      "lat": 35.686963,
+      "lng": 139.749462,
+      "province": "Tokyo",
+      "country": "日本"
+    },
+    "nameEn": "Tokyo",
+    "aliases": [
+      "Tokyo",
+      "东京",
+      "東京",
+      "tokyo-jp"
+    ],
+    "countryCode": "JP",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "dushanbe-tj",
+      "name": "杜尚别",
+      "lat": 38.560035,
+      "lng": 68.773879,
+      "province": "Tadzhikistan Territories",
+      "country": "塔吉克斯坦"
+    },
+    "nameEn": "Dushanbe",
+    "aliases": [
+      "Dushanbe",
+      "杜尚别",
+      "杜尚貝",
+      "dushanbe-tj"
+    ],
+    "countryCode": "TJ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "doha-qa",
+      "name": "多哈",
+      "lat": 25.286556,
+      "lng": 51.532968,
+      "province": "Ad Dawhah",
+      "country": "卡塔尔"
+    },
+    "nameEn": "Doha",
+    "aliases": [
+      "Doha",
+      "多哈",
+      "杜哈",
+      "doha-qa"
+    ],
+    "countryCode": "QA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "hanoi-vn",
+      "name": "河内",
+      "lat": 21.035273,
+      "lng": 105.848068,
+      "province": "Thái Nguyên",
+      "country": "越南"
+    },
+    "nameEn": "Hanoi",
+    "aliases": [
+      "Hanoi",
+      "河内",
+      "河內市",
+      "H",
+      "hanoi-vn"
+    ],
+    "countryCode": "VN",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kuala-lumpur-my",
+      "name": "吉隆坡",
+      "lat": 3.139797,
+      "lng": 101.688699,
+      "province": "Selangor",
+      "country": "马来西亚"
+    },
+    "nameEn": "Kuala Lumpur",
+    "aliases": [
+      "Kuala Lumpur",
+      "吉隆坡",
+      "kuala-lumpur-my"
+    ],
+    "countryCode": "MY",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kathmandu-np",
+      "name": "加德满都",
+      "lat": 27.718638,
+      "lng": 85.314696,
+      "province": "Bhaktapur",
+      "country": "尼泊尔"
+    },
+    "nameEn": "Kathmandu",
+    "aliases": [
+      "Kathmandu",
+      "加德满都",
+      "加德滿都",
+      "kathmandu-np"
+    ],
+    "countryCode": "NP",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "phnom-penh-kh",
+      "name": "金边",
+      "lat": 11.551976,
+      "lng": 104.914689,
+      "province": "Phnom Penh",
+      "country": "柬埔寨"
+    },
+    "nameEn": "Phnom Penh",
+    "aliases": [
+      "Phnom Penh",
+      "金边",
+      "金邊",
+      "Phnum Penh",
+      "phnom-penh-kh"
+    ],
+    "countryCode": "KH",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kabul-af",
+      "name": "喀布尔",
+      "lat": 34.518636,
+      "lng": 69.181314,
+      "province": "Kabul",
+      "country": "阿富汗"
+    },
+    "nameEn": "Kabul",
+    "aliases": [
+      "Kabul",
+      "喀布尔",
+      "喀布爾",
+      "kabul-af"
+    ],
+    "countryCode": "AF",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "colombo-lk",
+      "name": "科伦坡",
+      "lat": 6.931966,
+      "lng": 79.857751,
+      "province": "Colombo",
+      "country": "斯里兰卡"
+    },
+    "nameEn": "Colombo",
+    "aliases": [
+      "Colombo",
+      "科伦坡",
+      "可倫坡",
+      "colombo-lk"
+    ],
+    "countryCode": "LK",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kuwait-city-kw",
+      "name": "科威特城",
+      "lat": 29.371664,
+      "lng": 47.976355,
+      "province": "Al Kuwayt",
+      "country": "科威特"
+    },
+    "nameEn": "Kuwait City",
+    "aliases": [
+      "Kuwait City",
+      "科威特城",
+      "Al Kuwayt|Kuwait",
+      "kuwait-city-kw"
+    ],
+    "countryCode": "KW",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "riyadh-sa",
+      "name": "利雅德",
+      "lat": 24.634497,
+      "lng": 46.720487,
+      "province": "Ar Riyad",
+      "country": "沙特阿拉伯"
+    },
+    "nameEn": "Riyadh",
+    "aliases": [
+      "Riyadh",
+      "利雅德",
+      "Ar-Riyadh",
+      "riyadh-sa"
+    ],
+    "countryCode": "SA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "male-mv",
+      "name": "马累",
+      "lat": 4.172037,
+      "lng": 73.508901,
+      "province": "马尔代夫",
+      "country": "马尔代夫"
+    },
+    "nameEn": "Malé",
+    "aliases": [
+      "Malé",
+      "Male",
+      "马累",
+      "馬累",
+      "male-mv"
+    ],
+    "countryCode": "MV",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "manila-ph",
+      "name": "马尼拉",
+      "lat": 14.606105,
+      "lng": 120.980271,
+      "province": "Metropolitan Manila",
+      "country": "菲律宾"
+    },
+    "nameEn": "Manila",
+    "aliases": [
+      "Manila",
+      "马尼拉",
+      "馬尼拉",
+      "manila-ph"
+    ],
+    "countryCode": "PH",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "muscat-om",
+      "name": "马斯喀特",
+      "lat": 23.585179,
+      "lng": 58.378311,
+      "province": "Muscat",
+      "country": "阿曼"
+    },
+    "nameEn": "Muscat",
+    "aliases": [
+      "Muscat",
+      "马斯喀特",
+      "馬斯喀特",
+      "muscat-om"
+    ],
+    "countryCode": "OM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "manama-bh",
+      "name": "麦纳麦",
+      "lat": 26.236136,
+      "lng": 50.583052,
+      "province": "巴林",
+      "country": "巴林"
+    },
+    "nameEn": "Manama",
+    "aliases": [
+      "Manama",
+      "麦纳麦",
+      "manama-bh"
+    ],
+    "countryCode": "BH",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bangkok-th",
+      "name": "曼谷",
+      "lat": 13.751945,
+      "lng": 100.514699,
+      "province": "Bangkok Metropolis",
+      "country": "泰国"
+    },
+    "nameEn": "Bangkok",
+    "aliases": [
+      "Bangkok",
+      "曼谷",
+      "Krung Thep",
+      "bangkok-th"
+    ],
+    "countryCode": "TH",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "naypyidaw-mm",
+      "name": "奈比多",
+      "lat": 19.768503,
+      "lng": 96.116673,
+      "province": "Mandalay",
+      "country": "缅甸"
+    },
+    "nameEn": "Naypyidaw",
+    "aliases": [
+      "Naypyidaw",
+      "奈比多",
+      "Nay Pyi Taw",
+      "naypyidaw-mm"
+    ],
+    "countryCode": "MM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "astana-kz",
+      "name": "努尔苏丹",
+      "lat": 51.181125,
+      "lng": 71.427774,
+      "province": "Aqmola",
+      "country": "哈萨克斯坦"
+    },
+    "nameEn": "Nur-Sultan",
+    "aliases": [
+      "Nur-Sultan",
+      "Astana",
+      "努尔苏丹",
+      "努爾蘇丹",
+      "astana-kz"
+    ],
+    "countryCode": "KZ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "pyongyang-kp",
+      "name": "平壤",
+      "lat": 39.021385,
+      "lng": 125.752745,
+      "province": "P'yongyang",
+      "country": "朝鲜"
+    },
+    "nameEn": "Pyongyang",
+    "aliases": [
+      "Pyongyang",
+      "平壤",
+      "P'yongyang",
+      "pyongyang-kp"
+    ],
+    "countryCode": "KP",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "sanaa-ye",
+      "name": "萨那",
+      "lat": 15.356679,
+      "lng": 44.204648,
+      "province": "Amanat Al Asimah",
+      "country": "也门"
+    },
+    "nameEn": "Sanaa",
+    "aliases": [
+      "Sanaa",
+      "萨那",
+      "Sana'a'",
+      "sanaa-ye"
+    ],
+    "countryCode": "YE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "seoul-kr",
+      "name": "首尔",
+      "lat": 37.568295,
+      "lng": 126.997785,
+      "province": "Seoul",
+      "country": "韩国"
+    },
+    "nameEn": "Seoul",
+    "aliases": [
+      "Seoul",
+      "首尔",
+      "首爾",
+      "seoul-kr"
+    ],
+    "countryCode": "KR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bandar-seri-begawan-bn",
+      "name": "斯里巴加湾",
+      "lat": 4.883331,
+      "lng": 114.933284,
+      "province": "Brunei and Muara",
+      "country": "文莱"
+    },
+    "nameEn": "Bandar Seri Begawan",
+    "aliases": [
+      "Bandar Seri Begawan",
+      "斯里巴加湾",
+      "斯里巴加湾市",
+      "bandar-seri-begawan-bn"
+    ],
+    "countryCode": "BN",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tashkent-uz",
+      "name": "塔什干",
+      "lat": 41.303828,
+      "lng": 69.268823,
+      "province": "Tashkent",
+      "country": "乌兹别克斯坦"
+    },
+    "nameEn": "Tashkent",
+    "aliases": [
+      "Tashkent",
+      "塔什干",
+      "tashkent-uz"
+    ],
+    "countryCode": "UZ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "thimphu-bt",
+      "name": "廷布",
+      "lat": 27.472986,
+      "lng": 89.639014,
+      "province": "Thimphu",
+      "country": "不丹"
+    },
+    "nameEn": "Thimphu",
+    "aliases": [
+      "Thimphu",
+      "廷布",
+      "辛布",
+      "thimphu-bt"
+    ],
+    "countryCode": "BT",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "vientiane-la",
+      "name": "万象",
+      "lat": 17.966693,
+      "lng": 102.59998,
+      "province": "Vientiane [prefecture]",
+      "country": "老挝"
+    },
+    "nameEn": "Vientiane",
+    "aliases": [
+      "Vientiane",
+      "万象",
+      "永珍",
+      "vientiane-la"
+    ],
+    "countryCode": "LA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "ulaanbaatar-mn",
+      "name": "乌兰巴托",
+      "lat": 47.918619,
+      "lng": 106.91467,
+      "province": "Ulaanbaatar",
+      "country": "蒙古"
+    },
+    "nameEn": "Ulaanbaatar",
+    "aliases": [
+      "Ulaanbaatar",
+      "乌兰巴托",
+      "烏蘭巴托",
+      "ulaanbaatar-mn"
+    ],
+    "countryCode": "MN",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "new-delhi-in",
+      "name": "新德里",
+      "lat": 28.600023,
+      "lng": 77.19998,
+      "province": "Delhi",
+      "country": "印度"
+    },
+    "nameEn": "New Delhi",
+    "aliases": [
+      "New Delhi",
+      "新德里",
+      "new-delhi-in"
+    ],
+    "countryCode": "IN",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "singapore-sg",
+      "name": "新加坡",
+      "lat": 1.294979,
+      "lng": 103.853875,
+      "province": "新加坡",
+      "country": "新加坡"
+    },
+    "nameEn": "Singapore",
+    "aliases": [
+      "Singapore",
+      "新加坡",
+      "新加坡市",
+      "singapore-sg"
+    ],
+    "countryCode": "SG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "jakarta-id",
+      "name": "雅加达",
+      "lat": -6.172472,
+      "lng": 106.827492,
+      "province": "Jakarta Raya",
+      "country": "印度尼西亚"
+    },
+    "nameEn": "Jakarta",
+    "aliases": [
+      "Jakarta",
+      "雅加达",
+      "雅加達",
+      "jakarta-id"
+    ],
+    "countryCode": "ID",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "rangoon-mm",
+      "name": "仰光",
+      "lat": 16.7853,
+      "lng": 96.164732,
+      "province": "Yangon",
+      "country": "缅甸"
+    },
+    "nameEn": "Yangon",
+    "aliases": [
+      "Yangon",
+      "Rangoon",
+      "仰光",
+      "rangoon-mm"
+    ],
+    "countryCode": "MM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "jerusalem-il",
+      "name": "耶路撒冷",
+      "lat": 31.778408,
+      "lng": 35.206626,
+      "province": "Jerusalem",
+      "country": "以色列"
+    },
+    "nameEn": "Jerusalem",
+    "aliases": [
+      "Jerusalem",
+      "耶路撒冷",
+      "jerusalem-il"
+    ],
+    "countryCode": "IL",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "islamabad-pk",
+      "name": "伊斯兰堡",
+      "lat": 33.689368,
+      "lng": 73.08063,
+      "province": "F.C.T.",
+      "country": "巴基斯坦"
+    },
+    "nameEn": "Islamabad",
+    "aliases": [
+      "Islamabad",
+      "伊斯兰堡",
+      "伊斯蘭瑪巴德",
+      "islamabad-pk"
+    ],
+    "countryCode": "PK",
+    "kind": "capital",
+    "priority": 70
+  }
+]

@@ -1,0 +1,1007 @@
+[
+  {
+    "city": {
+      "id": "frankfurt-de",
+      "name": "美因河畔法兰克福",
+      "lat": 50.099977,
+      "lng": 8.675015,
+      "province": "Hessen",
+      "country": "德国"
+    },
+    "nameEn": "Frankfurt",
+    "aliases": [
+      "Frankfurt",
+      "美因河畔法兰克福",
+      "美茵河畔法蘭克福",
+      "Frankfurt am Main",
+      "frankfurt-de"
+    ],
+    "countryCode": "DE",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "milan-it",
+      "name": "米兰",
+      "lat": 45.471921,
+      "lng": 9.203063,
+      "province": "Lombardia",
+      "country": "意大利"
+    },
+    "nameEn": "Milan",
+    "aliases": [
+      "Milan",
+      "米兰",
+      "米蘭",
+      "Milano",
+      "milan-it"
+    ],
+    "countryCode": "IT",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "munich-de",
+      "name": "慕尼黑",
+      "lat": 48.131888,
+      "lng": 11.573048,
+      "province": "Bayern",
+      "country": "德国"
+    },
+    "nameEn": "Munich",
+    "aliases": [
+      "Munich",
+      "慕尼黑",
+      "Munchen",
+      "munich-de"
+    ],
+    "countryCode": "DE",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "zurich-ch",
+      "name": "苏黎世",
+      "lat": 47.381934,
+      "lng": 8.548064,
+      "province": "Zürich",
+      "country": "瑞士"
+    },
+    "nameEn": "Zürich",
+    "aliases": [
+      "Zürich",
+      "Zurich",
+      "苏黎世",
+      "蘇黎世",
+      "zurich-ch"
+    ],
+    "countryCode": "CH",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "amsterdam-nl",
+      "name": "阿姆斯特丹",
+      "lat": 52.351914,
+      "lng": 4.914694,
+      "province": "Noord-Holland",
+      "country": "荷兰"
+    },
+    "nameEn": "Amsterdam",
+    "aliases": [
+      "Amsterdam",
+      "阿姆斯特丹",
+      "amsterdam-nl"
+    ],
+    "countryCode": "NL",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "andorra-ad",
+      "name": "安道尔城",
+      "lat": 42.510753,
+      "lng": 1.526594,
+      "province": "安道尔",
+      "country": "安道尔"
+    },
+    "nameEn": "Andorra la Vella",
+    "aliases": [
+      "Andorra",
+      "Andorra la Vella",
+      "安道尔城",
+      "老安道爾",
+      "andorra-ad"
+    ],
+    "countryCode": "AD",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "oslo-no",
+      "name": "奥斯陆",
+      "lat": 59.918636,
+      "lng": 10.748033,
+      "province": "Oslo",
+      "country": "挪威"
+    },
+    "nameEn": "Oslo",
+    "aliases": [
+      "Oslo",
+      "奥斯陆",
+      "奧斯陸",
+      "oslo-no"
+    ],
+    "countryCode": "NO",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "paris-fr",
+      "name": "巴黎",
+      "lat": 48.858092,
+      "lng": 2.352992,
+      "province": "Île-de-France",
+      "country": "法国"
+    },
+    "nameEn": "Paris",
+    "aliases": [
+      "Paris",
+      "巴黎",
+      "paris-fr"
+    ],
+    "countryCode": "FR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "berlin-de",
+      "name": "柏林",
+      "lat": 52.523764,
+      "lng": 13.399603,
+      "province": "Berlin",
+      "country": "德国"
+    },
+    "nameEn": "Berlin",
+    "aliases": [
+      "Berlin",
+      "柏林",
+      "berlin-de"
+    ],
+    "countryCode": "DE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "belgrade-rs",
+      "name": "贝尔格莱德",
+      "lat": 44.820591,
+      "lng": 20.466045,
+      "province": "Grad Beograd",
+      "country": "塞尔维亚"
+    },
+    "nameEn": "Belgrade",
+    "aliases": [
+      "Belgrade",
+      "贝尔格莱德",
+      "貝爾格勒",
+      "Beograd",
+      "belgrade-rs"
+    ],
+    "countryCode": "RS",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "podgorica-me",
+      "name": "波德戈里察",
+      "lat": 42.465972,
+      "lng": 19.266307,
+      "province": "Podgorica",
+      "country": "黑山"
+    },
+    "nameEn": "Podgorica",
+    "aliases": [
+      "Podgorica",
+      "波德戈里察",
+      "波德里查",
+      "podgorica-me"
+    ],
+    "countryCode": "ME",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bern-ch",
+      "name": "伯尔尼",
+      "lat": 46.916683,
+      "lng": 7.466976,
+      "province": "Bern",
+      "country": "瑞士"
+    },
+    "nameEn": "Bern",
+    "aliases": [
+      "Bern",
+      "伯尔尼",
+      "伯恩",
+      "bern-ch"
+    ],
+    "countryCode": "CH",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "budapest-hu",
+      "name": "布达佩斯",
+      "lat": 47.501952,
+      "lng": 19.081375,
+      "province": "Budapest",
+      "country": "匈牙利"
+    },
+    "nameEn": "Budapest",
+    "aliases": [
+      "Budapest",
+      "布达佩斯",
+      "布達佩斯",
+      "budapest-hu"
+    ],
+    "countryCode": "HU",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bucharest-ro",
+      "name": "布加勒斯特",
+      "lat": 44.435318,
+      "lng": 26.098001,
+      "province": "Bucharest",
+      "country": "罗马尼亚"
+    },
+    "nameEn": "Bucharest",
+    "aliases": [
+      "Bucharest",
+      "布加勒斯特",
+      "Bucuresti",
+      "bucharest-ro"
+    ],
+    "countryCode": "RO",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bratislava-sk",
+      "name": "布拉迪斯拉发",
+      "lat": 48.150018,
+      "lng": 17.116981,
+      "province": "Bratislavský",
+      "country": "斯洛伐克"
+    },
+    "nameEn": "Bratislava",
+    "aliases": [
+      "Bratislava",
+      "布拉迪斯拉发",
+      "布拉提斯拉瓦",
+      "bratislava-sk"
+    ],
+    "countryCode": "SK",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "prague-cz",
+      "name": "布拉格",
+      "lat": 50.086967,
+      "lng": 14.422939,
+      "province": "Prague",
+      "country": "捷克"
+    },
+    "nameEn": "Prague",
+    "aliases": [
+      "Prague",
+      "布拉格",
+      "Praha",
+      "prague-cz"
+    ],
+    "countryCode": "CZ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "brussels-be",
+      "name": "布鲁塞尔",
+      "lat": 50.835263,
+      "lng": 4.331371,
+      "province": "Brussels",
+      "country": "比利时"
+    },
+    "nameEn": "Brussels",
+    "aliases": [
+      "Brussels",
+      "布鲁塞尔",
+      "布魯塞爾市",
+      "Bruxelles-Brussel",
+      "brussels-be"
+    ],
+    "countryCode": "BE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tirana-al",
+      "name": "地拉那",
+      "lat": 41.327541,
+      "lng": 19.818883,
+      "province": "Durrës",
+      "country": "阿尔巴尼亚"
+    },
+    "nameEn": "Tirana",
+    "aliases": [
+      "Tirana",
+      "地拉那",
+      "tirana-al"
+    ],
+    "countryCode": "AL",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "dublin-ie",
+      "name": "都柏林",
+      "lat": 53.346731,
+      "lng": -6.25698,
+      "province": "Dublin",
+      "country": "爱尔兰"
+    },
+    "nameEn": "Dublin",
+    "aliases": [
+      "Dublin",
+      "都柏林",
+      "dublin-ie"
+    ],
+    "countryCode": "IE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "vatican-city-va",
+      "name": "梵蒂冈",
+      "lat": 41.903282,
+      "lng": 12.453387,
+      "province": "Lazio",
+      "country": "梵蒂冈"
+    },
+    "nameEn": "Vatican City",
+    "aliases": [
+      "Vatican City",
+      "梵蒂冈",
+      "梵蒂岡",
+      "vatican-city-va"
+    ],
+    "countryCode": "VA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kobenhavn-dk",
+      "name": "哥本哈根",
+      "lat": 55.68051,
+      "lng": 12.56154,
+      "province": "Hovedstaden",
+      "country": "丹麦"
+    },
+    "nameEn": "Copenhagen",
+    "aliases": [
+      "København",
+      "Copenhagen",
+      "Kobenhavn",
+      "哥本哈根",
+      "kobenhavn-dk"
+    ],
+    "countryCode": "DK",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "helsinki-fi",
+      "name": "赫尔辛基",
+      "lat": 60.163804,
+      "lng": 24.932457,
+      "province": "Southern Finland",
+      "country": "芬兰"
+    },
+    "nameEn": "Helsinki",
+    "aliases": [
+      "Helsinki",
+      "赫尔辛基",
+      "赫爾辛基",
+      "helsinki-fi"
+    ],
+    "countryCode": "FI",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "warsaw-pl",
+      "name": "华沙",
+      "lat": 52.230872,
+      "lng": 21.005347,
+      "province": "Masovian",
+      "country": "波兰"
+    },
+    "nameEn": "Warsaw",
+    "aliases": [
+      "Warsaw",
+      "华沙",
+      "華沙",
+      "Warszawa",
+      "warsaw-pl"
+    ],
+    "countryCode": "PL",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kiev-ua",
+      "name": "基辅",
+      "lat": 50.435313,
+      "lng": 30.514682,
+      "province": "Kiev",
+      "country": "乌克兰"
+    },
+    "nameEn": "Kyiv",
+    "aliases": [
+      "Kyiv",
+      "Kiev",
+      "基辅",
+      "基輔",
+      "kiev-ua"
+    ],
+    "countryCode": "UA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "chisinau-md",
+      "name": "基希讷乌",
+      "lat": 47.005024,
+      "lng": 28.857711,
+      "province": "Chisinau",
+      "country": "摩尔多瓦"
+    },
+    "nameEn": "Chișinău",
+    "aliases": [
+      "Chișinău",
+      "Chisinau",
+      "基希讷乌",
+      "基希涅夫",
+      "chisinau-md"
+    ],
+    "countryCode": "MD",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "reykjavik-is",
+      "name": "雷克雅未克",
+      "lat": 64.143459,
+      "lng": -21.936546,
+      "province": "Suðurnes",
+      "country": "冰岛"
+    },
+    "nameEn": "Reykjavík",
+    "aliases": [
+      "Reykjavík",
+      "Reykjavik",
+      "雷克雅未克",
+      "reykjavik-is"
+    ],
+    "countryCode": "IS",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "riga-lv",
+      "name": "里加",
+      "lat": 56.950024,
+      "lng": 24.099965,
+      "province": "Riga",
+      "country": "拉脱维亚"
+    },
+    "nameEn": "Riga",
+    "aliases": [
+      "Riga",
+      "里加",
+      "裏加",
+      "riga-lv"
+    ],
+    "countryCode": "LV",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "lisbon-pt",
+      "name": "里斯本",
+      "lat": 38.724669,
+      "lng": -9.146812,
+      "province": "Lisboa",
+      "country": "葡萄牙"
+    },
+    "nameEn": "Lisbon",
+    "aliases": [
+      "Lisbon",
+      "里斯本",
+      "Lisboa",
+      "lisbon-pt"
+    ],
+    "countryCode": "PT",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "ljubljana-si",
+      "name": "卢布尔雅那",
+      "lat": 46.055288,
+      "lng": 14.514969,
+      "province": "Osrednjeslovenska",
+      "country": "斯洛文尼亚"
+    },
+    "nameEn": "Ljubljana",
+    "aliases": [
+      "Ljubljana",
+      "卢布尔雅那",
+      "盧比安納",
+      "ljubljana-si"
+    ],
+    "countryCode": "SI",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "luxembourg-lu",
+      "name": "卢森堡",
+      "lat": 49.61166,
+      "lng": 6.130003,
+      "province": "Luxembourg",
+      "country": "卢森堡"
+    },
+    "nameEn": "Luxembourg",
+    "aliases": [
+      "Luxembourg",
+      "卢森堡",
+      "盧森堡市",
+      "luxembourg-lu"
+    ],
+    "countryCode": "LU",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "london-gb",
+      "name": "伦敦",
+      "lat": 51.501941,
+      "lng": -0.118668,
+      "province": "Westminster",
+      "country": "英国"
+    },
+    "nameEn": "London",
+    "aliases": [
+      "London",
+      "伦敦",
+      "倫敦",
+      "london-gb"
+    ],
+    "countryCode": "GB",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "rome-it",
+      "name": "罗马",
+      "lat": 41.897902,
+      "lng": 12.481313,
+      "province": "Lazio",
+      "country": "意大利"
+    },
+    "nameEn": "Rome",
+    "aliases": [
+      "Rome",
+      "罗马",
+      "羅馬",
+      "rome-it"
+    ],
+    "countryCode": "IT",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "madrid-es",
+      "name": "马德里",
+      "lat": 40.401972,
+      "lng": -3.685297,
+      "province": "Comunidad de Madrid",
+      "country": "西班牙"
+    },
+    "nameEn": "Madrid",
+    "aliases": [
+      "Madrid",
+      "马德里",
+      "馬德里",
+      "madrid-es"
+    ],
+    "countryCode": "ES",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "minsk-by",
+      "name": "明斯克",
+      "lat": 53.901923,
+      "lng": 27.564681,
+      "province": "Minsk",
+      "country": "白俄罗斯"
+    },
+    "nameEn": "Minsk",
+    "aliases": [
+      "Minsk",
+      "明斯克",
+      "minsk-by"
+    ],
+    "countryCode": "BY",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "monaco-mc",
+      "name": "摩纳哥",
+      "lat": 43.739646,
+      "lng": 7.406913,
+      "province": "摩纳哥",
+      "country": "摩纳哥"
+    },
+    "nameEn": "Monaco",
+    "aliases": [
+      "Monaco",
+      "摩纳哥",
+      "摩納哥",
+      "monaco-mc"
+    ],
+    "countryCode": "MC",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "moscow-ru",
+      "name": "莫斯科",
+      "lat": 55.75411,
+      "lng": 37.613577,
+      "province": "Moskva",
+      "country": "俄罗斯"
+    },
+    "nameEn": "Moscow",
+    "aliases": [
+      "Moscow",
+      "莫斯科",
+      "Moskva",
+      "moscow-ru"
+    ],
+    "countryCode": "RU",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "nicosia-cy",
+      "name": "尼科西亚",
+      "lat": 35.166677,
+      "lng": 33.366635,
+      "province": "塞浦路斯",
+      "country": "塞浦路斯"
+    },
+    "nameEn": "Nicosia",
+    "aliases": [
+      "Nicosia",
+      "尼科西亚",
+      "尼古西亞",
+      "nicosia-cy"
+    ],
+    "countryCode": "CY",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "pristina-xk",
+      "name": "普里什蒂纳",
+      "lat": 42.66671,
+      "lng": 21.165984,
+      "province": "Pristina",
+      "country": "科索沃"
+    },
+    "nameEn": "Pristina",
+    "aliases": [
+      "Pristina",
+      "普里什蒂纳",
+      "普里斯提納",
+      "pristina-xk"
+    ],
+    "countryCode": "XK",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "zagreb-hr",
+      "name": "萨格勒布",
+      "lat": 45.800007,
+      "lng": 15.999995,
+      "province": "Grad Zagreb",
+      "country": "克罗地亚"
+    },
+    "nameEn": "Zagreb",
+    "aliases": [
+      "Zagreb",
+      "萨格勒布",
+      "札格雷布",
+      "zagreb-hr"
+    ],
+    "countryCode": "HR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "sarajevo-ba",
+      "name": "萨拉热窝",
+      "lat": 43.850022,
+      "lng": 18.383002,
+      "province": "Sarajevo",
+      "country": "波斯尼亚和黑塞哥维那"
+    },
+    "nameEn": "Sarajevo",
+    "aliases": [
+      "Sarajevo",
+      "萨拉热窝",
+      "塞拉耶佛",
+      "sarajevo-ba"
+    ],
+    "countryCode": "BA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "san-marino-sm",
+      "name": "圣马力诺",
+      "lat": 43.936096,
+      "lng": 12.44177,
+      "province": "圣马力诺",
+      "country": "圣马力诺"
+    },
+    "nameEn": "San Marino",
+    "aliases": [
+      "San Marino",
+      "圣马力诺",
+      "聖馬力諾",
+      "san-marino-sm"
+    ],
+    "countryCode": "SM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "stockholm-se",
+      "name": "斯德哥尔摩",
+      "lat": 59.324127,
+      "lng": 18.0663,
+      "province": "Stockholm",
+      "country": "瑞典"
+    },
+    "nameEn": "Stockholm",
+    "aliases": [
+      "Stockholm",
+      "斯德哥尔摩",
+      "斯德哥爾摩",
+      "stockholm-se"
+    ],
+    "countryCode": "SE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "skopje-mk",
+      "name": "斯科普里",
+      "lat": 42.000006,
+      "lng": 21.433461,
+      "province": "Centar",
+      "country": "北馬其頓"
+    },
+    "nameEn": "Skopje",
+    "aliases": [
+      "Skopje",
+      "斯科普里",
+      "史高比耶",
+      "skopje-mk"
+    ],
+    "countryCode": "MK",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "sofia-bg",
+      "name": "索非亚",
+      "lat": 42.685295,
+      "lng": 23.314708,
+      "province": "Grad Sofiya",
+      "country": "保加利亚"
+    },
+    "nameEn": "Sofia",
+    "aliases": [
+      "Sofia",
+      "索非亚",
+      "索菲亞",
+      "sofia-bg"
+    ],
+    "countryCode": "BG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tallinn-ee",
+      "name": "塔林",
+      "lat": 59.433877,
+      "lng": 24.728041,
+      "province": "Harju",
+      "country": "爱沙尼亚"
+    },
+    "nameEn": "Tallinn",
+    "aliases": [
+      "Tallinn",
+      "塔林",
+      "tallinn-ee"
+    ],
+    "countryCode": "EE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "vaduz-li",
+      "name": "瓦都兹",
+      "lat": 47.133724,
+      "lng": 9.51667,
+      "province": "列支敦士登",
+      "country": "列支敦士登"
+    },
+    "nameEn": "Vaduz",
+    "aliases": [
+      "Vaduz",
+      "瓦都兹",
+      "華杜茲",
+      "vaduz-li"
+    ],
+    "countryCode": "LI",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "valletta-mt",
+      "name": "瓦莱塔",
+      "lat": 35.899732,
+      "lng": 14.514711,
+      "province": "马耳他",
+      "country": "马耳他"
+    },
+    "nameEn": "Valletta",
+    "aliases": [
+      "Valletta",
+      "瓦莱塔",
+      "瓦萊塔",
+      "valletta-mt"
+    ],
+    "countryCode": "MT",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "vilnius-lt",
+      "name": "维尔纽斯",
+      "lat": 54.683366,
+      "lng": 25.316635,
+      "province": "Vilniaus",
+      "country": "立陶宛"
+    },
+    "nameEn": "Vilnius",
+    "aliases": [
+      "Vilnius",
+      "维尔纽斯",
+      "維爾紐斯",
+      "vilnius-lt"
+    ],
+    "countryCode": "LT",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "vienna-at",
+      "name": "维也纳",
+      "lat": 48.201961,
+      "lng": 16.364693,
+      "province": "Wien",
+      "country": "奥地利"
+    },
+    "nameEn": "Vienna",
+    "aliases": [
+      "Vienna",
+      "维也纳",
+      "維也納",
+      "Wien",
+      "vienna-at"
+    ],
+    "countryCode": "AT",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "athens-gr",
+      "name": "雅典",
+      "lat": 37.985272,
+      "lng": 23.731375,
+      "province": "Attiki",
+      "country": "希腊"
+    },
+    "nameEn": "Athens",
+    "aliases": [
+      "Athens",
+      "雅典",
+      "Athinai",
+      "Athenai",
+      "athens-gr"
+    ],
+    "countryCode": "GR",
+    "kind": "capital",
+    "priority": 70
+  }
+]

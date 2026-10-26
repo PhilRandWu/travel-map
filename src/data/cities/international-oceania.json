@@ -1,0 +1,280 @@
+[
+  {
+    "city": {
+      "id": "auckland-nz",
+      "name": "奥克兰都会区",
+      "lat": -36.848055,
+      "lng": 174.763027,
+      "province": "Auckland",
+      "country": "新西兰"
+    },
+    "nameEn": "Auckland",
+    "aliases": [
+      "Auckland",
+      "奥克兰都会区",
+      "奧克蘭市",
+      "auckland-nz"
+    ],
+    "countryCode": "NZ",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "apia-ws",
+      "name": "阿皮亚",
+      "lat": -13.835715,
+      "lng": -171.768599,
+      "province": "萨摩亚",
+      "country": "萨摩亚"
+    },
+    "nameEn": "Apia",
+    "aliases": [
+      "Apia",
+      "阿皮亚",
+      "阿皮亞",
+      "apia-ws"
+    ],
+    "countryCode": "WS",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "funafuti-tv",
+      "name": "富纳富提",
+      "lat": -8.516652,
+      "lng": 179.216647,
+      "province": "图瓦卢",
+      "country": "图瓦卢"
+    },
+    "nameEn": "Funafuti",
+    "aliases": [
+      "Funafuti",
+      "富纳富提",
+      "funafuti-tv"
+    ],
+    "countryCode": "TV",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "wellington-nz",
+      "name": "惠灵顿",
+      "lat": -41.292068,
+      "lng": 174.777201,
+      "province": "Manawatu-Wanganui",
+      "country": "新西兰"
+    },
+    "nameEn": "Wellington",
+    "aliases": [
+      "Wellington",
+      "惠灵顿",
+      "威靈頓",
+      "wellington-nz"
+    ],
+    "countryCode": "NZ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "honiara-sb",
+      "name": "霍尼亚拉",
+      "lat": -9.437994,
+      "lng": 159.949766,
+      "province": "Guadalcanal",
+      "country": "所罗门群岛"
+    },
+    "nameEn": "Honiara",
+    "aliases": [
+      "Honiara",
+      "霍尼亚拉",
+      "荷尼阿拉",
+      "honiara-sb"
+    ],
+    "countryCode": "SB",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "canberra-au",
+      "name": "堪培拉",
+      "lat": -35.283029,
+      "lng": 149.129026,
+      "province": "Australian Capital Territory",
+      "country": "澳大利亚"
+    },
+    "nameEn": "Canberra",
+    "aliases": [
+      "Canberra",
+      "堪培拉",
+      "坎培拉",
+      "canberra-au"
+    ],
+    "countryCode": "AU",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "majuro-mh",
+      "name": "马朱罗",
+      "lat": 7.103004,
+      "lng": 171.38,
+      "province": "马绍尔群岛",
+      "country": "马绍尔群岛"
+    },
+    "nameEn": "Majuro",
+    "aliases": [
+      "Majuro",
+      "马朱罗",
+      "馬久羅",
+      "majuro-mh"
+    ],
+    "countryCode": "MH",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "melekeok-pw",
+      "name": "梅莱凯奥克",
+      "lat": 7.487396,
+      "lng": 134.626549,
+      "province": "帕劳",
+      "country": "帕劳"
+    },
+    "nameEn": "Melekeok",
+    "aliases": [
+      "Melekeok",
+      "梅莱凯奥克",
+      "梅萊凱奧克",
+      "melekeok-pw"
+    ],
+    "countryCode": "PW",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "port-moresby-pg",
+      "name": "莫尔兹比港",
+      "lat": -9.464708,
+      "lng": 147.192504,
+      "province": "Central",
+      "country": "巴布亚新几内亚"
+    },
+    "nameEn": "Port Moresby",
+    "aliases": [
+      "Port Moresby",
+      "莫尔兹比港",
+      "莫士比港",
+      "port-moresby-pg"
+    ],
+    "countryCode": "PG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tarawa-ki",
+      "name": "南塔拉瓦",
+      "lat": 1.338188,
+      "lng": 173.017571,
+      "province": "基里巴斯",
+      "country": "基里巴斯"
+    },
+    "nameEn": "South Tarawa",
+    "aliases": [
+      "Tarawa",
+      "South Tarawa",
+      "南塔拉瓦",
+      "tarawa-ki"
+    ],
+    "countryCode": "KI",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "nukualofa-to",
+      "name": "努库阿洛法",
+      "lat": -21.138512,
+      "lng": -175.220564,
+      "province": "汤加",
+      "country": "汤加"
+    },
+    "nameEn": "Nuku'alofa",
+    "aliases": [
+      "Nuku'alofa",
+      "Nukualofa",
+      "努库阿洛法",
+      "nukualofa-to"
+    ],
+    "countryCode": "TO",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "palikir-fm",
+      "name": "帕利基尔",
+      "lat": 6.916644,
+      "lng": 158.149974,
+      "province": "密克罗尼西亚",
+      "country": "密克罗尼西亚"
+    },
+    "nameEn": "Palikir",
+    "aliases": [
+      "Palikir",
+      "帕利基尔",
+      "palikir-fm"
+    ],
+    "countryCode": "FM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "suva-fj",
+      "name": "苏瓦",
+      "lat": -18.133016,
+      "lng": 178.441707,
+      "province": "Central",
+      "country": "斐济"
+    },
+    "nameEn": "Suva",
+    "aliases": [
+      "Suva",
+      "苏瓦",
+      "蘇瓦",
+      "suva-fj"
+    ],
+    "countryCode": "FJ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "port-vila-vu",
+      "name": "维拉港",
+      "lat": -17.73335,
+      "lng": 168.316641,
+      "province": "Shefa",
+      "country": "瓦努阿图"
+    },
+    "nameEn": "Port Vila",
+    "aliases": [
+      "Port Vila",
+      "维拉港",
+      "維拉港",
+      "port-vila-vu"
+    ],
+    "countryCode": "VU",
+    "kind": "capital",
+    "priority": 70
+  }
+]

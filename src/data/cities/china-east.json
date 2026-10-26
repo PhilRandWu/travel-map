@@ -1,0 +1,1595 @@
+[
+  {
+    "city": {
+      "id": "shanghai",
+      "name": "上海",
+      "lat": 31.231706,
+      "lng": 121.472644,
+      "province": "上海",
+      "country": "中国"
+    },
+    "nameEn": "Shanghai",
+    "aliases": [
+      "上海",
+      "上海市",
+      "shanghai"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 100
+  },
+  {
+    "city": {
+      "id": "taipei",
+      "name": "台北",
+      "lat": 25.033,
+      "lng": 121.5654,
+      "province": "台湾",
+      "country": "中国"
+    },
+    "nameEn": "Taipei",
+    "aliases": [
+      "台北",
+      "taipei"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "fu-zhou",
+      "name": "福州",
+      "lat": 26.075302,
+      "lng": 119.306239,
+      "province": "福建",
+      "country": "中国"
+    },
+    "nameEn": "Fuzhou",
+    "aliases": [
+      "福州",
+      "福州市",
+      "fu-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "kaohsiung",
+      "name": "高雄",
+      "lat": 22.6273,
+      "lng": 120.3014,
+      "province": "台湾",
+      "country": "中国"
+    },
+    "nameEn": "Kaohsiung",
+    "aliases": [
+      "高雄",
+      "kaohsiung"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "hangzhou",
+      "name": "杭州",
+      "lat": 30.287459,
+      "lng": 120.153576,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Hangzhou",
+    "aliases": [
+      "杭州",
+      "杭州市",
+      "hangzhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "he-fei",
+      "name": "合肥",
+      "lat": 31.86119,
+      "lng": 117.283042,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Hefei",
+    "aliases": [
+      "合肥",
+      "合肥市",
+      "he-fei"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "ji-nan",
+      "name": "济南",
+      "lat": 36.675807,
+      "lng": 117.000923,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Jinan",
+    "aliases": [
+      "济南",
+      "济南市",
+      "ji-nan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "nan-chang",
+      "name": "南昌",
+      "lat": 28.676493,
+      "lng": 115.892151,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Nanchang",
+    "aliases": [
+      "南昌",
+      "南昌市",
+      "nan-chang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "nan-jing",
+      "name": "南京",
+      "lat": 32.041544,
+      "lng": 118.767413,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Nanjing",
+    "aliases": [
+      "南京",
+      "南京市",
+      "nan-jing"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 75
+  },
+  {
+    "city": {
+      "id": "taichung",
+      "name": "台中",
+      "lat": 24.1477,
+      "lng": 120.6736,
+      "province": "台湾",
+      "country": "中国"
+    },
+    "nameEn": "Taichung",
+    "aliases": [
+      "台中",
+      "taichung"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "new-taipei",
+      "name": "新北",
+      "lat": 25.0169,
+      "lng": 121.4628,
+      "province": "台湾",
+      "country": "中国"
+    },
+    "nameEn": "New Taipei",
+    "aliases": [
+      "新北",
+      "new taipei",
+      "new-taipei"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tainan",
+      "name": "台南",
+      "lat": 22.9999,
+      "lng": 120.227,
+      "province": "台湾",
+      "country": "中国"
+    },
+    "nameEn": "Tainan",
+    "aliases": [
+      "台南",
+      "tainan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 65
+  },
+  {
+    "city": {
+      "id": "taoyuan",
+      "name": "桃园",
+      "lat": 24.9937,
+      "lng": 121.301,
+      "province": "台湾",
+      "country": "中国"
+    },
+    "nameEn": "Taoyuan",
+    "aliases": [
+      "桃园",
+      "taoyuan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 65
+  },
+  {
+    "city": {
+      "id": "hualien",
+      "name": "花莲",
+      "lat": 23.9911,
+      "lng": 121.6112,
+      "province": "台湾",
+      "country": "中国"
+    },
+    "nameEn": "Hualien",
+    "aliases": [
+      "花莲",
+      "hualien"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 60
+  },
+  {
+    "city": {
+      "id": "an-qing",
+      "name": "安庆",
+      "lat": 30.50883,
+      "lng": 117.043551,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Anqing",
+    "aliases": [
+      "安庆",
+      "安庆市",
+      "an-qing"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "bengbu",
+      "name": "蚌埠",
+      "lat": 32.939667,
+      "lng": 117.363228,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Bengbu",
+    "aliases": [
+      "蚌埠",
+      "蚌埠市",
+      "bengbu"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "bin-zhou",
+      "name": "滨州",
+      "lat": 37.383542,
+      "lng": 118.016974,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Binzhou",
+    "aliases": [
+      "滨州",
+      "滨州市",
+      "bin-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "bo-zhou",
+      "name": "亳州",
+      "lat": 33.869338,
+      "lng": 115.782939,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Bozhou",
+    "aliases": [
+      "亳州",
+      "亳州市",
+      "bo-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "chang-zhou",
+      "name": "常州",
+      "lat": 31.772752,
+      "lng": 119.946973,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Changzhou",
+    "aliases": [
+      "常州",
+      "常州市",
+      "chang-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "chi-zhou",
+      "name": "池州",
+      "lat": 30.656037,
+      "lng": 117.489157,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Chizhou",
+    "aliases": [
+      "池州",
+      "池州市",
+      "chi-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "chu-zhou",
+      "name": "滁州",
+      "lat": 32.303627,
+      "lng": 118.316264,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Chuzhou",
+    "aliases": [
+      "滁州",
+      "滁州市",
+      "chu-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "de-zhou",
+      "name": "德州",
+      "lat": 37.453968,
+      "lng": 116.307428,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Dezhou",
+    "aliases": [
+      "德州",
+      "德州市",
+      "de-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "dong-ying",
+      "name": "东营",
+      "lat": 37.434564,
+      "lng": 118.66471,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Dongying",
+    "aliases": [
+      "东营",
+      "东营市",
+      "dong-ying"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "fu-zhou-2",
+      "name": "抚州",
+      "lat": 27.98385,
+      "lng": 116.358351,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Fuzhou",
+    "aliases": [
+      "抚州",
+      "抚州市",
+      "fu-zhou",
+      "fu-zhou-2"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "fu-yang",
+      "name": "阜阳",
+      "lat": 32.896969,
+      "lng": 115.819729,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Fuyang",
+    "aliases": [
+      "阜阳",
+      "阜阳市",
+      "fu-yang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "gan-zhou",
+      "name": "赣州",
+      "lat": 25.85097,
+      "lng": 114.940278,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Ganzhou",
+    "aliases": [
+      "赣州",
+      "赣州市",
+      "gan-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "he-ze",
+      "name": "菏泽",
+      "lat": 35.246531,
+      "lng": 115.469381,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Heze",
+    "aliases": [
+      "菏泽",
+      "菏泽市",
+      "he-ze"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "hu-zhou",
+      "name": "湖州",
+      "lat": 30.867198,
+      "lng": 120.102398,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Huzhou",
+    "aliases": [
+      "湖州",
+      "湖州市",
+      "hu-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "huai-an",
+      "name": "淮安",
+      "lat": 33.597506,
+      "lng": 119.021265,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Huaian",
+    "aliases": [
+      "淮安",
+      "淮安市",
+      "huai-an"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "huai-bei",
+      "name": "淮北",
+      "lat": 33.971707,
+      "lng": 116.794664,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Huaibei",
+    "aliases": [
+      "淮北",
+      "淮北市",
+      "huai-bei"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "huai-nan",
+      "name": "淮南",
+      "lat": 32.647574,
+      "lng": 117.018329,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Huainan",
+    "aliases": [
+      "淮南",
+      "淮南市",
+      "huai-nan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "huang-shan",
+      "name": "黄山",
+      "lat": 29.709239,
+      "lng": 118.317325,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Huangshan",
+    "aliases": [
+      "黄山",
+      "黄山市",
+      "huang-shan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ji-an",
+      "name": "吉安",
+      "lat": 27.111699,
+      "lng": 114.986373,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Jian",
+    "aliases": [
+      "吉安",
+      "吉安市",
+      "ji-an"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ji-ning",
+      "name": "济宁",
+      "lat": 35.415393,
+      "lng": 116.587245,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Jining",
+    "aliases": [
+      "济宁",
+      "济宁市",
+      "ji-ning"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jiaxing",
+      "name": "嘉兴",
+      "lat": 30.762653,
+      "lng": 120.750865,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Jiaxing",
+    "aliases": [
+      "嘉兴",
+      "嘉兴市",
+      "jiaxing"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jin-hua",
+      "name": "金华",
+      "lat": 29.089524,
+      "lng": 119.649506,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Jinhua",
+    "aliases": [
+      "金华",
+      "金华市",
+      "jin-hua"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jing-de-zhen",
+      "name": "景德镇",
+      "lat": 29.29256,
+      "lng": 117.214664,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Jingdezhen",
+    "aliases": [
+      "景德镇",
+      "景德镇市",
+      "jing-de-zhen"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "jiu-jiang",
+      "name": "九江",
+      "lat": 29.712034,
+      "lng": 115.992811,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Jiujiang",
+    "aliases": [
+      "九江",
+      "九江市",
+      "jiu-jiang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "li-shui",
+      "name": "丽水",
+      "lat": 28.451993,
+      "lng": 119.921786,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Lishui",
+    "aliases": [
+      "丽水",
+      "丽水市",
+      "li-shui"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "lian-yun-gang",
+      "name": "连云港",
+      "lat": 34.600018,
+      "lng": 119.178821,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Lianyungang",
+    "aliases": [
+      "连云港",
+      "连云港市",
+      "lian-yun-gang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "liao-cheng",
+      "name": "聊城",
+      "lat": 36.456013,
+      "lng": 115.980367,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Liaocheng",
+    "aliases": [
+      "聊城",
+      "聊城市",
+      "liao-cheng"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "lin-yi",
+      "name": "临沂",
+      "lat": 35.065282,
+      "lng": 118.326443,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Linyi",
+    "aliases": [
+      "临沂",
+      "临沂市",
+      "lin-yi"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "luan",
+      "name": "六安",
+      "lat": 31.752889,
+      "lng": 116.507676,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Luan",
+    "aliases": [
+      "六安",
+      "六安市",
+      "luan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "long-yan",
+      "name": "龙岩",
+      "lat": 25.091603,
+      "lng": 117.02978,
+      "province": "福建",
+      "country": "中国"
+    },
+    "nameEn": "Longyan",
+    "aliases": [
+      "龙岩",
+      "龙岩市",
+      "long-yan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ma-an-shan",
+      "name": "马鞍山",
+      "lat": 31.689362,
+      "lng": 118.507906,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Maanshan",
+    "aliases": [
+      "马鞍山",
+      "马鞍山市",
+      "ma-an-shan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "nan-ping",
+      "name": "南平",
+      "lat": 26.635627,
+      "lng": 118.178459,
+      "province": "福建",
+      "country": "中国"
+    },
+    "nameEn": "Nanping",
+    "aliases": [
+      "南平",
+      "南平市",
+      "nan-ping"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "nan-tong",
+      "name": "南通",
+      "lat": 32.016212,
+      "lng": 120.864608,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Nantong",
+    "aliases": [
+      "南通",
+      "南通市",
+      "nan-tong"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ning-bo",
+      "name": "宁波",
+      "lat": 29.868388,
+      "lng": 121.549792,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Ningbo",
+    "aliases": [
+      "宁波",
+      "宁波市",
+      "ning-bo"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ning-de",
+      "name": "宁德",
+      "lat": 26.65924,
+      "lng": 119.527082,
+      "province": "福建",
+      "country": "中国"
+    },
+    "nameEn": "Ningde",
+    "aliases": [
+      "宁德",
+      "宁德市",
+      "ning-de"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ping-xiang",
+      "name": "萍乡",
+      "lat": 27.622946,
+      "lng": 113.852186,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Pingxiang",
+    "aliases": [
+      "萍乡",
+      "萍乡市",
+      "ping-xiang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "pu-tian",
+      "name": "莆田",
+      "lat": 25.431011,
+      "lng": 119.007558,
+      "province": "福建",
+      "country": "中国"
+    },
+    "nameEn": "Putian",
+    "aliases": [
+      "莆田",
+      "莆田市",
+      "pu-tian"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "qing-dao",
+      "name": "青岛",
+      "lat": 36.082982,
+      "lng": 120.355173,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Qingdao",
+    "aliases": [
+      "青岛",
+      "青岛市",
+      "qing-dao"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "qu-zhou",
+      "name": "衢州",
+      "lat": 28.941708,
+      "lng": 118.87263,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Quzhou",
+    "aliases": [
+      "衢州",
+      "衢州市",
+      "qu-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "quanzhou",
+      "name": "泉州",
+      "lat": 24.908853,
+      "lng": 118.589421,
+      "province": "福建",
+      "country": "中国"
+    },
+    "nameEn": "Quanzhou",
+    "aliases": [
+      "泉州",
+      "泉州市",
+      "quanzhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ri-zhao",
+      "name": "日照",
+      "lat": 35.428588,
+      "lng": 119.461208,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Rizhao",
+    "aliases": [
+      "日照",
+      "日照市",
+      "ri-zhao"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "san-ming",
+      "name": "三明",
+      "lat": 26.265444,
+      "lng": 117.635001,
+      "province": "福建",
+      "country": "中国"
+    },
+    "nameEn": "Sanming",
+    "aliases": [
+      "三明",
+      "三明市",
+      "san-ming"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "xiamen",
+      "name": "厦门",
+      "lat": 24.490474,
+      "lng": 118.11022,
+      "province": "福建",
+      "country": "中国"
+    },
+    "nameEn": "Xiamen",
+    "aliases": [
+      "厦门",
+      "厦门市",
+      "xiamen"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "shang-rao",
+      "name": "上饶",
+      "lat": 28.44442,
+      "lng": 117.971185,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Shangrao",
+    "aliases": [
+      "上饶",
+      "上饶市",
+      "shang-rao"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "shao-xing",
+      "name": "绍兴",
+      "lat": 29.997117,
+      "lng": 120.582112,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Shaoxing",
+    "aliases": [
+      "绍兴",
+      "绍兴市",
+      "shao-xing"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "suzhou",
+      "name": "苏州",
+      "lat": 31.299379,
+      "lng": 120.619585,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Suzhou",
+    "aliases": [
+      "苏州",
+      "苏州市",
+      "suzhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "su-qian",
+      "name": "宿迁",
+      "lat": 33.963008,
+      "lng": 118.275162,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Suqian",
+    "aliases": [
+      "宿迁",
+      "宿迁市",
+      "su-qian"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "su-zhou",
+      "name": "宿州",
+      "lat": 33.633891,
+      "lng": 116.984084,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Suzhou",
+    "aliases": [
+      "宿州",
+      "宿州市",
+      "su-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tai-zhou-2",
+      "name": "台州",
+      "lat": 28.661378,
+      "lng": 121.428599,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Taizhou",
+    "aliases": [
+      "台州",
+      "台州市",
+      "tai-zhou",
+      "tai-zhou-2"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tai-an",
+      "name": "泰安",
+      "lat": 36.194968,
+      "lng": 117.129063,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Taian",
+    "aliases": [
+      "泰安",
+      "泰安市",
+      "tai-an"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tai-zhou",
+      "name": "泰州",
+      "lat": 32.484882,
+      "lng": 119.915176,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Taizhou",
+    "aliases": [
+      "泰州",
+      "泰州市",
+      "tai-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "tong-ling",
+      "name": "铜陵",
+      "lat": 30.929935,
+      "lng": 117.816576,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Tongling",
+    "aliases": [
+      "铜陵",
+      "铜陵市",
+      "tong-ling"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "wei-hai",
+      "name": "威海",
+      "lat": 37.509691,
+      "lng": 122.116394,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Weihai",
+    "aliases": [
+      "威海",
+      "威海市",
+      "wei-hai"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "wei-fang",
+      "name": "潍坊",
+      "lat": 36.70925,
+      "lng": 119.107078,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Weifang",
+    "aliases": [
+      "潍坊",
+      "潍坊市",
+      "wei-fang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "wen-zhou",
+      "name": "温州",
+      "lat": 28.000575,
+      "lng": 120.672111,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Wenzhou",
+    "aliases": [
+      "温州",
+      "温州市",
+      "wen-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "wu-xi",
+      "name": "无锡",
+      "lat": 31.574729,
+      "lng": 120.301663,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Wuxi",
+    "aliases": [
+      "无锡",
+      "无锡市",
+      "wu-xi"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "wu-hu",
+      "name": "芜湖",
+      "lat": 31.326319,
+      "lng": 118.376451,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Wuhu",
+    "aliases": [
+      "芜湖",
+      "芜湖市",
+      "wu-hu"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "xin-yu",
+      "name": "新余",
+      "lat": 27.810834,
+      "lng": 114.930835,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Xinyu",
+    "aliases": [
+      "新余",
+      "新余市",
+      "xin-yu"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "xu-zhou",
+      "name": "徐州",
+      "lat": 34.261792,
+      "lng": 117.184811,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Xuzhou",
+    "aliases": [
+      "徐州",
+      "徐州市",
+      "xu-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "xuan-cheng",
+      "name": "宣城",
+      "lat": 30.945667,
+      "lng": 118.757995,
+      "province": "安徽",
+      "country": "中国"
+    },
+    "nameEn": "Xuancheng",
+    "aliases": [
+      "宣城",
+      "宣城市",
+      "xuan-cheng"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yan-tai",
+      "name": "烟台",
+      "lat": 37.539297,
+      "lng": 121.391382,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Yantai",
+    "aliases": [
+      "烟台",
+      "烟台市",
+      "yan-tai"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yan-cheng",
+      "name": "盐城",
+      "lat": 33.377631,
+      "lng": 120.139998,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Yancheng",
+    "aliases": [
+      "盐城",
+      "盐城市",
+      "yan-cheng"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yang-zhou",
+      "name": "扬州",
+      "lat": 32.393159,
+      "lng": 119.421003,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Yangzhou",
+    "aliases": [
+      "扬州",
+      "扬州市",
+      "yang-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "yi-chun-2",
+      "name": "宜春",
+      "lat": 27.8043,
+      "lng": 114.391136,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Yichun",
+    "aliases": [
+      "宜春",
+      "宜春市",
+      "yi-chun",
+      "yi-chun-2"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "ying-tan",
+      "name": "鹰潭",
+      "lat": 28.238638,
+      "lng": 117.033838,
+      "province": "江西",
+      "country": "中国"
+    },
+    "nameEn": "Yingtan",
+    "aliases": [
+      "鹰潭",
+      "鹰潭市",
+      "ying-tan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "zao-zhuang",
+      "name": "枣庄",
+      "lat": 34.856424,
+      "lng": 117.557964,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Zaozhuang",
+    "aliases": [
+      "枣庄",
+      "枣庄市",
+      "zao-zhuang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "zhang-zhou",
+      "name": "漳州",
+      "lat": 24.510897,
+      "lng": 117.661801,
+      "province": "福建",
+      "country": "中国"
+    },
+    "nameEn": "Zhangzhou",
+    "aliases": [
+      "漳州",
+      "漳州市",
+      "zhang-zhou"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "zhen-jiang",
+      "name": "镇江",
+      "lat": 32.204402,
+      "lng": 119.452753,
+      "province": "江苏",
+      "country": "中国"
+    },
+    "nameEn": "Zhenjiang",
+    "aliases": [
+      "镇江",
+      "镇江市",
+      "zhen-jiang"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "zhou-shan",
+      "name": "舟山",
+      "lat": 30.016028,
+      "lng": 122.106863,
+      "province": "浙江",
+      "country": "中国"
+    },
+    "nameEn": "Zhoushan",
+    "aliases": [
+      "舟山",
+      "舟山市",
+      "zhou-shan"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  },
+  {
+    "city": {
+      "id": "zi-bo",
+      "name": "淄博",
+      "lat": 36.814939,
+      "lng": 118.047648,
+      "province": "山东",
+      "country": "中国"
+    },
+    "nameEn": "Zibo",
+    "aliases": [
+      "淄博",
+      "淄博市",
+      "zi-bo"
+    ],
+    "countryCode": "CN",
+    "kind": "china-city",
+    "priority": 50
+  }
+]

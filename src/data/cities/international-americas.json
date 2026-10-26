@@ -1,0 +1,1008 @@
+[
+  {
+    "city": {
+      "id": "barcelona-ve",
+      "name": "巴塞罗那",
+      "lat": 10.130375,
+      "lng": -64.720014,
+      "province": "Anzoátegui",
+      "country": "委内瑞拉"
+    },
+    "nameEn": "Barcelona",
+    "aliases": [
+      "Barcelona",
+      "巴塞罗那",
+      "巴塞羅那",
+      "barcelona-ve"
+    ],
+    "countryCode": "VE",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "toronto-ca",
+      "name": "多伦多",
+      "lat": 43.664645,
+      "lng": -79.389459,
+      "province": "Ontario",
+      "country": "加拿大"
+    },
+    "nameEn": "Toronto",
+    "aliases": [
+      "Toronto",
+      "多伦多",
+      "多倫多",
+      "toronto-ca"
+    ],
+    "countryCode": "CA",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "cancun-mx",
+      "name": "坎昆",
+      "lat": 21.16996,
+      "lng": -86.830008,
+      "province": "Quintana Roo",
+      "country": "墨西哥"
+    },
+    "nameEn": "Cancun",
+    "aliases": [
+      "Cancún",
+      "Cancun",
+      "坎昆",
+      "cancun-mx"
+    ],
+    "countryCode": "MX",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "cusco-pe",
+      "name": "库斯科",
+      "lat": -13.525028,
+      "lng": -71.972155,
+      "province": "Cusco",
+      "country": "秘鲁"
+    },
+    "nameEn": "Cuzco",
+    "aliases": [
+      "Cusco",
+      "Cuzco",
+      "库斯科",
+      "庫斯科",
+      "cusco-pe"
+    ],
+    "countryCode": "PE",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "rio-de-janeiro-br",
+      "name": "里约热内卢",
+      "lat": -22.907308,
+      "lng": -43.212117,
+      "province": "Rio de Janeiro",
+      "country": "巴西"
+    },
+    "nameEn": "Rio de Janeiro",
+    "aliases": [
+      "Rio de Janeiro",
+      "里约热内卢",
+      "里約熱內盧",
+      "rio-de-janeiro-br"
+    ],
+    "countryCode": "BR",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "los-angeles-cl",
+      "name": "洛桑赫莱斯",
+      "lat": -37.479741,
+      "lng": -72.346924,
+      "province": "Bío-Bío",
+      "country": "智利"
+    },
+    "nameEn": "Los Ángeles",
+    "aliases": [
+      "Los Angeles",
+      "Los Ángeles",
+      "洛桑赫莱斯",
+      "洛桑赫萊斯",
+      "los-angeles-cl"
+    ],
+    "countryCode": "CL",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "miami-us",
+      "name": "迈阿密",
+      "lat": 25.789557,
+      "lng": -80.226052,
+      "province": "Florida",
+      "country": "美国"
+    },
+    "nameEn": "Miami",
+    "aliases": [
+      "Miami",
+      "迈阿密",
+      "邁阿密",
+      "miami-us"
+    ],
+    "countryCode": "US",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "montreal-ca",
+      "name": "蒙特利尔",
+      "lat": 45.501945,
+      "lng": -73.585243,
+      "province": "Québec",
+      "country": "加拿大"
+    },
+    "nameEn": "Montreal",
+    "aliases": [
+      "Montréal",
+      "Montreal",
+      "蒙特利尔",
+      "蒙特利爾",
+      "montreal-ca"
+    ],
+    "countryCode": "CA",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "melbourne-us",
+      "name": "墨尔本",
+      "lat": 28.08331,
+      "lng": -80.60832,
+      "province": "Florida",
+      "country": "美国"
+    },
+    "nameEn": "Melbourne",
+    "aliases": [
+      "Melbourne",
+      "墨尔本",
+      "墨爾本",
+      "melbourne-us"
+    ],
+    "countryCode": "US",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "new-york-us",
+      "name": "纽约",
+      "lat": 40.721562,
+      "lng": -73.995718,
+      "province": "New York",
+      "country": "美国"
+    },
+    "nameEn": "New York City",
+    "aliases": [
+      "New York",
+      "New York City",
+      "纽约",
+      "紐約",
+      "New York-Newark",
+      "NYC",
+      "new-york-us"
+    ],
+    "countryCode": "US",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "sao-paulo-br",
+      "name": "圣保罗",
+      "lat": -23.556734,
+      "lng": -46.626966,
+      "province": "São Paulo",
+      "country": "巴西"
+    },
+    "nameEn": "São Paulo",
+    "aliases": [
+      "São Paulo",
+      "Sao Paulo",
+      "圣保罗",
+      "聖保羅",
+      "Sao Paulo|Sio Paulo",
+      "sao-paulo-br"
+    ],
+    "countryCode": "BR",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "san-francisco-ar",
+      "name": "聖弗朗西斯科",
+      "lat": -31.430034,
+      "lng": -62.089968,
+      "province": "Córdoba",
+      "country": "阿根廷"
+    },
+    "nameEn": "San Francisco",
+    "aliases": [
+      "San Francisco",
+      "聖弗朗西斯科",
+      "san-francisco-ar"
+    ],
+    "countryCode": "AR",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "vancouver-us",
+      "name": "温哥华",
+      "lat": 45.630301,
+      "lng": -122.639993,
+      "province": "Washington",
+      "country": "美国"
+    },
+    "nameEn": "Vancouver",
+    "aliases": [
+      "Vancouver",
+      "温哥华",
+      "溫哥華",
+      "vancouver-us"
+    ],
+    "countryCode": "US",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "chicago-us",
+      "name": "芝加哥",
+      "lat": 41.847961,
+      "lng": -87.635237,
+      "province": "Illinois",
+      "country": "美国"
+    },
+    "nameEn": "Chicago",
+    "aliases": [
+      "Chicago",
+      "芝加哥",
+      "chicago-us"
+    ],
+    "countryCode": "US",
+    "kind": "major-city",
+    "priority": 80
+  },
+  {
+    "city": {
+      "id": "panama-city-pa",
+      "name": "巴拿马城",
+      "lat": 8.969963,
+      "lng": -79.534983,
+      "province": "Panama",
+      "country": "巴拿马"
+    },
+    "nameEn": "Panama City",
+    "aliases": [
+      "Panama City",
+      "巴拿马城",
+      "巴拿馬城",
+      "Ciudad de Panam|Panama",
+      "panama-city-pa"
+    ],
+    "countryCode": "PA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "basseterre-kn",
+      "name": "巴斯特尔",
+      "lat": 17.302031,
+      "lng": -62.717009,
+      "province": "圣基茨和尼维斯",
+      "country": "圣基茨和尼维斯"
+    },
+    "nameEn": "Basseterre",
+    "aliases": [
+      "Basseterre",
+      "巴斯特尔",
+      "basseterre-kn"
+    ],
+    "countryCode": "KN",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "brasilia-br",
+      "name": "巴西利亚",
+      "lat": -15.781394,
+      "lng": -47.917998,
+      "province": "Distrito Federal",
+      "country": "巴西"
+    },
+    "nameEn": "Brasília",
+    "aliases": [
+      "Brasília",
+      "Brasilia",
+      "巴西利亚",
+      "巴西利亞",
+      "brasilia-br"
+    ],
+    "countryCode": "BR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "belmopan-bz",
+      "name": "贝尔墨邦",
+      "lat": 17.252033,
+      "lng": -88.767073,
+      "province": "Cayo",
+      "country": "伯利兹"
+    },
+    "nameEn": "Belmopan",
+    "aliases": [
+      "Belmopan",
+      "贝尔墨邦",
+      "貝爾墨邦",
+      "belmopan-bz"
+    ],
+    "countryCode": "BZ",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bogota-co",
+      "name": "波哥大",
+      "lat": 4.598369,
+      "lng": -74.08529,
+      "province": "Bogota",
+      "country": "哥伦比亚"
+    },
+    "nameEn": "Bogotá",
+    "aliases": [
+      "Bogota",
+      "Bogotá",
+      "波哥大",
+      "bogota-co"
+    ],
+    "countryCode": "CO",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "bridgetown-bb",
+      "name": "布里奇顿",
+      "lat": 13.102003,
+      "lng": -59.616527,
+      "province": "Saint Michael",
+      "country": "巴巴多斯"
+    },
+    "nameEn": "Bridgetown",
+    "aliases": [
+      "Bridgetown",
+      "布里奇顿",
+      "bridgetown-bb"
+    ],
+    "countryCode": "BB",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "buenos-aires-ar",
+      "name": "布宜诺斯艾利斯",
+      "lat": -34.610715,
+      "lng": -58.432513,
+      "province": "Ciudad de Buenos Aires",
+      "country": "阿根廷"
+    },
+    "nameEn": "Buenos Aires",
+    "aliases": [
+      "Buenos Aires",
+      "布宜诺斯艾利斯",
+      "布宜諾斯艾利斯",
+      "buenos-aires-ar"
+    ],
+    "countryCode": "AR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "guatemala-gt",
+      "name": "瓜地馬拉",
+      "lat": 14.623081,
+      "lng": -90.528911,
+      "province": "Guatemala",
+      "country": "危地马拉"
+    },
+    "nameEn": "Guatemala City",
+    "aliases": [
+      "Guatemala City",
+      "Guatemala",
+      "瓜地馬拉",
+      "瓜地馬拉市",
+      "Ciudad de Guatemala (Guatemala City)",
+      "guatemala-gt"
+    ],
+    "countryCode": "GT",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "havana-cu",
+      "name": "哈瓦那",
+      "lat": 23.133905,
+      "lng": -82.366128,
+      "province": "Ciudad de la Habana",
+      "country": "古巴"
+    },
+    "nameEn": "Havana",
+    "aliases": [
+      "Havana",
+      "哈瓦那",
+      "La Habana",
+      "havana-cu"
+    ],
+    "countryCode": "CU",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "washington-d-c-us",
+      "name": "华盛顿哥伦比亚特区",
+      "lat": 38.901495,
+      "lng": -77.011364,
+      "province": "District of Columbia",
+      "country": "美国"
+    },
+    "nameEn": "Washington",
+    "aliases": [
+      "Washington,  D.C.",
+      "Washington",
+      "Washington, D.C.",
+      "华盛顿哥伦比亚特区",
+      "華盛頓哥倫比亞特區",
+      "Washington D.C.",
+      "washington-d-c-us"
+    ],
+    "countryCode": "US",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "quito-ec",
+      "name": "基多",
+      "lat": -0.213042,
+      "lng": -78.501997,
+      "province": "Pichincha",
+      "country": "厄瓜多尔"
+    },
+    "nameEn": "Quito",
+    "aliases": [
+      "Quito",
+      "基多",
+      "quito-ec"
+    ],
+    "countryCode": "EC",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "caracas-ve",
+      "name": "加拉加斯",
+      "lat": 10.502944,
+      "lng": -66.918983,
+      "province": "Distrito Capital",
+      "country": "委内瑞拉"
+    },
+    "nameEn": "Caracas",
+    "aliases": [
+      "Caracas",
+      "加拉加斯",
+      "卡拉卡斯",
+      "caracas-ve"
+    ],
+    "countryCode": "VE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kingstown-vc",
+      "name": "金斯敦",
+      "lat": 13.155756,
+      "lng": -61.220236,
+      "province": "圣文森特和格林纳丁斯",
+      "country": "圣文森特和格林纳丁斯"
+    },
+    "nameEn": "Kingstown",
+    "aliases": [
+      "Kingstown",
+      "金斯敦",
+      "kingstown-vc"
+    ],
+    "countryCode": "VC",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "kingston-jm",
+      "name": "京斯敦",
+      "lat": 17.977077,
+      "lng": -76.767434,
+      "province": "Kingston",
+      "country": "牙买加"
+    },
+    "nameEn": "Kingston",
+    "aliases": [
+      "Kingston",
+      "京斯敦",
+      "kingston-jm"
+    ],
+    "countryCode": "JM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "castries-lc",
+      "name": "卡斯特里",
+      "lat": 14.007875,
+      "lng": -60.992875,
+      "province": "圣卢西亚",
+      "country": "圣卢西亚"
+    },
+    "nameEn": "Castries",
+    "aliases": [
+      "Castries",
+      "卡斯特里",
+      "castries-lc"
+    ],
+    "countryCode": "LC",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "la-paz-bo",
+      "name": "拉巴斯",
+      "lat": -16.496028,
+      "lng": -68.151931,
+      "province": "La Paz",
+      "country": "玻利维亚"
+    },
+    "nameEn": "La Paz",
+    "aliases": [
+      "La Paz",
+      "拉巴斯",
+      "la-paz-bo"
+    ],
+    "countryCode": "BO",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "lima-pe",
+      "name": "利马",
+      "lat": -12.046067,
+      "lng": -77.052008,
+      "province": "Lima",
+      "country": "秘鲁"
+    },
+    "nameEn": "Lima",
+    "aliases": [
+      "Lima",
+      "利马",
+      "利馬",
+      "lima-pe"
+    ],
+    "countryCode": "PE",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "roseau-dm",
+      "name": "罗索",
+      "lat": 15.301016,
+      "lng": -61.387013,
+      "province": "Saint George",
+      "country": "多米尼加"
+    },
+    "nameEn": "Roseau",
+    "aliases": [
+      "Roseau",
+      "罗索",
+      "羅梭",
+      "roseau-dm"
+    ],
+    "countryCode": "DM",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "managua-ni",
+      "name": "馬拿瓜",
+      "lat": 12.154962,
+      "lng": -86.270437,
+      "province": "Managua",
+      "country": "尼加拉瓜"
+    },
+    "nameEn": "Managua",
+    "aliases": [
+      "Managua",
+      "馬拿瓜",
+      "managua-ni"
+    ],
+    "countryCode": "NI",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "montevideo-uy",
+      "name": "蒙得维的亚",
+      "lat": -34.905376,
+      "lng": -56.186823,
+      "province": "Montevideo",
+      "country": "乌拉圭"
+    },
+    "nameEn": "Montevideo",
+    "aliases": [
+      "Montevideo",
+      "蒙得维的亚",
+      "蒙特維多",
+      "montevideo-uy"
+    ],
+    "countryCode": "UY",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "mexico-city-mx",
+      "name": "墨西哥城",
+      "lat": 19.444388,
+      "lng": -99.132934,
+      "province": "Distrito Federal",
+      "country": "墨西哥"
+    },
+    "nameEn": "Mexico City",
+    "aliases": [
+      "Mexico City",
+      "墨西哥城",
+      "Ciudad de M",
+      "mexico-city-mx"
+    ],
+    "countryCode": "MX",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "nassau-bs",
+      "name": "拿骚",
+      "lat": 25.08339,
+      "lng": -77.350044,
+      "province": "巴哈马",
+      "country": "巴哈马"
+    },
+    "nameEn": "Nassau",
+    "aliases": [
+      "Nassau",
+      "拿骚",
+      "拿騷",
+      "nassau-bs"
+    ],
+    "countryCode": "BS",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "paramaribo-sr",
+      "name": "帕拉马里博",
+      "lat": 5.83503,
+      "lng": -55.167031,
+      "province": "Paramaribo",
+      "country": "苏里南"
+    },
+    "nameEn": "Paramaribo",
+    "aliases": [
+      "Paramaribo",
+      "帕拉马里博",
+      "巴拉馬利波",
+      "paramaribo-sr"
+    ],
+    "countryCode": "SR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "georgetown-gy",
+      "name": "乔治敦",
+      "lat": 6.801974,
+      "lng": -58.167029,
+      "province": "East Berbice-Corentyne",
+      "country": "圭亚那"
+    },
+    "nameEn": "Georgetown",
+    "aliases": [
+      "Georgetown",
+      "乔治敦",
+      "georgetown-gy"
+    ],
+    "countryCode": "GY",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "santiago-cl",
+      "name": "圣地亚哥",
+      "lat": -33.440205,
+      "lng": -70.650504,
+      "province": "Región Metropolitana de Santiago",
+      "country": "智利"
+    },
+    "nameEn": "Santiago",
+    "aliases": [
+      "Santiago",
+      "圣地亚哥",
+      "聖地亞哥",
+      "santiago-cl"
+    ],
+    "countryCode": "CL",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "santo-domingo-do",
+      "name": "圣多明哥",
+      "lat": 18.470745,
+      "lng": -69.929742,
+      "province": "Distrito Nacional",
+      "country": "多明尼加"
+    },
+    "nameEn": "Santo Domingo",
+    "aliases": [
+      "Santo Domingo",
+      "圣多明哥",
+      "聖多明哥",
+      "santo-domingo-do"
+    ],
+    "countryCode": "DO",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "san-jose-cr",
+      "name": "圣荷西",
+      "lat": 9.930371,
+      "lng": -84.078814,
+      "province": "San José",
+      "country": "哥斯达黎加"
+    },
+    "nameEn": "San José",
+    "aliases": [
+      "San José",
+      "San Jose",
+      "圣荷西",
+      "聖荷西",
+      "san-jose-cr"
+    ],
+    "countryCode": "CR",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "saint-george-s-gd",
+      "name": "圣乔治",
+      "lat": 12.052633,
+      "lng": -61.741643,
+      "province": "格林纳达",
+      "country": "格林纳达"
+    },
+    "nameEn": "St. George's",
+    "aliases": [
+      "Saint George's",
+      "St. George's",
+      "圣乔治",
+      "saint-george-s-gd"
+    ],
+    "countryCode": "GD",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "san-salvador-sv",
+      "name": "圣萨尔瓦多",
+      "lat": 13.70328,
+      "lng": -89.215576,
+      "province": "San Salvador",
+      "country": "萨尔瓦多"
+    },
+    "nameEn": "San Salvador",
+    "aliases": [
+      "San Salvador",
+      "圣萨尔瓦多",
+      "聖薩爾瓦多",
+      "san-salvador-sv"
+    ],
+    "countryCode": "SV",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "saint-john-s-ag",
+      "name": "圣约翰",
+      "lat": 17.118036,
+      "lng": -61.850034,
+      "province": "安提瓜和巴布达",
+      "country": "安提瓜和巴布达"
+    },
+    "nameEn": "Saint John's",
+    "aliases": [
+      "Saint John's",
+      "圣约翰",
+      "聖約翰",
+      "saint-john-s-ag"
+    ],
+    "countryCode": "AG",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "sucre-bo",
+      "name": "苏克雷",
+      "lat": -19.040971,
+      "lng": -65.259516,
+      "province": "Chuquisaca",
+      "country": "玻利维亚"
+    },
+    "nameEn": "Sucre",
+    "aliases": [
+      "Sucre",
+      "苏克雷",
+      "蘇克雷",
+      "sucre-bo"
+    ],
+    "countryCode": "BO",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "port-au-prince-ht",
+      "name": "太子港",
+      "lat": 18.54297,
+      "lng": -72.33798,
+      "province": "Ouest",
+      "country": "海地"
+    },
+    "nameEn": "Port-au-Prince",
+    "aliases": [
+      "Port-au-Prince",
+      "太子港",
+      "port-au-prince-ht"
+    ],
+    "countryCode": "HT",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "tegucigalpa-hn",
+      "name": "特古西加尔巴",
+      "lat": 14.103991,
+      "lng": -87.219475,
+      "province": "Francisco Morazán",
+      "country": "洪都拉斯"
+    },
+    "nameEn": "Tegucigalpa",
+    "aliases": [
+      "Tegucigalpa",
+      "特古西加尔巴",
+      "德古西加巴",
+      "tegucigalpa-hn"
+    ],
+    "countryCode": "HN",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "ottawa-ca",
+      "name": "渥太华",
+      "lat": 45.418643,
+      "lng": -75.701961,
+      "province": "Ontario",
+      "country": "加拿大"
+    },
+    "nameEn": "Ottawa",
+    "aliases": [
+      "Ottawa",
+      "渥太华",
+      "渥太華",
+      "Ottawa-Gatineau",
+      "ottawa-ca"
+    ],
+    "countryCode": "CA",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "port-of-spain-tt",
+      "name": "西班牙港",
+      "lat": 10.651997,
+      "lng": -61.517031,
+      "province": "Port of Spain",
+      "country": "特立尼达和多巴哥"
+    },
+    "nameEn": "Port of Spain",
+    "aliases": [
+      "Port-of-Spain",
+      "Port of Spain",
+      "西班牙港",
+      "port-of-spain-tt"
+    ],
+    "countryCode": "TT",
+    "kind": "capital",
+    "priority": 70
+  },
+  {
+    "city": {
+      "id": "asuncion-py",
+      "name": "亚松森",
+      "lat": -25.290671,
+      "lng": -57.625834,
+      "province": "Asunción",
+      "country": "巴拉圭"
+    },
+    "nameEn": "Asunción",
+    "aliases": [
+      "Asunción",
+      "Asuncion",
+      "亚松森",
+      "亞松森",
+      "asuncion-py"
+    ],
+    "countryCode": "PY",
+    "kind": "capital",
+    "priority": 70
+  }
+]
