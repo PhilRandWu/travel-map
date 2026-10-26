@@ -1,6 +1,12 @@
 import type { City, Journey, Photo, TravelData, Trip, TransportType, Visit } from '@/types'
-import { BUILTIN_CITIES, resolveCity } from '@/lib/cities'
+import { resolveCity } from '@/lib/cities'
+import { listCityOptions } from '@/lib/editorCityCatalog'
 import { validateTravelData, type ValidationIssue } from '@/lib/validate'
+
+export {
+  listCityOptions,
+  searchCities,
+} from '@/lib/editorCityCatalog'
 
 export interface VisitDraft {
   id: string
@@ -35,38 +41,8 @@ export interface CustomCityInput {
   lng: number
 }
 
-function normalize(value: string): string {
-  return value.trim().toLocaleLowerCase()
-}
-
-/** 已存城市优先于内置表，同名/同 id 时用户数据覆盖。 */
-export function listCityOptions(data: TravelData): City[] {
-  const merged = new Map<string, City>()
-  for (const city of BUILTIN_CITIES) merged.set(city.id, city)
-  for (const city of data.cities) merged.set(city.id, city)
-  return [...merged.values()]
-}
-
-export function searchCities(
-  data: TravelData,
-  query: string,
-  limit = 8,
-): City[] {
-  const needle = normalize(query)
-  const cities = listCityOptions(data)
-  if (!needle) return cities.slice(0, limit)
-
-  return cities
-    .filter((city) => [city.name, city.id, city.province, city.country]
-      .some((value) => normalize(value).includes(needle)))
-    .slice(0, limit)
-}
-
 export function makeCityId(name: string, data: TravelData): string {
-  const used = new Set([
-    ...BUILTIN_CITIES.map((city) => city.id),
-    ...data.cities.map((city) => city.id),
-  ])
+  const used = new Set(listCityOptions(data).map((city) => city.id))
   const base = name
     .trim()
     .toLocaleLowerCase()

@@ -20,8 +20,9 @@ const clone = (): TravelData => JSON.parse(JSON.stringify(tripsJson)) as TravelD
 describe('editor model', () => {
   it('searches cities by name, province and user-defined city', () => {
     const data = clone()
-    expect(searchCities(data, '浙江').map((city) => city.id))
+    expect(searchCities(data, '浙江').slice(0, 2).map((city) => city.id))
       .toEqual(['hangzhou', 'jiaxing'])
+    expect(searchCities(data, '浙江').length).toBeGreaterThan(2)
 
     data.cities.push({
       id: 'hangzhou',
@@ -32,6 +33,47 @@ describe('editor model', () => {
       country: '中国',
     })
     expect(searchCities(data, '杭州')[0].name).toBe('杭州市')
+  })
+
+  it('searches the global offline catalog by Chinese and English names', () => {
+    const data = clone()
+    expect(searchCities(data, '东京')[0].id).toBe('tokyo-jp')
+    expect(searchCities(data, 'Tokyo')[0].id).toBe('tokyo-jp')
+    expect(searchCities(data, 'nyc')[0].id).toBe('new-york-us')
+  })
+
+  it('prefers user city overrides for an existing catalog id', () => {
+    const data = clone()
+    data.cities.push({
+      id: 'tokyo-jp',
+      name: '东京都',
+      lat: 35.68,
+      lng: 139.76,
+      province: '东京都',
+      country: '日本',
+    })
+
+    expect(searchCities(data, '东京都')[0]).toMatchObject({
+      id: 'tokyo-jp',
+      name: '东京都',
+      lat: 35.68,
+    })
+  })
+
+  it('persists a selected global city into travel data', () => {
+    const data = clone()
+    const draft = createTripDraft(data, data.journeys[0])
+    const from = searchCities(data, '东京')[0]
+    const to = searchCities(data, '纽约')[0]
+    const next = saveTrip(data, {
+      ...draft,
+      from,
+      to,
+      date: '2025-05-02',
+    })
+
+    expect(next.cities.some((city) => city.id === 'tokyo-jp')).toBe(true)
+    expect(next.cities.some((city) => city.id === 'new-york-us')).toBe(true)
   })
 
   it('creates unique ids and custom city ids', () => {
