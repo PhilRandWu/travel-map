@@ -47,7 +47,7 @@ describe('CityCombobox', () => {
 
     const input = screen.getByLabelText(/到访城市/)
     await user.click(input)
-    await user.type(input, '绍兴')
+    await user.type(input, '测试小镇')
     await user.click(screen.getByRole('option', { name: /新建城市/ }))
     await user.type(screen.getByLabelText('纬度'), '30.03')
     await user.type(screen.getByLabelText('经度'), '120.58')
@@ -55,10 +55,24 @@ describe('CityCombobox', () => {
 
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({
       id: 'city',
-      name: '绍兴',
+      name: '测试小镇',
       lat: 30.03,
       lng: 120.58,
     }))
+  })
+
+  it('advertises Chinese, English and pinyin search', () => {
+    render(
+      <CityCombobox
+        data={data}
+        label="到达城市"
+        value={null}
+        onChange={() => {}}
+      />,
+    )
+
+    expect(screen.getByRole('combobox').getAttribute('placeholder'))
+      .toContain('中文、英文或拼音')
   })
 
   it('does not select an excluded city with Enter', async () => {

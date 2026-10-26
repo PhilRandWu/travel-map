@@ -164,7 +164,7 @@ export default function CityCombobox({
           autoComplete="off"
           autoFocus={autoFocus}
           value={query}
-          placeholder="搜索城市名、省份或 id"
+          placeholder="搜索中文、英文或拼音"
           onChange={(event) => handleQuery(event.target.value)}
           onFocus={() => setOpen(true)}
           onKeyDown={handleKeyDown}
