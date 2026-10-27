@@ -84,8 +84,7 @@ export function flightArcAltitude(km: number): number {
 
 /**
  * 一段行程的里程：
- * - flight：起终点大圆距离；
- * - train：from → waypoints → to 各段大圆距离之和。
+ * - 五类交通统一按 from → waypoints → to 各段大圆距离求和。
  * cityMap 缺引用时返回 null（校验层负责报错）。
  */
 export function tripDistance(trip: Trip, cityMap: Map<string, City>): number | null {
