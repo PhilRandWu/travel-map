@@ -1,6 +1,8 @@
 import { useEffect, useRef, type RefObject } from 'react'
 import type { GlobeMethods } from 'react-globe.gl'
+import type { TransportType } from '@/types'
 import { sampleVehicleRoute, type VehiclePlayback } from '@/lib/vehicle'
+import { getTransportMode } from '@/lib/transportModes'
 import type { VehicleRuntime } from '@/components/globe/hooks/useVehicleRuntime'
 import { createVehicleTrail } from '@/components/globe/vehicleTrail'
 import { useMotion } from '@/components/motion/MotionProvider'
@@ -23,10 +25,13 @@ interface Props {
   globeRef: RefObject<GlobeMethods | undefined>
 }
 
-const VEHICLE_ICONS = {
+const VEHICLE_ICONS: Record<TransportType, string> = {
   flight: '/vehicle-icons/flight-3d.svg',
   train: '/vehicle-icons/train-3d.svg',
-} as const
+  metro: '/vehicle-icons/metro-3d.svg',
+  ship: '/vehicle-icons/ship-3d.svg',
+  car: '/vehicle-icons/car-3d.svg',
+}
 
 const CAMERA_SETTLE_PROGRESS = 0.86
 
@@ -41,11 +46,10 @@ export default function VehicleOverlay({
   const effects = useVehicleMotionEffects(playback?.key)
 
   useEffect(() => {
-    for (const source of Object.values(VEHICLE_ICONS)) {
-      const image = new window.Image()
-      image.src = source
-    }
-  }, [])
+    if (!playback) return
+    const image = new window.Image()
+    image.src = VEHICLE_ICONS[playback.type]
+  }, [playback?.type])
 
   useEffect(() => {
     const globe = globeRef.current
@@ -165,7 +169,8 @@ export default function VehicleOverlay({
   }, [effectiveLevel, globeRef, playback, runtime])
 
   if (!playback) return null
-  const isFlight = playback.type === 'flight'
+  const mode = getTransportMode(playback.type)
+  const isFlight = mode.route.shape === 'arc'
 
   return (
     <div

@@ -6,6 +6,7 @@ import {
   type RefObject,
 } from 'react'
 import type { GlobeMethods } from 'react-globe.gl'
+import type { TransportType } from '@/types'
 import {
   buildDestinationPose,
   buildRouteCameraPose,
@@ -20,6 +21,7 @@ import {
 import type { VehicleRuntime } from '@/components/globe/hooks/useVehicleRuntime'
 import type { VehicleRuntimeFrame } from '@/lib/vehicleRuntime'
 import type { VehicleCameraStatusData } from '@/components/globe/VehicleCameraStatus'
+import { getTransportMode } from '@/lib/transportModes'
 
 interface SavedCamera {
   position: [number, number, number]
@@ -48,8 +50,8 @@ function applyPose(globe: GlobeMethods, pose: CameraPose): void {
   camera.updateMatrixWorld(true)
 }
 
-function preparationLabel(type: 'flight' | 'train'): string {
-  return type === 'flight' ? '准备起飞' : '准备发车'
+function preparationLabel(type: TransportType): string {
+  return getTransportMode(type).camera.preparingLabel
 }
 
 export function useVehicleDirectorCamera({

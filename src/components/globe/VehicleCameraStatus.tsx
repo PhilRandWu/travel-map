@@ -1,8 +1,10 @@
 import type { CSSProperties } from 'react'
+import type { TransportType } from '@/types'
+import { getTransportMode } from '@/lib/transportModes'
 
 export interface VehicleCameraStatusData {
   label: string
-  type: 'flight' | 'train'
+  type: TransportType
   routeLabel: string
   progress: number
 }
@@ -17,7 +19,7 @@ export default function VehicleCameraStatus({
   status,
 }: Props) {
   if (!active || !status) return null
-  const vehicle = status.type === 'flight' ? '飞机' : '高铁'
+  const vehicle = getTransportMode(status.type).label
   const [date, routeLabel, ...meta] = status.routeLabel.split(' · ')
   const [origin, destination] = routeLabel?.split(' → ') ?? []
   const detail = meta.join(' · ')

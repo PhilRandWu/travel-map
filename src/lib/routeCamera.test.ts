@@ -24,11 +24,25 @@ const fakeGlobe = {
   },
 } as Pick<GlobeMethods, 'getGlobeRadius' | 'getCoords'>
 
+const flightPoints: [number, number][] = [[20, 100], [24, 104], [30, 112]]
 const flightRoute: VehicleRoute = {
   type: 'flight',
-  points: [[20, 100], [24, 104], [30, 112]],
+  points: flightPoints,
+  legs: [{
+    points: flightPoints,
+    altitude: 0.18,
+    distanceKm: 1200,
+    startProgress: 0,
+    endProgress: 1,
+    startMs: 0,
+    endMs: 7600,
+    durationMs: 7600,
+    toName: '终点',
+  }],
   altitude: 0.18,
   distanceKm: 1200,
+  movementDurationMs: 7600,
+  stopHoldMs: 0,
   durationMs: 7600,
 }
 
@@ -36,6 +50,7 @@ const trainRoute: VehicleRoute = {
   ...flightRoute,
   type: 'train',
   altitude: 0.004,
+  legs: flightRoute.legs.map((leg) => ({ ...leg, altitude: 0.004 })),
 }
 
 function projectedY(
@@ -85,9 +100,14 @@ describe('buildRouteCameraPose', () => {
   })
 
   it('stays finite across the antimeridian', () => {
+    const points: [number, number][] = [[0, 179], [0, 180], [0, -179]]
     const datelineRoute: VehicleRoute = {
       ...flightRoute,
-      points: [[0, 179], [0, 180], [0, -179]],
+      points,
+      legs: [{
+        ...flightRoute.legs[0],
+        points,
+      }],
     }
     const pose = buildRouteCameraPose(
       fakeGlobe,

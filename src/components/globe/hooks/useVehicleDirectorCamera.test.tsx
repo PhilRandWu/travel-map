@@ -16,14 +16,15 @@ import {
 } from '@/lib/vehicleMotion'
 import { useVehicleDirectorCamera } from '@/components/globe/hooks/useVehicleDirectorCamera'
 
-const { flights } = buildTracks(data as TravelData)
-const route = buildVehicleRoute(flights[0])
+const flightTrack = buildTracks(data as TravelData).routes
+  .find((item) => item.type === 'flight')!
+const route = buildVehicleRoute(flightTrack)
 const playback: VehiclePlayback = {
   key: 1,
-  tripId: flights[0].trip.id,
+  tripId: flightTrack.trip.id,
   type: route.type,
   route,
-  label: flights[0].label,
+  label: flightTrack.label,
 }
 const framing = { topRatio: 0.06, bottomRatio: 0.8 }
 

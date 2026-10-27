@@ -1,42 +1,54 @@
 import type { TransportType } from '@/types'
-import type { FlightArc, TrainPath } from '@/lib/tracks'
+import type { TransportRoute } from '@/lib/tracks'
 import { greatCirclePoints, haversineKm } from '@/lib/geo'
+import { getTransportMode } from '@/lib/transportModes'
 import {
-  FLIGHT_CRUISE_MIN_MS,
-  FLIGHT_FIXED_MS,
-  TRAIN_CRUISE_MIN_MS,
-  TRAIN_FIXED_MS,
-  vehicleAltitudeProfile,
+  VEHICLE_STOP_HOLD_MS,
+  legAltitudeEnvelope,
+  vehicleDurationForDistance,
 } from '@/lib/vehicleTiming'
 
-export type VehicleTrack = FlightArc | TrainPath
+export { vehicleDurationForDistance }
 
-export interface VehicleRoute {
-  type: 'flight' | 'train'
+export interface VehicleRouteLeg {
   points: [number, number][]
   altitude: number
   distanceKm: number
+  startProgress: number
+  endProgress: number
+  startMs: number
+  endMs: number
+  durationMs: number
+  toName: string
+}
+
+export interface VehicleRoute {
+  type: TransportType
+  points: [number, number][]
+  legs: VehicleRouteLeg[]
+  altitude: number
+  distanceKm: number
+  movementDurationMs: number
+  stopHoldMs: number
   durationMs: number
 }
 
 export interface VehiclePlayback {
   key: number
   tripId: string
-  type: VehicleRoute['type']
+  type: TransportType
   route: VehicleRoute
   label: string
 }
 
-export const TRAIN_ALTITUDE = 0.004
-
 function pathDistanceKm(points: [number, number][]): number {
   let total = 0
   for (let index = 1; index < points.length; index += 1) {
-    const [fromLat, fromLng] = points[index - 1]
-    const [toLat, toLng] = points[index]
+    const previous = points[index - 1]
+    const current = points[index]
     total += haversineKm(
-      { lat: fromLat, lng: fromLng },
-      { lat: toLat, lng: toLng },
+      { lat: previous[0], lng: previous[1] },
+      { lat: current[0], lng: current[1] },
     )
   }
   return total
@@ -47,100 +59,130 @@ function resampleByDistance(
 ): [number, number][] {
   if (points.length <= 2) return points.map((point) => [...point])
 
-  const lengths = points.slice(1).map((point, index) => haversineKm(
+  const distances = points.slice(1).map((point, index) => haversineKm(
     { lat: points[index][0], lng: points[index][1] },
     { lat: point[0], lng: point[1] },
   ))
-  const total = lengths.reduce((sum, length) => sum + length, 0)
+  const total = distances.reduce((sum, value) => sum + value, 0)
   if (total <= 0) return points.map((point) => [...point])
 
-  const intervals = points.length - 1
-  const result: [number, number][] = []
-  let segmentIndex = 0
-  let segmentStartDistance = 0
-
-  for (let index = 0; index <= intervals; index += 1) {
-    if (index === 0) {
-      result.push([...points[0]])
-      continue
-    }
-    if (index === intervals) {
-      result.push([...points.at(-1)!])
-      continue
-    }
-
-    const targetDistance = total * index / intervals
+  const result: [number, number][] = [[...points[0]]]
+  let segment = 0
+  let covered = 0
+  for (let index = 1; index < points.length - 1; index += 1) {
+    const target = total * index / (points.length - 1)
     while (
-      segmentIndex < lengths.length - 1
-      && segmentStartDistance + lengths[segmentIndex] < targetDistance
+      segment < distances.length - 1
+      && covered + distances[segment] < target
     ) {
-      segmentStartDistance += lengths[segmentIndex]
-      segmentIndex += 1
+      covered += distances[segment]
+      segment += 1
     }
-
-    const from = points[segmentIndex]
-    const to = points[segmentIndex + 1]
-    const segmentProgress = lengths[segmentIndex] <= 0
+    const from = points[segment]
+    const to = points[segment + 1]
+    const progress = distances[segment] <= 0
       ? 0
-      : (targetDistance - segmentStartDistance) / lengths[segmentIndex]
+      : (target - covered) / distances[segment]
     const rawLngDelta = to[1] - from[1]
     const lngDelta = rawLngDelta > 180
       ? rawLngDelta - 360
       : rawLngDelta < -180
         ? rawLngDelta + 360
         : rawLngDelta
-    const lng = from[1] + lngDelta * segmentProgress
     result.push([
-      from[0] + (to[0] - from[0]) * segmentProgress,
-      ((lng + 540) % 360) - 180,
+      from[0] + (to[0] - from[0]) * progress,
+      ((from[1] + lngDelta * progress + 540) % 360) - 180,
     ])
   }
-
+  result.push([...points.at(-1)!])
   return result
 }
 
-export function vehicleDurationForDistance(
-  type: TransportType,
-  distanceKm: number,
-): number {
-  const flight = type === 'flight'
-  const cruiseFloor = flight ? FLIGHT_CRUISE_MIN_MS : TRAIN_CRUISE_MIN_MS
-  const fixed = flight ? FLIGHT_FIXED_MS : TRAIN_FIXED_MS
-  const distanceStart = flight ? 300 : 100
-  const distanceRange = flight ? 9700 : 3900
-  const cruise = cruiseFloor
-    + Math.max(0, Math.min(1, (distanceKm - distanceStart) / distanceRange))
-      * 2000
-  return Math.round(cruise + fixed)
+function allocateLegDurations(
+  totalMs: number,
+  distances: number[],
+): number[] {
+  if (distances.length === 1) return [totalMs]
+
+  const floor = Math.min(
+    900,
+    Math.floor(totalMs / (distances.length * 2)),
+  )
+  const flex = totalMs - floor * distances.length
+  const weights = distances.map((distance) => Math.max(0.001, distance))
+  const weightTotal = weights.reduce((sum, value) => sum + value, 0)
+  const durations = weights.map((weight) => (
+    floor + Math.floor(flex * weight / weightTotal)
+  ))
+  const remaining = totalMs
+    - durations.reduce((sum, value) => sum + value, 0)
+  durations[durations.length - 1] += remaining
+  return durations
 }
 
-/** 把一条行程轨迹转成载具可沿用的采样路径；飞机按高空弧线，高铁按贴地折线。 */
-export function buildVehicleRoute(track: VehicleTrack): VehicleRoute {
-  if ('altitude' in track) {
-    const distanceKm = haversineKm(
-      { lat: track.startLat, lng: track.startLng },
-      { lat: track.endLat, lng: track.endLng },
-    )
-    return {
-      type: 'flight',
-      points: greatCirclePoints(
-        { lat: track.startLat, lng: track.startLng },
-        { lat: track.endLat, lng: track.endLng },
-        64,
-      ),
-      altitude: track.altitude,
-      distanceKm,
-      durationMs: vehicleDurationForDistance('flight', distanceKm),
-    }
-  }
+interface RawVehicleLeg {
+  points: [number, number][]
+  altitude: number
+  distanceKm: number
+  toName: string
+}
 
-  const distanceKm = pathDistanceKm(track.points)
-  return {
-    type: 'train',
-    points: resampleByDistance(track.points),
-    altitude: TRAIN_ALTITUDE,
+export function buildVehicleRoute(track: TransportRoute): VehicleRoute {
+  const mode = getTransportMode(track.type)
+  const rawLegs: RawVehicleLeg[] = track.legs.map((leg) => {
+    const points = mode.route.shape === 'arc'
+      ? greatCirclePoints(leg.from, leg.to, 64)
+      : resampleByDistance(leg.points)
+    return {
+      points,
+      altitude: leg.altitude,
+      distanceKm: pathDistanceKm(points),
+      toName: leg.to.name,
+    }
+  })
+
+  const distanceKm = rawLegs.reduce((sum, leg) => sum + leg.distanceKm, 0)
+  const movementDurationMs = vehicleDurationForDistance(
+    track.type,
     distanceKm,
-    durationMs: vehicleDurationForDistance('train', distanceKm),
+  )
+  const legDurations = allocateLegDurations(
+    movementDurationMs,
+    rawLegs.map((leg) => leg.distanceKm),
+  )
+  const stopHoldMs = (rawLegs.length - 1) * VEHICLE_STOP_HOLD_MS
+  const points: [number, number][] = []
+  let distanceCursor = 0
+  let elapsedCursor = 0
+
+  const legs = rawLegs.map((leg, index): VehicleRouteLeg => {
+    const startProgress = distanceKm <= 0 ? 0 : distanceCursor / distanceKm
+    distanceCursor += leg.distanceKm
+    const endProgress = distanceKm <= 0 ? 1 : distanceCursor / distanceKm
+    if (index > 0) elapsedCursor += VEHICLE_STOP_HOLD_MS
+    const startMs = elapsedCursor
+    const durationMs = legDurations[index]
+    elapsedCursor += durationMs
+    points.push(...(points.length === 0 ? leg.points : leg.points.slice(1)))
+    return {
+      ...leg,
+      startProgress,
+      endProgress,
+      startMs,
+      endMs: startMs + durationMs,
+      durationMs,
+    }
+  })
+
+  return {
+    type: track.type,
+    points,
+    legs,
+    altitude: Math.max(...legs.map((leg) => leg.altitude)),
+    distanceKm,
+    movementDurationMs,
+    stopHoldMs,
+    durationMs: movementDurationMs + stopHoldMs,
   }
 }
 
@@ -150,51 +192,66 @@ export interface VehiclePosition {
   altitude: number
 }
 
-export function vehicleAltitudeAt(
-  route: VehicleRoute,
+function samplePath(
+  points: [number, number][],
   progress: number,
-): number {
-  return vehicleAltitudeProfile(
-    route.type,
-    route.altitude,
-    route.durationMs,
-    progress,
-  )
-}
+): [number, number] {
+  if (points.length === 0) return [0, 0]
+  const t = Math.max(0, Math.min(1, progress))
+  if (t <= 0) return points[0]
+  if (t >= 1) return points.at(-1)!
 
-/** 在路径上取 0–1 进度对应的位置；相邻点按最短经度差插值，避免跨 180° 跳变。 */
-export function sampleVehicleRoute(
-  route: VehicleRoute,
-  progress: number,
-): VehiclePosition {
-  if (route.points.length === 0) {
-    return { lat: 0, lng: 0, altitude: 0 }
-  }
-  const t = Math.min(1, Math.max(0, progress))
-  if (t <= 0) {
-    const [lat, lng] = route.points[0]
-    return { lat, lng, altitude: vehicleAltitudeAt(route, 0) }
-  }
-  if (t >= 1) {
-    const [lat, lng] = route.points[route.points.length - 1]
-    return { lat, lng, altitude: vehicleAltitudeAt(route, 1) }
-  }
-
-  const position = t * (route.points.length - 1)
-  const index = Math.floor(position)
-  const fraction = position - index
-  const [fromLat, fromLng] = route.points[index]
-  const [toLat, toLng] = route.points[index + 1]
-  const rawLngDelta = toLng - fromLng
+  const index = Math.floor(t * (points.length - 1))
+  const fraction = t * (points.length - 1) - index
+  const from = points[index]
+  const to = points[index + 1]
+  const rawLngDelta = to[1] - from[1]
   const lngDelta = rawLngDelta > 180
     ? rawLngDelta - 360
     : rawLngDelta < -180
       ? rawLngDelta + 360
       : rawLngDelta
+  return [
+    from[0] + (to[0] - from[0]) * fraction,
+    ((from[1] + lngDelta * fraction + 540) % 360) - 180,
+  ]
+}
 
-  return {
-    lat: fromLat + (toLat - fromLat) * fraction,
-    lng: fromLng + lngDelta * fraction,
-    altitude: vehicleAltitudeAt(route, t),
-  }
+function legAtProgress(
+  route: VehicleRoute,
+  progress: number,
+): VehicleRouteLeg | undefined {
+  const t = Math.max(0, Math.min(1, progress))
+  return route.legs.find((leg, index) => (
+    index === route.legs.length - 1
+    || (t >= leg.startProgress && t < leg.endProgress)
+  )) ?? route.legs.at(-1)
+}
+
+export function vehicleAltitudeAt(
+  route: VehicleRoute,
+  progress: number,
+): number {
+  const leg = legAtProgress(route, progress)
+  if (!leg) return 0
+  const span = Math.max(1e-9, leg.endProgress - leg.startProgress)
+  const local = (
+    Math.max(0, Math.min(1, progress)) - leg.startProgress
+  ) / span
+  return getTransportMode(route.type).route.shape === 'arc'
+    ? legAltitudeEnvelope(route.type, local, leg.altitude)
+    : leg.altitude
+}
+
+export function sampleVehicleRoute(
+  route: VehicleRoute,
+  progress: number,
+): VehiclePosition {
+  const t = Math.max(0, Math.min(1, progress))
+  const leg = legAtProgress(route, t)
+  if (!leg) return { lat: 0, lng: 0, altitude: 0 }
+  const span = Math.max(1e-9, leg.endProgress - leg.startProgress)
+  const local = (t - leg.startProgress) / span
+  const [lat, lng] = samplePath(leg.points, local)
+  return { lat, lng, altitude: vehicleAltitudeAt(route, t) }
 }

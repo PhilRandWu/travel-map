@@ -11,14 +11,15 @@ import { useVehicleRuntime } from '@/components/globe/hooks/useVehicleRuntime'
 import { vehicleNodeDurationMs } from '@/lib/vehicleMotion'
 import { SceneClockProvider } from '@/components/scene/SceneClockProvider'
 
-const { flights } = buildTracks(data as TravelData)
-const route = buildVehicleRoute(flights[0])
+const flightTrack = buildTracks(data as TravelData).routes
+  .find((item) => item.type === 'flight')!
+const route = buildVehicleRoute(flightTrack)
 const playback: VehiclePlayback = {
   key: 1,
-  tripId: flights[0].trip.id,
+  tripId: flightTrack.trip.id,
   type: route.type,
   route,
-  label: flights[0].label,
+  label: flightTrack.label,
 }
 
 const wrapper = ({ children }: { children: ReactNode }) => (

@@ -21,9 +21,9 @@ export function useVehiclePlayback({
 }: Options): VehiclePlayback | null {
   return useMemo(() => {
     if (!selectedTripId) return null
-    const track =
-      tracks.flights.find((item) => item.trip.id === selectedTripId) ??
-      tracks.trains.find((item) => item.trip.id === selectedTripId)
+    const track = tracks.routes.find(
+      (item) => item.trip.id === selectedTripId,
+    )
     if (!track) return null
 
     const route = buildVehicleRoute(track)

@@ -6,9 +6,13 @@ import {
   getReplayStepProgress,
   getReplayTrackState,
   getReplayProgress,
+  replayNodeDurationMs,
   seekReplayPlan,
 } from '@/lib/replay'
 import type { TravelData } from '@/types'
+import { buildTracks } from '@/lib/tracks'
+import { buildVehicleRoute } from '@/lib/vehicle'
+import { vehicleNodeDurationMs } from '@/lib/vehicleMotion'
 
 const travelData = data as TravelData
 const nodes = buildTimelineNodes(travelData)
@@ -17,8 +21,8 @@ const plan = buildReplayPlan(travelData, nodes)
 describe('buildReplayPlan', () => {
   it('按节点类型分配停留时长并累计起点', () => {
     expect(plan.steps[0]).toMatchObject({ startMs: 0 })
-    expect(plan.steps[0].durationMs).toBeGreaterThanOrEqual(9550)
-    expect(plan.steps[0].durationMs).toBeLessThanOrEqual(11_550)
+    expect(plan.steps[0].durationMs).toBeGreaterThanOrEqual(8050)
+    expect(plan.steps[0].durationMs).toBeLessThanOrEqual(11_050)
     expect(plan.steps[1]).toMatchObject({
       startMs: plan.steps[0].durationMs,
       durationMs: 2200,
@@ -26,8 +30,8 @@ describe('buildReplayPlan', () => {
     expect(plan.steps[2]).toMatchObject({
       startMs: plan.steps[0].durationMs + plan.steps[1].durationMs,
     })
-    expect(plan.steps[2].durationMs).toBeGreaterThanOrEqual(9550)
-    expect(plan.steps[2].durationMs).toBeLessThanOrEqual(11_550)
+    expect(plan.steps[2].durationMs).toBeGreaterThanOrEqual(8050)
+    expect(plan.steps[2].durationMs).toBeLessThanOrEqual(11_050)
     expect(plan.totalMs).toBe(plan.steps.reduce(
       (sum, step) => sum + step.durationMs,
       0,
@@ -38,13 +42,29 @@ describe('buildReplayPlan', () => {
 describe('replayNodeDurationMs', () => {
   it('vehicle steps include pre-roll, motion and arrival settlement', () => {
     const tripStep = plan.steps.find((step) => step.node.kind === 'trip')!
-    expect(tripStep.durationMs).toBeGreaterThanOrEqual(9550)
-    expect(tripStep.durationMs).toBeLessThanOrEqual(11_550)
+    expect(tripStep.durationMs).toBeGreaterThanOrEqual(8050)
+    expect(tripStep.durationMs).toBeLessThanOrEqual(11_050)
   })
 
   it('visit steps keep the existing hold duration', () => {
     const visitStep = plan.steps.find((step) => step.node.kind === 'visit')!
     expect(visitStep.durationMs).toBe(2200)
+  })
+
+  it('matches the full vehicle duration, including waypoint holds', () => {
+    const trip = travelData.trips.find((item) => item.waypoints.length > 0)!
+    const route = buildTracks(travelData).routes
+      .find((item) => item.trip.id === trip.id)!
+    const vehicleRoute = buildVehicleRoute(route)
+    const duration = replayNodeDurationMs(travelData, {
+      kind: 'trip',
+      date: trip.date,
+      refId: trip.id,
+      cityId: trip.from,
+      label: '',
+    })
+
+    expect(duration).toBe(vehicleNodeDurationMs(vehicleRoute.durationMs))
   })
 })
 

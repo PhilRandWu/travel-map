@@ -1,6 +1,7 @@
 import type { GlobeMethods } from 'react-globe.gl'
 import type { VehicleMotionFrame } from '@/lib/vehicleMotion'
 import { sampleVehicleRoute, type VehicleRoute } from '@/lib/vehicle'
+import { getTransportMode } from '@/lib/transportModes'
 
 export type CameraPose = {
   position: [number, number, number]
@@ -14,14 +15,6 @@ export interface RouteCameraFraming {
 }
 
 type GlobeGeometry = Pick<GlobeMethods, 'getCoords' | 'getGlobeRadius'>
-
-const CAMERA_PROFILE: Record<
-  VehicleRoute['type'],
-  { altitude: number; northLeadDeg: number }
-> = {
-  flight: { altitude: 0.62, northLeadDeg: 2.4 },
-  train: { altitude: 0.34, northLeadDeg: 2.4 },
-}
 
 const asTuple = (value: {
   x: number
@@ -45,7 +38,7 @@ export function buildRouteCameraPose(
   motion: VehicleMotionFrame,
   framing: RouteCameraFraming = { topRatio: 0.06, bottomRatio: 0.8 },
 ): CameraPose {
-  const profile = CAMERA_PROFILE[route.type]
+  const profile = getTransportMode(route.type).camera
   const current = sampleVehicleRoute(route, motion.progress)
   const bottomRatio = Math.max(0.55, Math.min(0.92, framing.bottomRatio))
   const leadOffset = (bottomRatio - 0.8) * 6
