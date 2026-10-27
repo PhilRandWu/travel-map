@@ -1,3 +1,4 @@
+import type { TransportType } from '@/types'
 import type { FlightArc, TrainPath } from '@/lib/tracks'
 import { greatCirclePoints, haversineKm } from '@/lib/geo'
 import {
@@ -99,7 +100,7 @@ function resampleByDistance(
 }
 
 export function vehicleDurationForDistance(
-  type: VehicleRoute['type'],
+  type: TransportType,
   distanceKm: number,
 ): number {
   const flight = type === 'flight'

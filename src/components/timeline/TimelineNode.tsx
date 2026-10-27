@@ -1,11 +1,12 @@
 import type { CSSProperties, Ref } from 'react'
+import type { TransportType } from '@/types'
 
 export interface TimelineItem {
   date: string
   headline: string
   detail?: string
   meta: string
-  icon: 'flight' | 'train' | 'visit'
+  icon: TransportType | 'visit'
   thumbnailUrl?: string
   thumbnailAlt?: string
 }
@@ -18,7 +19,14 @@ interface Props {
   onSelect: () => void
 }
 
-const ICONS = { flight: '✈', train: '🚄', visit: '●' } as const
+const ICONS: Record<TransportType | 'visit', string> = {
+  flight: '✈',
+  train: '🚄',
+  metro: '🚇',
+  ship: '🚢',
+  car: '🚗',
+  visit: '●',
+}
 
 export default function TimelineNode({
   item,

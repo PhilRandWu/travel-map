@@ -48,6 +48,51 @@ describe('validateTravelData（示例数据必须零错误）', () => {
     broken.trips[0].date = '2025-02-30'
     expect(validateTravelData(broken).some((i) => i.message.includes('date 非法'))).toBe(true)
   })
+
+  it('accepts all five transport types and waypoints', () => {
+    const valid = structuredClone(d)
+    valid.trips = (['flight', 'train', 'metro', 'ship', 'car'] as const)
+      .map((type) => ({
+        id: `t-${type}`,
+        journeyId: valid.journeys[0].id,
+        date: '2025-05-01',
+        type,
+        from: 'beijing',
+        to: 'hangzhou',
+        waypoints: ['shanghai'],
+      }))
+
+    expect(validateTravelData(valid).filter((issue) => issue.level === 'error'))
+      .toEqual([])
+  })
+
+  it('rejects repeated route nodes and more than four waypoints', () => {
+    const broken = structuredClone(d)
+    const trip = broken.trips[0]
+    trip.from = 'beijing'
+    trip.to = 'hangzhou'
+    trip.waypoints = [
+      'shanghai',
+      'beijing',
+      'jiaxing',
+      'chengdu',
+      'hangzhou',
+    ]
+
+    const messages = validateTravelData(broken)
+      .filter((issue) => issue.subject === `trip:${trip.id}`)
+      .map((issue) => issue.message)
+    expect(messages.some((message) => message.includes('不能超过 4'))).toBe(true)
+    expect(messages.some((message) => message.includes('不能重复'))).toBe(true)
+  })
+
+  it('rejects identical departure and arrival cities', () => {
+    const broken = structuredClone(d)
+    broken.trips[0].to = broken.trips[0].from
+    expect(validateTravelData(broken).some((issue) =>
+      issue.subject === `trip:${broken.trips[0].id}`
+      && issue.message.includes('不能相同'))).toBe(true)
+  })
 })
 
 describe('selectLitCities', () => {

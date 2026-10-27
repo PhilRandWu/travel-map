@@ -3,8 +3,8 @@
  * 唯一数据源：src/data/trips.json。城市点亮、时间轴、统计全部由它推导。
  */
 
-/** 交通方式：✈️ 飞机 / 🚄 高铁 */
-export type TransportType = 'flight' | 'train'
+/** 交通方式：飞机 / 高铁 / 地铁 / 轮船 / 汽车 */
+export type TransportType = 'flight' | 'train' | 'metro' | 'ship' | 'car'
 export type JourneyTheme = 'amber' | 'cyan' | 'sage' | 'rose'
 
 /** 城市坐标与行政区划 */
@@ -58,9 +58,8 @@ export interface Journey {
 }
 
 /**
- * 一段行程（渲染为一条轨迹）。
- * flight：from → to 高空大圆弧；
- * train：from → waypoints[0] → … → to 贴地折线。
+ * 一段行程（回放时视为一条交通路线）。
+ * 五种方式统一按 from → waypoints[0] → … → to 渲染。
  */
 export interface Trip {
   id: string
@@ -70,9 +69,9 @@ export interface Trip {
   type: TransportType
   from: string
   to: string
-  /** 经停城市 id（仅 train 有意义，flight 为 []） */
+  /** 有序经停城市 id，最多 4 个 */
   waypoints: string[]
-  /** 备注：航班号/车次等 */
+  /** 备注：航班号、车次、线路、船班或自驾路线 */
   note?: string
 }
 

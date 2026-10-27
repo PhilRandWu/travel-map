@@ -4,6 +4,10 @@ import { validateJourneyData } from '@/lib/journeyValidation'
 import { photoVariantUrl } from '@/lib/photoUrls'
 import { hasLocalPhotoDraft } from '@/lib/localPhotoDrafts'
 import { compareDate, isValidISODate } from '@/lib/date'
+import {
+  TRANSPORT_WAYPOINT_LIMIT,
+  isTransportType,
+} from '@/lib/transportModes'
 
 export { compareDate, isValidISODate } from '@/lib/date'
 
@@ -112,19 +116,42 @@ export function validateTravelData(input: unknown): ValidationIssue[] {
     const subject = `trip:${t.id}`
     requireCity(t.from, subject, 'from')
     requireCity(t.to, subject, 'to')
+    const waypoints = Array.isArray(t.waypoints) ? t.waypoints : []
     if (!Array.isArray(t.waypoints)) {
       issues.push({ level: 'error', subject, message: 'waypoints 必须是数组（无经停填 []）' })
     } else {
-      t.waypoints.forEach((w, i) => requireCity(w, subject, `waypoints[${i}]`))
+      waypoints.forEach((w, i) => requireCity(w, subject, `waypoints[${i}]`))
     }
-    if (t.type !== 'flight' && t.type !== 'train') {
-      issues.push({ level: 'error', subject, message: `type 非法：${String(t.type)}（仅 flight / train）` })
+    if (!isTransportType(t.type)) {
+      issues.push({
+        level: 'error',
+        subject,
+        message: `type 非法：${String(t.type)}（仅 flight / train / metro / ship / car）`,
+      })
     }
     if (!isValidISODate(t.date)) {
       issues.push({ level: 'error', subject, message: `date 非法：${String(t.date)}（应为 YYYY-MM-DD）` })
     }
-    if (t.type === 'flight' && Array.isArray(t.waypoints) && t.waypoints.length > 0) {
-      issues.push({ level: 'warning', subject, message: 'flight 不应配置 waypoints（高空直飞大圆弧）' })
+    if (t.from === t.to) {
+      issues.push({ level: 'error', subject, message: '出发城市与到达城市不能相同' })
+    }
+    if (waypoints.length > TRANSPORT_WAYPOINT_LIMIT) {
+      issues.push({
+        level: 'error',
+        subject,
+        message: `经停城市不能超过 ${TRANSPORT_WAYPOINT_LIMIT} 个`,
+      })
+    }
+    const routeIds = [t.from, ...waypoints, t.to]
+    const repeated = [...new Set(routeIds.filter((id, index) => (
+      typeof id === 'string' && routeIds.indexOf(id) !== index
+    )))]
+    if (repeated.length > 0) {
+      issues.push({
+        level: 'error',
+        subject,
+        message: `路线节点不能重复：${repeated.join(', ')}`,
+      })
     }
   }
 
