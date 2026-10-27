@@ -118,7 +118,7 @@ export function useTravelWorkspaceController({
     const photo = memory.photos[memory.overlay.photoIndex]
     if (!photo) return
     if (state.photo?.visitId === photo.visitId && state.photo.file === photo.file) return
-    actions.setPhoto(photo.visitId, photo.file)
+    actions.openPhoto(photo.visitId, photo.cityId, photo.file)
   }, [actions, memory.overlay, memory.photos, state.photo])
 
   useEffect(() => {
