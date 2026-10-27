@@ -66,7 +66,11 @@ export default function PhotoGroupingRow({
             </span>
           </div>
           <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[9px] text-white/35">
-            <time>{row.capturedAt ?? '无拍摄日期'}</time>
+            <time>
+              {row.capturedAt
+                ? row.capturedAt.replace('T', ' ').slice(0, 19)
+                : '无拍摄日期'}
+            </time>
             {row.sourcePath !== row.file.name && (
               <span className="max-w-60 truncate" title={row.sourcePath}>
                 {row.sourcePath}

@@ -2,7 +2,11 @@ import { useRef, useState } from 'react'
 import type { Photo } from '@/types'
 import { registerLocalPhotoDraft } from '@/lib/localPhotoDrafts'
 import { storeLocalPhoto } from '@/lib/localPhotoStore'
-import { collectDroppedPhotos, collectSelectedPhotos } from '@/lib/photoFiles'
+import {
+  collectDroppedPhotos,
+  collectSelectedPhotos,
+  readPhotoCapturedAt,
+} from '@/lib/photoFiles'
 import PhotoFocusCard from '@/components/editor/PhotoFocusCard'
 
 interface Props {
@@ -43,11 +47,18 @@ export default function PhotoDropzone({
     setStoreError(null)
     onBusyChange?.(true)
     const used = new Set(photos.map((photo) => photo.file))
-    const additions = items.map(({ file }) => {
+    const pending = items.map(({ file }) => {
       const fileName = uniqueFileName(file.name, used)
       registerLocalPhotoDraft(visitId, fileName, file)
-      return { file: fileName, source: file }
+      return { file: fileName, source: file, takenAt: null as string | null }
     })
+    const additions: typeof pending = []
+    for (const item of pending) {
+      additions.push({
+        ...item,
+        takenAt: await readPhotoCapturedAt(item.source),
+      })
+    }
     const results = await Promise.allSettled(additions.map(({ file, source }) => (
       storeLocalPhoto(visitId, file, source)
     )))
@@ -59,7 +70,13 @@ export default function PhotoDropzone({
         `${failures} 张照片无法写入浏览器照片库；刷新后这些照片会丢失。`,
       )
     }
-    onChange([...photos, ...additions.map(({ file }) => ({ file }))])
+    onChange([
+      ...photos,
+      ...additions.map(({ file, takenAt }) => ({
+        file,
+        ...(takenAt ? { takenAt } : {}),
+      })),
+    ])
     setStoring(false)
     onBusyChange?.(false)
   }

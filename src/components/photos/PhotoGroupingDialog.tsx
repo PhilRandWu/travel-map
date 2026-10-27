@@ -53,6 +53,7 @@ export default function PhotoGroupingDialog({ data, onClose }: Props) {
       id: row.id,
       visitId: row.targetVisitId,
       fileName: row.file.name,
+      takenAt: row.capturedAt ?? undefined,
     })),
   ), [data, photos.includedRows])
   const finalFiles = useMemo(

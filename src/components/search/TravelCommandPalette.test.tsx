@@ -3,9 +3,23 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import dataJson from '@/data/trips.json'
 import type { TravelData } from '@/types'
+import type { MemoryDiscovery } from '@/lib/travelDiscovery'
 import TravelCommandPalette from '@/components/search/TravelCommandPalette'
 
 const data = dataJson as TravelData
+const discoveries: MemoryDiscovery[] = [{
+  id: 'anniversary:v000',
+  kind: 'anniversary',
+  label: '往年的今天',
+  title: '杭州',
+  subtitle: '2024 年的这一天 · 杭州旧梦',
+  target: {
+    journeyId: 'j001',
+    cityId: 'hangzhou',
+    visitId: 'v001',
+    photoFile: '01.svg',
+  },
+}]
 
 describe('TravelCommandPalette', () => {
   it('searches across photos and returns the selected target', async () => {
@@ -14,7 +28,9 @@ describe('TravelCommandPalette', () => {
     render(
       <TravelCommandPalette
         data={data}
+        discoveries={discoveries}
         onOpenResult={onOpenResult}
+        onOpenMemory={vi.fn()}
         onRandomMemory={() => undefined}
         onClose={() => undefined}
       />,
@@ -40,7 +56,9 @@ describe('TravelCommandPalette', () => {
     render(
       <TravelCommandPalette
         data={data}
+        discoveries={discoveries}
         onOpenResult={onOpenResult}
+        onOpenMemory={vi.fn()}
         onRandomMemory={() => undefined}
         onClose={() => undefined}
       />,
@@ -60,7 +78,9 @@ describe('TravelCommandPalette', () => {
     render(
       <TravelCommandPalette
         data={data}
+        discoveries={discoveries}
         onOpenResult={() => undefined}
+        onOpenMemory={vi.fn()}
         onRandomMemory={onRandomMemory}
         onClose={onClose}
       />,
@@ -71,5 +91,24 @@ describe('TravelCommandPalette', () => {
 
     await user.keyboard('{Escape}')
     expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('opens a curated discovery with its navigation target intact', async () => {
+    const user = userEvent.setup()
+    const onOpenMemory = vi.fn()
+    render(
+      <TravelCommandPalette
+        data={data}
+        discoveries={discoveries}
+        onOpenResult={() => undefined}
+        onOpenMemory={onOpenMemory}
+        onRandomMemory={() => undefined}
+        onClose={() => undefined}
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: '往年的今天：杭州' }))
+
+    expect(onOpenMemory).toHaveBeenCalledWith(discoveries[0].target)
   })
 })

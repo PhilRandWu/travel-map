@@ -34,8 +34,15 @@ function exifJpeg(dateTime: string): Uint8Array {
   return jpeg
 }
 
+function localOffset(date: Date): string {
+  const minutes = -date.getTimezoneOffset()
+  const sign = minutes >= 0 ? '+' : '-'
+  const absolute = Math.abs(minutes)
+  return `${sign}${String(Math.floor(absolute / 60)).padStart(2, '0')}:${String(absolute % 60).padStart(2, '0')}`
+}
+
 describe('readPhotoCapturedAt', () => {
-  it('读取 DateTimeOriginal 并保留本地时间', async () => {
+  it('读取 DateTimeOriginal 并输出带时区的 ISO 时间', async () => {
     const bytes = exifJpeg('2025:05:02 09:30:00')
     const file = new File(
       [bytes.buffer as ArrayBuffer],
@@ -43,7 +50,9 @@ describe('readPhotoCapturedAt', () => {
       { type: 'image/jpeg' },
     )
 
-    expect(await readPhotoCapturedAt(file)).toBe('2025-05-02 09:30:00')
+    const localTime = new Date(2025, 4, 2, 9, 30)
+    expect(await readPhotoCapturedAt(file))
+      .toBe(`2025-05-02T09:30:00${localOffset(localTime)}`)
   })
 
   it('没有 EXIF 或不是图片时安全返回 null', async () => {

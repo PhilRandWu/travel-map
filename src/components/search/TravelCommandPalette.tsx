@@ -5,11 +5,18 @@ import {
   type TravelSearchKind,
   type TravelSearchResult,
 } from '@/lib/travelSearch'
+import type {
+  MemoryDiscovery,
+  RandomMemoryTarget,
+} from '@/lib/travelDiscovery'
 import { useFocusTrap } from '@/hooks/useFocusTrap'
+import MemoryDiscoveryStrip from '@/components/search/MemoryDiscoveryStrip'
 
 interface Props {
   data: TravelData
+  discoveries: MemoryDiscovery[]
   onOpenResult: (result: TravelSearchResult) => void
+  onOpenMemory: (target: RandomMemoryTarget) => void
   onRandomMemory: () => void
   onClose: () => void
 }
@@ -23,7 +30,9 @@ const KIND_LABELS: Record<TravelSearchKind, string> = {
 
 export default function TravelCommandPalette({
   data,
+  discoveries,
   onOpenResult,
+  onOpenMemory,
   onRandomMemory,
   onClose,
 }: Props) {
@@ -109,6 +118,13 @@ export default function TravelCommandPalette({
             ESC
           </kbd>
         </div>
+
+        {!query && (
+          <MemoryDiscoveryStrip
+            discoveries={discoveries}
+            onOpen={onOpenMemory}
+          />
+        )}
 
         <div
           id="travel-command-results"

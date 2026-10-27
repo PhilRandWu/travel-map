@@ -3,6 +3,7 @@ import type { PickedRegion } from '@/components/globe/pickedRegion'
 import { useGeoDataPreload } from '@/hooks/useGeoDataPreload'
 import { useFocusIdle } from '@/hooks/useFocusIdle'
 import { useJourneyMemory } from '@/hooks/useJourneyMemory'
+import { useMemoryDiscovery } from '@/hooks/useMemoryDiscovery'
 import { useReplaySafeFrame } from '@/hooks/useReplaySafeFrame'
 import { useReplayTakeover } from '@/hooks/useReplayTakeover'
 import { useScopedTravelData } from '@/hooks/useScopedTravelData'
@@ -15,7 +16,7 @@ import { getOtherJourneyTrips, summarizeJourney } from '@/lib/journeys'
 import type { TravelNavigationState } from '@/lib/navigation'
 import type { ReplayRuntime } from '@/lib/replay'
 import { buildTracks, type Tracks } from '@/lib/tracks'
-import { pickRandomMemory } from '@/lib/travelDiscovery'
+import type { RandomMemoryTarget } from '@/lib/travelDiscovery'
 import type { TravelSearchResult } from '@/lib/travelSearch'
 import type { TravelData } from '@/types'
 
@@ -70,6 +71,7 @@ export function useTravelWorkspaceController({
     ? resolveCity(data, state.cardCityId)?.name
     : undefined
   const memory = useJourneyMemory(data, activeJourneyId ?? 'archive')
+  const memoryDiscovery = useMemoryDiscovery(data, state.cardCityId)
   const replayTakeover = useReplayTakeover(replayRuntime)
   const replaySafeFrame = useReplaySafeFrame()
   const stardustTracks = useMemo(() => {
@@ -205,15 +207,18 @@ export function useTravelWorkspaceController({
     }
   }
 
-  const openRandomMemory = () => {
-    const target = pickRandomMemory(data)
-    if (!target) return
+  const openMemoryTarget = (target: RandomMemoryTarget) => {
     setCommandOpen(false)
     openJourney(target.journeyId)
     actions.openVisit(target.visitId, target.cityId)
     if (target.photoFile) {
       actions.openPhoto(target.visitId, target.cityId, target.photoFile)
     }
+  }
+
+  const openRandomMemory = () => {
+    const target = memoryDiscovery.pickNext()
+    if (target) openMemoryTarget(target)
   }
 
   const blocked = editorOpen
@@ -273,6 +278,7 @@ export function useTravelWorkspaceController({
     selectedTripId,
     activePlaceName,
     memory,
+    memoryDiscoveries: memoryDiscovery.discoveries,
     replayTakeover,
     replaySafeFrame,
     focusPoint,
@@ -285,6 +291,7 @@ export function useTravelWorkspaceController({
     startJourneyReplay,
     closeMemory,
     openSearchResult,
+    openMemoryTarget,
     openRandomMemory,
     applyEditorData,
   }

@@ -149,4 +149,19 @@ describe('buildPhotoExport', () => {
 
     expect(JSON.stringify(travelData)).toBe(before)
   })
+
+  it('保留自动归组时读取到的拍摄时间', () => {
+    const result = buildPhotoExport(travelData, [{
+      id: 'dated',
+      visitId: 'v001',
+      fileName: 'dated.jpg',
+      takenAt: '2025-05-02T09:30:00+08:00',
+    }])
+    const visit = result.data.visits.find((item) => item.id === 'v001')
+
+    expect(visit?.photos.at(-1)).toMatchObject({
+      file: 'dated.jpg',
+      takenAt: '2025-05-02T09:30:00+08:00',
+    })
+  })
 })

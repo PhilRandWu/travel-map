@@ -107,11 +107,14 @@ function pad(value: number): string {
   return String(value).padStart(2, '0')
 }
 
-function localTimestamp(date: Date): string {
-  return [
-    `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
-    `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`,
-  ].join(' ')
+function isoWithLocalOffset(date: Date): string {
+  const offsetMinutes = -date.getTimezoneOffset()
+  const sign = offsetMinutes >= 0 ? '+' : '-'
+  const absoluteOffset = Math.abs(offsetMinutes)
+  const local = new Date(date.getTime() + offsetMinutes * 60_000)
+    .toISOString()
+    .slice(0, 19)
+  return `${local}${sign}${pad(Math.floor(absoluteOffset / 60))}:${pad(absoluteOffset % 60)}`
 }
 
 /** 只读取元数据块，不让大图进入主线程解码流程。 */
@@ -128,7 +131,7 @@ export async function readPhotoCapturedAt(file: File): Promise<string | null> {
       ?? metadata?.CreateDate
       ?? metadata?.ModifyDate
     return value instanceof Date && !Number.isNaN(value.getTime())
-      ? localTimestamp(value)
+      ? isoWithLocalOffset(value)
       : null
   } catch {
     return null

@@ -15,6 +15,7 @@ export interface PhotoAssignment {
   id: string
   visitId: string
   fileName: string
+  takenAt?: string
 }
 
 export interface ExportedPhotoFile {
@@ -147,7 +148,11 @@ export function buildPhotoExport(
     if (!fileName || !visit || !used) continue
 
     const finalName = uniqueFileName(fileName, used)
-    visit.photos.push({ file: finalName, caption: '' })
+    visit.photos.push({
+      file: finalName,
+      caption: '',
+      ...(assignment.takenAt ? { takenAt: assignment.takenAt } : {}),
+    })
     files.push({
       id: assignment.id,
       visitId: visit.id,

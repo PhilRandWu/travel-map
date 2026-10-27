@@ -12,6 +12,7 @@ import FocusModeBar from '@/components/app/FocusModeBar'
 import TravelCommandPalette from '@/components/search/TravelCommandPalette'
 import { useTravelNavigation } from '@/hooks/useTravelNavigation'
 import { useTravelWorkspaceController } from '@/hooks/useTravelWorkspaceController'
+import { useDeferredMount } from '@/hooks/useDeferredMount'
 import type { TravelData } from '@/types'
 
 interface Props {
@@ -27,6 +28,7 @@ export default function TravelWorkspace({
   lastSavedAt,
   onDataChange,
 }: Props) {
+  const globeMounted = useDeferredMount()
   const { state, actions } = useTravelNavigation(data)
   const workspace = useTravelWorkspaceController({
     data,
@@ -44,34 +46,36 @@ export default function TravelWorkspace({
     >
       <Starfield />
       <main id="travel-map-main" aria-label="旅行足迹地图" className="absolute inset-0">
-        <WorkspaceGlobe
-          litCities={workspace.litCities}
-          homeCity={workspace.homeCity}
-          tracks={workspace.tracks}
-          stardustTracks={workspace.stardustTracks}
-          selectedCityId={state.cardCityId}
-          selectedTripId={workspace.selectedTripId}
-          journeyId={workspace.activeJourneyId}
-          focusPoint={workspace.focusPoint}
-          tripPlaybackSignal={workspace.tripPlaybackSignal}
-          replayRuntime={workspace.replayRuntime}
-          framing={workspace.replaySafeFrame.frame}
-          resetSignal={workspace.resetSignal}
-          onReady={() => workspace.setGlobeReady(true)}
-          onDirectorCameraChange={workspace.replayTakeover.onDirectorCameraChange}
-          onSelectCity={(cityId) => {
-            workspace.setRegion(null)
-            if (cityId) actions.openCity(cityId)
-            else actions.closePlace()
-          }}
-          onSelectTrip={workspace.handleSelectTrip}
-          region={workspace.region}
-          onPick={(region) => {
-            workspace.setRegion(region)
-            actions.clearSelection()
-          }}
-          onFailure={() => workspace.setGlobeFailed(true)}
-        />
+        {globeMounted && (
+          <WorkspaceGlobe
+            litCities={workspace.litCities}
+            homeCity={workspace.homeCity}
+            tracks={workspace.tracks}
+            stardustTracks={workspace.stardustTracks}
+            selectedCityId={state.cardCityId}
+            selectedTripId={workspace.selectedTripId}
+            journeyId={workspace.activeJourneyId}
+            focusPoint={workspace.focusPoint}
+            tripPlaybackSignal={workspace.tripPlaybackSignal}
+            replayRuntime={workspace.replayRuntime}
+            framing={workspace.replaySafeFrame.frame}
+            resetSignal={workspace.resetSignal}
+            onReady={() => workspace.setGlobeReady(true)}
+            onDirectorCameraChange={workspace.replayTakeover.onDirectorCameraChange}
+            onSelectCity={(cityId) => {
+              workspace.setRegion(null)
+              if (cityId) actions.openCity(cityId)
+              else actions.closePlace()
+            }}
+            onSelectTrip={workspace.handleSelectTrip}
+            region={workspace.region}
+            onPick={(region) => {
+              workspace.setRegion(region)
+              actions.clearSelection()
+            }}
+            onFailure={() => workspace.setGlobeFailed(true)}
+          />
+        )}
       </main>
       <GlobeLoader ready={workspace.globeReady || workspace.globeFailed} />
 
@@ -196,7 +200,9 @@ export default function TravelWorkspace({
       {workspace.commandOpen && (
         <TravelCommandPalette
           data={data}
+          discoveries={workspace.memoryDiscoveries}
           onOpenResult={workspace.openSearchResult}
+          onOpenMemory={workspace.openMemoryTarget}
           onRandomMemory={workspace.openRandomMemory}
           onClose={() => workspace.setCommandOpen(false)}
         />

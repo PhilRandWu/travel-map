@@ -4,12 +4,19 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import PhotoDropzone from '@/components/editor/PhotoDropzone'
 
 const storeLocalPhoto = vi.hoisted(() => vi.fn())
+const readPhotoCapturedAt = vi.hoisted(() => vi.fn())
 
 vi.mock('@/lib/localPhotoStore', () => ({ storeLocalPhoto }))
+vi.mock('@/lib/photoFiles', async (importOriginal) => ({
+  ...await importOriginal<typeof import('@/lib/photoFiles')>(),
+  readPhotoCapturedAt,
+}))
 
 describe('PhotoDropzone', () => {
   beforeEach(() => {
     storeLocalPhoto.mockReset()
+    readPhotoCapturedAt.mockReset()
+    readPhotoCapturedAt.mockResolvedValue(null)
   })
 
   it('keeps the form busy until storage settles and warns on failure', async () => {
@@ -58,6 +65,30 @@ describe('PhotoDropzone', () => {
     expect(onChange).toHaveBeenCalledWith([
       { file: '01.svg', caption: '暮色', featured: true },
     ])
+  })
+
+  it('stores the EXIF capture time when photos are added', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    storeLocalPhoto.mockResolvedValue(true)
+    readPhotoCapturedAt.mockResolvedValue('2025-05-02T09:30:00+08:00')
+    render(
+      <PhotoDropzone
+        visitId="v001"
+        photos={[]}
+        onChange={onChange}
+      />,
+    )
+
+    await user.upload(
+      screen.getByLabelText('选择照片'),
+      new File(['photo'], '西湖.jpg', { type: 'image/jpeg' }),
+    )
+
+    await waitFor(() => expect(onChange).toHaveBeenCalledWith([{
+      file: '西湖.jpg',
+      takenAt: '2025-05-02T09:30:00+08:00',
+    }]))
   })
 
   it('edits the visual focal point within normalized bounds', async () => {

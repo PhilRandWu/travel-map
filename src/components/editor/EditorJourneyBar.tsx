@@ -3,8 +3,8 @@ import type { Journey, TravelData } from '@/types'
 import {
   getJourneyTrips,
   getJourneyVisits,
-  sortJourneysNewestFirst,
 } from '@/lib/journeys'
+import JourneySwitcher from '@/components/editor/JourneySwitcher'
 
 interface Props {
   data: TravelData
@@ -32,9 +32,8 @@ export default function EditorJourneyBar({
   onDuplicate,
   onDelete,
 }: Props) {
-  const sorted = sortJourneysNewestFirst(journeys)
-  const hasCurrent = sorted.some((journey) => journey.id === journeyId)
-  const current = sorted.find((journey) => journey.id === journeyId)
+  const hasCurrent = journeys.some((journey) => journey.id === journeyId)
+  const current = journeys.find((journey) => journey.id === journeyId)
   const visitCount = current ? getJourneyVisits(data, current.id).length : 0
   const tripCount = current ? getJourneyTrips(data, current.id).length : 0
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -47,12 +46,9 @@ export default function EditorJourneyBar({
   return (
     <div>
       <div className="flex items-center justify-between gap-3">
-        <label
-          htmlFor="editor-journey"
-          className="text-[11px] tracking-[0.12em] text-white/62"
-        >
+        <span className="text-[11px] tracking-[0.12em] text-white/62">
           当前旅程
-        </label>
+        </span>
         <div className="flex items-center gap-1.5">
           <button
             type="button"
@@ -65,20 +61,12 @@ export default function EditorJourneyBar({
         </div>
       </div>
 
-      <select
-        id="editor-journey"
-        value={hasCurrent ? journeyId : ''}
+      <JourneySwitcher
+        journeys={journeys}
+        journeyId={hasCurrent ? journeyId : ''}
         disabled={disabled}
-        onChange={(event) => onChange(event.target.value)}
-        className="mt-1.5 w-full rounded-xl border border-white/12 bg-[#0a0f1d] px-3 py-2.5 text-sm text-white/82 outline-none transition focus:border-cyan-200/35 focus:ring-2 focus:ring-cyan-200/8 disabled:opacity-50"
-      >
-        {!hasCurrent && <option value="">暂无旅程</option>}
-        {sorted.map((journey) => (
-          <option key={journey.id} value={journey.id}>
-            {journey.title} · {journey.startDate} 至 {journey.endDate}
-          </option>
-        ))}
-      </select>
+        onChange={onChange}
+      />
 
       <div className="mt-2 grid grid-cols-3 gap-2">
         <button
