@@ -1,6 +1,7 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import type { TravelStats } from '@/lib/derive'
 import { usePresence } from '@/components/common/usePresence'
+import TransportMix from '@/components/stats/TransportMix'
 
 interface Props {
   stats: TravelStats | null
@@ -60,9 +61,13 @@ export default function StatsPanel({ stats, context }: Props) {
               value={stats ? `${stats.provinceCount}/${stats.countryCount}` : '—'}
               label="省 · 国"
             />
-            <Metric index={2} value={stats ? `${stats.flightCount}` : '—'} label="飞行段" />
-            <Metric index={3} value={stats ? `${stats.trainCount}` : '—'} label="高铁段" />
+            <Metric index={2} value={stats ? `${stats.tripCount}` : '—'} label="交通段" />
           </div>
+          {stats && (
+            <div className="mt-2">
+              <TransportMix counts={stats.transportCounts} />
+            </div>
+          )}
           <div className="mt-3 border-t border-white/8 pt-3">
             <Metric
               index={4}

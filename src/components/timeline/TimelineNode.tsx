@@ -1,5 +1,6 @@
 import type { CSSProperties, Ref } from 'react'
 import type { TransportType } from '@/types'
+import { TRANSPORT_MODES } from '@/lib/transportModes'
 
 export interface TimelineItem {
   date: string
@@ -19,14 +20,12 @@ interface Props {
   onSelect: () => void
 }
 
-const ICONS: Record<TransportType | 'visit', string> = {
-  flight: '✈',
-  train: '🚄',
-  metro: '🚇',
-  ship: '🚢',
-  car: '🚗',
+const ICONS = {
+  ...Object.fromEntries(
+    Object.entries(TRANSPORT_MODES).map(([type, mode]) => [type, mode.icon]),
+  ),
   visit: '●',
-}
+} as Record<TransportType | 'visit', string>
 
 export default function TimelineNode({
   item,

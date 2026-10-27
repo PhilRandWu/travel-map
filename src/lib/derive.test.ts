@@ -138,11 +138,19 @@ describe('buildTimelineNodes', () => {
 describe('computeStats', () => {
   const s = computeStats(d)
 
-  it('城市/省/段数统计', () => {
+  it('城市、省份与五类交通统计', () => {
     expect(s.cityCount).toBe(3)
     expect(s.provinceCount).toBe(3) // 浙江、上海、四川
-    expect(s.flightCount).toBe(4)
-    expect(s.trainCount).toBe(1)
+    expect(s.tripCount).toBe(5)
+    expect(s.transportCounts).toEqual({
+      flight: 4,
+      train: 1,
+      metro: 0,
+      ship: 0,
+      car: 0,
+    })
+    expect(Object.values(s.transportCounts).reduce((sum, count) => sum + count, 0))
+      .toBe(s.tripCount)
     expect(s.firstDate).toBe('2025-05-01')
     expect(s.lastDate).toBe('2025-06-13')
   })

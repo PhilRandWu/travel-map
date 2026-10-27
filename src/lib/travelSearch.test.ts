@@ -43,4 +43,37 @@ describe('travel search', () => {
     expect(byNote.some((result) => result.kind === 'trip' && result.tripId === 't005'))
       .toBe(true)
   })
+
+  it('matches mode names and common transport terms', () => {
+    const metroData = structuredClone(data)
+    metroData.trips[1].type = 'metro'
+    metroData.trips[1].note = '2 号线'
+
+    expect(searchTravelData(metroData, '地铁')[0].tripId).toBe('t002')
+    expect(searchTravelData(metroData, 'subway')[0].tripId).toBe('t002')
+    expect(searchTravelData(metroData, '2 号线')[0].tripId).toBe('t002')
+  })
+
+  it('matches every transport label', () => {
+    const modes = [
+      ['flight', '飞机'],
+      ['train', '高铁'],
+      ['metro', '地铁'],
+      ['ship', '轮船'],
+      ['car', '汽车'],
+    ] as const
+    for (const [type, label] of modes) {
+      const modeData = structuredClone(data)
+      modeData.trips[0].type = type
+
+      expect(searchTravelData(modeData, label).some((result) =>
+        result.kind === 'trip' && result.tripId === 't001')).toBe(true)
+    }
+  })
+
+  it('matches a trip by waypoint city', () => {
+    const results = searchTravelData(data, '嘉兴')
+    expect(results.some((result) =>
+      result.kind === 'trip' && result.tripId === 't002')).toBe(true)
+  })
 })

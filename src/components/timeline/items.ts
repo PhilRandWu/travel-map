@@ -2,6 +2,7 @@ import type { TravelData } from '@/types'
 import type { TimelineNode as TimelineNodeModel } from '@/lib/derive'
 import { findTrip, findVisit, photoThumbUrl } from '@/lib/derive'
 import { resolveCities } from '@/lib/cities'
+import { getTransportMode } from '@/lib/transportModes'
 import type { TimelineItem } from '@/components/timeline/TimelineNode'
 
 const fmtDate = (date: string) => date.slice(5).replace('-', '.')
@@ -40,7 +41,7 @@ function buildTimelineItem(data: TravelData, node: TimelineNodeModel): TimelineI
   return {
     date: node.date,
     headline: route,
-    detail: trip?.note || (trip?.type === 'flight' ? '飞机' : '高铁'),
+    detail: trip?.note || (trip ? getTransportMode(trip.type).label : ''),
     meta: fmtDate(node.date),
     icon: trip?.type ?? 'flight',
   }

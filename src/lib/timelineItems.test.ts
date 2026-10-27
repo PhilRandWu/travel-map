@@ -34,4 +34,17 @@ describe('buildTimelineItems', () => {
       icon: 'train',
     })
   })
+
+  it('uses the registry label for every transport type', () => {
+    const shipData = structuredClone(d)
+    shipData.trips[1].type = 'ship'
+    delete shipData.trips[1].note
+
+    const ship = buildTimelineItems(shipData, buildTimelineNodes(shipData))
+      .find((item) => item.icon === 'ship')
+    expect(ship).toMatchObject({
+      detail: '轮船',
+      headline: '杭州 → 嘉兴 → 上海',
+    })
+  })
 })

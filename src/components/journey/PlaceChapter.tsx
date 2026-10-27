@@ -7,6 +7,7 @@ import {
   photoOriginalUrl,
   photoVariantUrl,
 } from '@/lib/photoUrls'
+import { getTransportMode } from '@/lib/transportModes'
 import { useLayerReturn } from '@/components/motion/useLayerReturn'
 import Lightbox from '@/components/common/Lightbox'
 
@@ -174,6 +175,7 @@ export default function PlaceChapter({
                 const route = [trip.from, ...trip.waypoints, trip.to]
                   .map((id) => cities.get(id)?.name ?? id)
                   .join(' → ')
+                const mode = getTransportMode(trip.type)
                 return (
                   <button
                     key={trip.id}
@@ -187,7 +189,7 @@ export default function PlaceChapter({
                     }`}
                   >
                     <span className="font-mono text-[9px] text-white/35">
-                      {date(trip.date)}
+                      {date(trip.date)} · {mode.label}
                     </span>
                     <span className="mt-0.5 block">{route}</span>
                   </button>

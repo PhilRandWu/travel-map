@@ -2,6 +2,7 @@ import { useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import type { Selection, TravelData } from '@/types'
 import { resolveCities } from '@/lib/cities'
 import { getCityTrips, getCityVisits, photoThumbUrl, photoUrl } from '@/lib/derive'
+import { getTransportMode } from '@/lib/transportModes'
 import Lightbox, { type LightboxPhoto } from '@/components/common/Lightbox'
 
 interface Props {
@@ -149,6 +150,7 @@ export default function CityCard({
                   const route = [t.from, ...t.waypoints, t.to]
                     .map((id) => cities.get(id)?.name ?? id)
                     .join(' → ')
+                  const mode = getTransportMode(t.type)
                   const selected = t.id === selectedTripId
                   return (
                     <button
@@ -163,7 +165,7 @@ export default function CityCard({
                       }`}
                     >
                       <span className="text-sm" aria-hidden>
-                        {t.type === 'flight' ? '✈️' : '🚄'}
+                        {mode.icon}
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-xs tracking-wide text-white/80">
@@ -172,7 +174,7 @@ export default function CityCard({
                           {route}
                         </span>
                         <span className="mt-0.5 block truncate text-[11px] text-white/40">
-                          {t.note ?? (t.type === 'flight' ? '飞机' : '高铁')}
+                          {t.note ?? mode.label}
                         </span>
                       </span>
                     </button>

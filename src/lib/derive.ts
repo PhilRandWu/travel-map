@@ -1,8 +1,16 @@
-import type { City, TimelineNodeKind, TravelData, Trip, Visit } from '@/types'
+import type {
+  City,
+  TimelineNodeKind,
+  TransportType,
+  TravelData,
+  Trip,
+  Visit,
+} from '@/types'
 import { resolveCities } from '@/lib/cities'
 import { compareDate } from '@/lib/date'
 import { tripDistance } from '@/lib/geo'
 import { photoOriginalUrl, photoVariantUrl } from '@/lib/photoUrls'
+import { TRANSPORT_TYPES } from '@/lib/transportModes'
 
 /**
  * 展示数据全部从 trips.json 推导（PRD 第 4 节「推导规则」），本文件只放纯函数。
@@ -81,8 +89,8 @@ export interface TravelStats {
   cityCount: number
   provinceCount: number
   countryCount: number
-  flightCount: number
-  trainCount: number
+  tripCount: number
+  transportCounts: Record<TransportType, number>
   /** 累计里程 km（缺失引用的行程不计入） */
   totalDistanceKm: number
   firstDate: string | null
@@ -104,6 +112,11 @@ export function computeStats(data: TravelData): TravelStats {
     totalDistanceKm += tripDistance(t, cityMap) ?? 0
   }
 
+  const transportCounts = Object.fromEntries(
+    TRANSPORT_TYPES.map((type) => [type, 0]),
+  ) as Record<TransportType, number>
+  for (const trip of data.trips) transportCounts[trip.type] += 1
+
   // 首次日期取最早出发/到达；最近日期取最晚离开（leaveDate），行程末日也算在出行区间内
   const dates = [
     ...data.trips.map((t) => t.date),
@@ -115,8 +128,8 @@ export function computeStats(data: TravelData): TravelStats {
     cityCount: lit.length,
     provinceCount: provinces.size,
     countryCount: countries.size,
-    flightCount: data.trips.filter((t) => t.type === 'flight').length,
-    trainCount: data.trips.filter((t) => t.type === 'train').length,
+    tripCount: data.trips.length,
+    transportCounts,
     totalDistanceKm: Math.round(totalDistanceKm),
     firstDate: dates[0] ?? null,
     lastDate: dates[dates.length - 1] ?? null,

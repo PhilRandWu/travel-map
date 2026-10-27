@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Selection, TravelData } from '@/types'
 import { findTrip, findVisit, photoThumbUrl } from '@/lib/derive'
 import { resolveCities } from '@/lib/cities'
+import { getTransportMode } from '@/lib/transportModes'
 
 interface Props {
   data: TravelData
@@ -24,6 +25,7 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
     title: string
     meta: string
     note?: string
+    fallbackIcon: string
     photo?: { url: string; alt?: string; motionKey: string }
   } | null = null
 
@@ -36,6 +38,7 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
         title: city?.name ?? visit.city,
         meta: fmtRange(visit.arriveDate, visit.leaveDate),
         note: visit.note,
+        fallbackIcon: getTransportMode('flight').icon,
         photo: photo
           ? {
               url: photoThumbUrl(visit.id, photo.file),
@@ -56,10 +59,12 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
         (visit) => visit.city === trip.to && visit.arriveDate >= trip.date,
       )
       const visitPhoto = arriveVisit?.photos[0]
+      const mode = getTransportMode(trip.type)
       content = {
         title: route,
-        meta: `${fmtDate(trip.date)} · ${trip.type === 'flight' ? '飞机' : '高铁'}`,
+        meta: `${fmtDate(trip.date)} · ${mode.label}`,
         note: trip.note || arriveVisit?.note,
+        fallbackIcon: mode.icon,
         photo: visitPhoto
           ? {
               url: photoThumbUrl(arriveVisit.id, visitPhoto.file),
@@ -111,7 +116,7 @@ export default function HeroPhoto({ data, selection, onExpand }: Props) {
           />
         ) : (
           <div className="flex h-[132px] w-full items-center justify-center bg-gradient-to-br from-[#101a2e] via-[#08101f] to-[#1d2a41] text-2xl text-white/35">
-            <span aria-hidden>✈</span>
+            <span aria-hidden>{content.fallbackIcon}</span>
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[rgba(3,6,13,.94)] via-[rgba(3,6,13,.18)] to-transparent" />

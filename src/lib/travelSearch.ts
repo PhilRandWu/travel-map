@@ -1,6 +1,7 @@
 import type { TravelData } from '@/types'
 import { resolveCities } from '@/lib/cities'
 import { sortJourneysNewestFirst } from '@/lib/journeys'
+import { getTransportMode } from '@/lib/transportModes'
 
 export type TravelSearchKind = 'journey' | 'visit' | 'trip' | 'photo'
 
@@ -142,13 +143,16 @@ export function searchTravelData(
     const route = [trip.from, ...trip.waypoints, trip.to]
       .map((cityId) => cities.get(cityId)?.name ?? cityId)
       .join(' → ')
-    const transport = trip.type === 'flight' ? '飞机' : '高铁'
+    const mode = getTransportMode(trip.type)
+    const transport = mode.label
     const score = resultScore([
       route,
       trip.note ?? '',
       trip.date,
       transport,
       trip.type,
+      ...mode.searchTerms,
+      ...trip.waypoints.map((cityId) => cities.get(cityId)?.name ?? cityId),
     ], query)
     if (score === 0) continue
     ranked.push({
