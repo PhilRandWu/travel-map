@@ -2,7 +2,11 @@ import { useEffect, useRef, type RefObject } from 'react'
 import type { GlobeMethods } from 'react-globe.gl'
 import type { TransportType } from '@/types'
 import { sampleVehicleRoute, type VehiclePlayback } from '@/lib/vehicle'
-import { getTransportMode } from '@/lib/transportModes'
+import {
+  TRANSPORT_MODES,
+  TRANSPORT_TYPES,
+  getTransportMode,
+} from '@/lib/transportModes'
 import type { VehicleRuntime } from '@/components/globe/hooks/useVehicleRuntime'
 import { createVehicleTrail } from '@/components/globe/vehicleTrail'
 import { useMotion } from '@/components/motion/MotionProvider'
@@ -25,13 +29,9 @@ interface Props {
   globeRef: RefObject<GlobeMethods | undefined>
 }
 
-const VEHICLE_ICONS: Record<TransportType, string> = {
-  flight: '/vehicle-icons/flight-3d.svg',
-  train: '/vehicle-icons/train-3d.svg',
-  metro: '/vehicle-icons/metro-3d.svg',
-  ship: '/vehicle-icons/ship-3d.svg',
-  car: '/vehicle-icons/car-3d.svg',
-}
+const VEHICLE_ICONS = Object.fromEntries(
+  TRANSPORT_TYPES.map((type) => [type, TRANSPORT_MODES[type].iconPath]),
+) as Record<TransportType, string>
 
 const CAMERA_SETTLE_PROGRESS = 0.86
 
@@ -156,6 +156,14 @@ export default function VehicleOverlay({
       if (motion.progress >= 1) {
         effects.markArrival(globe, playback.route)
       }
+      if (motion.phase === 'stopped') {
+        effects.markStop(
+          globe,
+          playback.route,
+          motion.progress,
+          `${playback.tripId}:${motion.progress.toFixed(4)}`,
+        )
+      }
     })
 
     return () => {
@@ -170,7 +178,6 @@ export default function VehicleOverlay({
 
   if (!playback) return null
   const mode = getTransportMode(playback.type)
-  const isFlight = mode.route.shape === 'arc'
 
   return (
     <div
@@ -181,7 +188,11 @@ export default function VehicleOverlay({
       className="pointer-events-none absolute inset-0 z-[2] overflow-hidden"
     >
       <div className="rg-route-vignette pointer-events-none absolute inset-0" />
-      <VehicleTrailLayer {...effects.refs} />
+      <VehicleTrailLayer
+        {...effects.refs}
+        type={playback.type}
+        color={mode.route.colorRgb}
+      />
       <div
         ref={markerRef}
         data-vehicle-type={playback.type}
@@ -189,26 +200,27 @@ export default function VehicleOverlay({
         className="rg-vehicle-marker"
       >
         <div
-          className={`rg-vehicle-glyph ${
-            isFlight
-              ? 'drop-shadow-[0_2px_8px_rgba(103,232,249,.5)]'
-              : 'drop-shadow-[0_2px_8px_rgba(251,191,36,.42)]'
-          }`}
+          className="rg-vehicle-glyph"
+          style={{
+            filter: `drop-shadow(0 2px 8px rgba(${mode.route.colorRgb},.48))`,
+          }}
         >
           <span
-            className={`rg-vehicle-halo ${
-              isFlight
-                ? 'bg-cyan-300/30 shadow-[0_0_22px_10px_rgba(103,232,249,.22)]'
-                : 'bg-amber-300/30 shadow-[0_0_22px_10px_rgba(251,191,36,.2)]'
-            }`}
+            className="rg-vehicle-halo"
+            style={{
+              background: mode.vehicle.haloColor,
+              boxShadow: mode.vehicle.haloShadow,
+            }}
           />
-          <img
-            src={VEHICLE_ICONS[playback.type]}
-            alt=""
-            draggable={false}
-            data-vehicle-icon
-            className="rg-vehicle-icon"
-          />
+          {mode.iconPath !== '' && (
+            <img
+              src={VEHICLE_ICONS[playback.type]}
+              alt=""
+              draggable={false}
+              data-vehicle-icon
+              className="rg-vehicle-icon"
+            />
+          )}
         </div>
         <span className="rg-vehicle-label">{playback.label}</span>
       </div>

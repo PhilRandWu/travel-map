@@ -20,8 +20,8 @@ export default function SceneRouteOverlay({
     const globe = globeRef.current
     if (!globe) return
     const lines = routes.map((route) => createSceneLine(globe, route, {
-      color: route.type === 'flight' ? 0xa5f3fc : 0xfbbf24,
-      dashed: route.type === 'flight',
+      color: route.color,
+      dashed: route.dashed,
       opacity: 0.92,
     }))
     linesRef.current = lines

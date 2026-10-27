@@ -1,15 +1,13 @@
 import { useCallback, useMemo, useState, type RefObject } from 'react'
 import type { GlobeProps } from 'react-globe.gl'
 import { getTripCityIds } from '@/lib/derive'
-import type { Tracks } from '@/lib/tracks'
+import type {
+  Tracks,
+  TransportRoute,
+  TransportRouteLeg,
+} from '@/lib/tracks'
+import { getTransportMode } from '@/lib/transportModes'
 import { getReplayTrackState, type ReplayRuntime } from '@/lib/replay'
-
-const FLIGHT_COLOR = 'rgba(165, 216, 255, 0.85)'
-const FLIGHT_COLOR_DIM = 'rgba(165, 216, 255, 0.16)'
-const TRAIN_COLOR = 'rgba(251, 191, 36, 0.8)'
-const TRAIN_COLOR_DIM = 'rgba(251, 191, 36, 0.14)'
-const STARDUST_FLIGHT_COLOR = 'rgba(165, 216, 255, 0.075)'
-const STARDUST_TRAIN_COLOR = 'rgba(251, 191, 36, 0.065)'
 
 type TrackProps = Pick<
   GlobeProps,
@@ -41,13 +39,14 @@ type TrackProps = Pick<
   | 'onPathClick'
 >
 
-interface FlightItem {
-  track: Tracks['flights'][number]
+interface ArcItem {
+  route: TransportRoute
+  leg: TransportRouteLeg
   stardust: boolean
 }
 
-interface TrainItem {
-  track: Tracks['trains'][number]
+interface PathItem {
+  route: TransportRoute
   stardust: boolean
 }
 
@@ -60,10 +59,14 @@ interface Options {
   onSelectTripRef: RefObject<(tripId: string) => void>
 }
 
-const asFlight = (obj: object) => obj as FlightItem
-const asTrain = (obj: object) => obj as TrainItem
+const asArc = (obj: object) => obj as ArcItem
+const asPath = (obj: object) => obj as PathItem
 
-/** 当前旅程轨迹与其他旅程星尘共用图层，但交互和视觉权重完全分离。 */
+function rgba(route: TransportRoute, alpha: number): string {
+  return `rgba(${getTransportMode(route.type).route.colorRgb}, ${alpha})`
+}
+
+/** 当前旅程与星尘路线共用图层，但交互和视觉权重完全分离。 */
 export function useTrackPresentation({
   tracks,
   stardustTracks,
@@ -89,54 +92,62 @@ export function useTrackPresentation({
     ),
     [replayRuntime?.activeIndex, replayRuntime?.plan, replaying],
   )
-  const visibleFlights = useMemo(
+  const visibleRoutes = useMemo(
     () => (
       replayTrackState
-        ? tracks.flights.filter((track) =>
-            replayTrackState.completedTripIds.has(track.trip.id))
-        : tracks.flights
+        ? tracks.routes.filter((route) =>
+            replayTrackState.completedTripIds.has(route.trip.id))
+        : tracks.routes
     ),
-    [replayTrackState, tracks.flights],
+    [replayTrackState, tracks.routes],
   )
-  const visibleTrains = useMemo(
-    () => (
-      replayTrackState
-        ? tracks.trains.filter((track) =>
-            replayTrackState.completedTripIds.has(track.trip.id))
-        : tracks.trains
-    ),
-    [replayTrackState, tracks.trains],
-  )
-  const flightItems = useMemo<FlightItem[]>(
+
+  const flightItems = useMemo<ArcItem[]>(
     () => [
-      ...visibleFlights.map((track) => ({ track, stardust: false })),
-      ...(replaying ? [] : (stardustTracks?.flights ?? [])
-        .map((track) => ({ track, stardust: true }))),
+      ...visibleRoutes.flatMap((route) => (
+        route.routeShape === 'arc'
+          ? route.legs.map((leg) => ({ route, leg, stardust: false }))
+          : []
+      )),
+      ...(replaying ? [] : (stardustTracks?.routes ?? []).flatMap((route) => (
+        route.routeShape === 'arc'
+          ? route.legs.map((leg) => ({ route, leg, stardust: true }))
+          : []
+      ))),
     ],
-    [replaying, stardustTracks?.flights, visibleFlights],
+    [replaying, stardustTracks?.routes, visibleRoutes],
   )
-  const trainItems = useMemo<TrainItem[]>(
+  const pathItems = useMemo<PathItem[]>(
     () => [
-      ...visibleTrains.map((track) => ({ track, stardust: false })),
-      ...(replaying ? [] : (stardustTracks?.trains ?? [])
-        .map((track) => ({ track, stardust: true }))),
+      ...visibleRoutes
+        .filter((route) => route.routeShape === 'surface')
+        .map((route) => ({ route, stardust: false })),
+      ...(replaying ? [] : (stardustTracks?.routes ?? [])
+        .filter((route) => route.routeShape === 'surface')
+        .map((route) => ({ route, stardust: true }))),
     ],
-    [replaying, stardustTracks?.trains, visibleTrains],
+    [replaying, stardustTracks?.routes, visibleRoutes],
   )
 
   // 回放时已完成轨迹保持常亮；当前行程由载具生长动画绘制。
   const activeTripId = replaying ? null : hoverTripId ?? selectedTripId
-  const activeTrip = useMemo(() => {
-    if (!activeTripId) return null
-    return (
-      tracks.flights.find((track) => track.trip.id === activeTripId)?.trip ??
-      tracks.trains.find((track) => track.trip.id === activeTripId)?.trip ??
-      null
-    )
-  }, [activeTripId, tracks])
+  const replayTripId = replayTrackState?.currentTripId ?? null
+  const focusedTripId = activeTripId ?? replayTripId
+  const activeRoute = useMemo(
+    () => (
+      focusedTripId
+        ? tracks.routes.find((route) => route.trip.id === focusedTripId) ?? null
+        : null
+    ),
+    [focusedTripId, tracks.routes],
+  )
   const activeCityIds = useMemo(
-    () => (activeTrip ? new Set(getTripCityIds(activeTrip)) : null),
-    [activeTrip],
+    () => (
+      activeRoute
+        ? new Set(getTripCityIds(activeRoute.trip))
+        : null
+    ),
+    [activeRoute],
   )
 
   const selectTrip = useCallback(
@@ -150,88 +161,106 @@ export function useTrackPresentation({
   const trackProps = useMemo<TrackProps>(
     () => ({
       arcsData: flightItems,
-      arcStartLat: (d) => asFlight(d).track.startLat,
-      arcStartLng: (d) => asFlight(d).track.startLng,
-      arcEndLat: (d) => asFlight(d).track.endLat,
-      arcEndLng: (d) => asFlight(d).track.endLng,
-      arcAltitude: (d) => asFlight(d).track.altitude,
+      arcStartLat: (d) => asArc(d).leg.from.lat,
+      arcStartLng: (d) => asArc(d).leg.from.lng,
+      arcEndLat: (d) => asArc(d).leg.to.lat,
+      arcEndLng: (d) => asArc(d).leg.to.lng,
+      arcAltitude: (d) => asArc(d).leg.altitude,
       arcColor: (d: object) => {
-        const item = asFlight(d)
-        if (item.stardust) return STARDUST_FLIGHT_COLOR
-        return activeTripId === null || activeTripId === item.track.trip.id
-          ? FLIGHT_COLOR
-          : FLIGHT_COLOR_DIM
+        const item = asArc(d)
+        if (item.stardust) return rgba(item.route, 0.075)
+        return rgba(
+          item.route,
+          activeTripId === null || activeTripId === item.route.trip.id
+            ? 0.85
+            : 0.16,
+        )
       },
       arcStroke: (d) => {
-        const item = asFlight(d)
+        const item = asArc(d)
+        const stroke = getTransportMode(item.route.type).route.stroke
         if (item.stardust) return 0.28
-        return item.track.trip.id === activeTripId ? 1.6 : 0.9
+        return item.route.trip.id === activeTripId ? stroke + 0.55 : stroke
       },
-      arcDashLength: 0.045,
+      arcDashLength: (d) => (
+        getTransportMode(asArc(d).route.type).route.dashLength
+      ),
       arcDashGap: (d) => {
-        const item = asFlight(d)
+        const item = asArc(d)
+        const gap = getTransportMode(item.route.type).route.dashGap
         if (item.stardust) return 0.05
-        return item.track.trip.id === activeTripId ? 0.014 : 0.028
+        return item.route.trip.id === activeTripId ? gap : gap * 1.8
       },
       arcDashAnimateTime: 0,
       arcsTransitionDuration: 180,
-      arcLabel: (d) => (asFlight(d).stardust ? '' : asFlight(d).track.label),
+      arcLabel: (d) => (asArc(d).stardust ? '' : asArc(d).route.label),
       onArcHover: (d: object | null) => {
         if (!d) {
           hoverTrip(null)
           return
         }
-        const item = asFlight(d)
-        if (!item.stardust) hoverTrip(item.track.trip.id)
+        const item = asArc(d)
+        if (!item.stardust) hoverTrip(item.route.trip.id)
       },
       onArcClick: (d: object) => {
-        const item = asFlight(d)
-        if (!item.stardust) selectTrip(item.track.trip.id)
+        const item = asArc(d)
+        if (!item.stardust) selectTrip(item.route.trip.id)
       },
 
-      pathsData: trainItems,
-      pathPoints: (d) => asTrain(d).track.points,
-      pathPointLat: (p) => (p as [number, number])[0],
-      pathPointLng: (p) => (p as [number, number])[1],
-      pathPointAlt: 0.004,
+      pathsData: pathItems,
+      pathPoints: (d) => {
+        const item = asPath(d)
+        const altitude = getTransportMode(item.route.type).route.baseAltitude
+        return item.route.points.map(([lat, lng]) => [lat, lng, altitude])
+      },
+      pathPointLat: (p) => (p as [number, number, number])[0],
+      pathPointLng: (p) => (p as [number, number, number])[1],
+      pathPointAlt: (p) => (p as [number, number, number])[2],
       pathColor: (d: object) => {
-        const item = asTrain(d)
-        if (item.stardust) return STARDUST_TRAIN_COLOR
-        return activeTripId === null || activeTripId === item.track.trip.id
-          ? TRAIN_COLOR
-          : TRAIN_COLOR_DIM
+        const item = asPath(d)
+        if (item.stardust) return rgba(item.route, 0.065)
+        return rgba(
+          item.route,
+          activeTripId === null || activeTripId === item.route.trip.id
+            ? 0.8
+            : 0.14,
+        )
       },
       pathStroke: (d) => {
-        const item = asTrain(d)
+        const item = asPath(d)
+        const stroke = getTransportMode(item.route.type).route.stroke
         if (item.stardust) return 0.45
-        return item.track.trip.id === activeTripId ? 2.2 : 1.4
+        return item.route.trip.id === activeTripId ? stroke + 0.7 : stroke
       },
       pathTransitionDuration: 180,
-      pathLabel: (d) => (asTrain(d).stardust ? '' : asTrain(d).track.label),
+      pathLabel: (d) => (asPath(d).stardust ? '' : asPath(d).route.label),
       onPathHover: (d: object | null) => {
         if (!d) {
           hoverTrip(null)
           return
         }
-        const item = asTrain(d)
-        if (!item.stardust) hoverTrip(item.track.trip.id)
+        const item = asPath(d)
+        if (!item.stardust) hoverTrip(item.route.trip.id)
       },
       onPathClick: (d: object) => {
-        const item = asTrain(d)
-        if (!item.stardust) selectTrip(item.track.trip.id)
+        const item = asPath(d)
+        if (!item.stardust) selectTrip(item.route.trip.id)
       },
     }),
-    [activeTripId, flightItems, hoverTrip, selectTrip, trainItems],
+    [activeTripId, flightItems, hoverTrip, pathItems, selectTrip],
   )
 
   return {
     trackProps,
     activeCityIds,
+    activeRoute,
     visibleTrackCounts: {
-      flights: visibleFlights.length,
-      trains: visibleTrains.length,
+      total: visibleRoutes.length,
+      surface: visibleRoutes.filter(
+        (route) => route.routeShape === 'surface',
+      ).length,
       stardust: flightItems.filter((item) => item.stardust).length
-        + trainItems.filter((item) => item.stardust).length,
+        + pathItems.filter((item) => item.stardust).length,
     },
   }
 }

@@ -18,7 +18,13 @@ import VehicleCameraStatus from '@/components/globe/VehicleCameraStatus'
 import GlobeFeedback from '@/components/globe/GlobeFeedback'
 import SceneRouteOverlay from '@/components/globe/SceneRouteOverlay'
 import RouteFlowOverlay from '@/components/globe/RouteFlowOverlay'
-import { buildCityMarker, buildHomeMarker, buildRegionDot, type GlobeMarker } from '@/components/globe/cityMarkers'
+import {
+  buildCityMarker,
+  buildHomeMarker,
+  buildRegionDot,
+  buildWaypointMarker,
+  type GlobeMarker,
+} from '@/components/globe/cityMarkers'
 import {
   INITIAL_POV,
   LABEL_ALT_THRESHOLD,
@@ -27,7 +33,7 @@ import {
 import { buildJourneySceneRoutes } from '@/lib/journeyScene'
 import type { Tracks } from '@/lib/tracks'
 
-const EMPTY_TRACKS: Tracks = { routes: [], flights: [], trains: [] }
+const EMPTY_TRACKS: Tracks = { routes: [] }
 const TEXTURE_BASE = `${import.meta.env.BASE_URL}textures/`
 
 export default function TravelGlobe({
@@ -133,7 +139,12 @@ export default function TravelGlobe({
     flyTo,
   })
 
-  const { trackProps, activeCityIds, visibleTrackCounts } = useTrackPresentation({
+  const {
+    trackProps,
+    activeCityIds,
+    activeRoute,
+    visibleTrackCounts,
+  } = useTrackPresentation({
     tracks: entrance.routesVisible ? tracks : EMPTY_TRACKS,
     stardustTracks,
     selectedTripId,
@@ -157,6 +168,7 @@ export default function TravelGlobe({
     zoomedIn,
     selectedCityId,
     activeCityIds,
+    activeRoute,
     revealedCityIds,
     arrivalActive: entrance.active,
     region,
@@ -176,8 +188,8 @@ export default function TravelGlobe({
   return (
     <div
       ref={wrapperRef}
-      data-visible-flight-tracks={visibleTrackCounts.flights}
-      data-visible-train-tracks={visibleTrackCounts.trains}
+      data-visible-transport-tracks={visibleTrackCounts.total}
+      data-visible-surface-tracks={visibleTrackCounts.surface}
       data-visible-stardust-tracks={visibleTrackCounts.stardust}
       data-camera-locked={directorCamera.locked}
       className="absolute inset-0"
@@ -230,7 +242,9 @@ export default function TravelGlobe({
               ? buildCityMarker(m, { onSelect: handleSelectCity, onHover: handleHoverCity, locked: directorCamera.locked })
               : m.kind === 'home'
                 ? buildHomeMarker(m)
-                : buildRegionDot(m)
+                : m.kind === 'waypoint'
+                  ? buildWaypointMarker(m)
+                  : buildRegionDot(m)
           }}
           htmlElementVisibilityModifier={(el, visible) => {
             el.style.display = visible ? 'block' : 'none'

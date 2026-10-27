@@ -142,4 +142,21 @@ describe('buildRouteCameraPose', () => {
     expect(interpolatePose(routePose, destinationPose, 0)).toEqual(routePose)
     expect(interpolatePose(routePose, destinationPose, 1)).toEqual(destinationPose)
   })
+
+  it.each([
+    ['flight', 0.62],
+    ['train', 0.34],
+    ['metro', 0.25],
+    ['ship', 0.43],
+    ['car', 0.3],
+  ] as const)('uses the registry camera altitude for %s', (type, altitude) => {
+    const route = { ...flightRoute, type }
+    const pose = buildRouteCameraPose(
+      fakeGlobe,
+      route,
+      vehicleMotionAt(route, route.durationMs * 0.5),
+    )
+    expect(Math.hypot(...pose.position))
+      .toBeCloseTo(RADIUS * (1 + altitude), 4)
+  })
 })

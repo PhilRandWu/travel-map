@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="ship-hull" x1="15" y1="68" x2="112" y2="92" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DBEAFE"/>
+      <stop offset=".24" stop-color="#93C5FD"/>
+      <stop offset=".66" stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="ship-deep" x1="20" y1="77" x2="107" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1E3A8A"/>
+      <stop offset=".58" stop-color="#172554"/>
+      <stop offset="1" stop-color="#0B1537"/>
+    </linearGradient>
+    <linearGradient id="ship-cabin" x1="39" y1="37" x2="98" y2="68" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".38" stop-color="#E0F2FE"/>
+      <stop offset="1" stop-color="#93C5FD"/>
+    </linearGradient>
+    <linearGradient id="ship-glass" x1="54" y1="46" x2="93" y2="61" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D9FAFF"/>
+      <stop offset=".36" stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#0C4A6E"/>
+    </linearGradient>
+    <linearGradient id="ship-water" x1="18" y1="96" x2="113" y2="106" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8" stop-opacity=".12"/>
+      <stop offset=".5" stop-color="#E0F2FE" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#38BDF8" stop-opacity=".1"/>
+    </linearGradient>
+    <filter id="ship-shadow" x="-28%" y="-24%" width="158%" height="174%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3.2" result="blur"/>
+      <feOffset dy="5" result="offset"/>
+      <feColorMatrix in="offset" type="matrix" values="0 0 0 0 0.01 0 0 0 0 0.04 0 0 0 0 0.1 0 0 0 .55 0" result="shadow"/>
+      <feMerge>
+        <feMergeNode in="shadow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="ship-light" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="2.1" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#ship-shadow)">
+    <path d="M34 31h45c5 0 8 3 8 8v27H30V36c0-3 1-5 4-5Z" fill="url(#ship-cabin)" stroke="#4B7CB5" stroke-opacity=".66" stroke-width="1.1"/>
+    <path d="M38 34h31c3 0 5 2 5 5v3H37v-4c0-2 0-4 1-4Z" fill="#FFFFFF" fill-opacity=".7"/>
+    <path d="M50 38h38c4 0 7 3 7 6v10H50c-3 0-5-2-5-5v-6c0-3 2-5 5-5Z" fill="url(#ship-glass)" stroke="#BAF7FF" stroke-opacity=".65" stroke-width=".9"/>
+    <g stroke="#C8FBFF" stroke-opacity=".55" stroke-width=".8">
+      <path d="M58 39v14M67 39v14M76 39v14M85 39v14"/>
+    </g>
+    <path d="M30 58h57l7 8H30z" fill="#BAE6FD" stroke="#4B7CB5" stroke-opacity=".46"/>
+    <path d="M39 52h18v7H39zM65 52h17v7H65z" fill="#60A5FA" fill-opacity=".35"/>
+
+    <path d="M22 65h82c10 0 16 2 22 8l-12 17c-3 4-8 6-14 6H37c-9 0-16-5-19-14l-6-17h10Z" fill="url(#ship-hull)" stroke="#315C9F" stroke-opacity=".72" stroke-width="1.2"/>
+    <path d="M25 76h91l-8 10c-4 4-9 6-16 6H39c-10 0-17-5-20-15l6-1Z" fill="url(#ship-deep)" stroke="#142B65" stroke-opacity=".7"/>
+    <path d="M20 64c22-5 59-5 83-1 8 1 15 4 21 9-20 2-40 2-61 1-19-1-34 0-47 2-4 0-5-7 4-11Z" fill="#EFF9FF" fill-opacity=".55"/>
+    <path d="M31 67h80" stroke="#D9F5FF" stroke-opacity=".8" stroke-width="1.3"/>
+    <path d="M36 82h73" stroke="#60A5FA" stroke-opacity=".78" stroke-width="1.2"/>
+
+    <g fill="#F8FDFF" fill-opacity=".86" stroke="#315C9F" stroke-opacity=".4">
+      <circle cx="42" cy="71" r="2.3"/>
+      <circle cx="53" cy="71" r="2.3"/>
+      <circle cx="64" cy="71" r="2.3"/>
+      <circle cx="75" cy="71" r="2.3"/>
+      <circle cx="86" cy="71" r="2.3"/>
+      <circle cx="97" cy="71" r="2.3"/>
+    </g>
+
+    <path d="M51 20h2v17h-2z" fill="#E0F2FE" stroke="#3B82F6" stroke-opacity=".5"/>
+    <path d="M52 18v4M47 23h10" stroke="#DBF8FF" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="52" cy="17" r="2" fill="#F0FCFF" filter="url(#ship-light)"/>
+    <path d="M92 42v-8h2v8" fill="#E0F2FE"/>
+    <circle cx="93" cy="32" r="2" fill="#F0FCFF" filter="url(#ship-light)"/>
+
+    <path d="M99 64c12 1 21 3 27 8l-12 5h-16l1-13Z" fill="#93C5FD" stroke="#D9F5FF" stroke-opacity=".66"/>
+    <circle cx="121" cy="69" r="2.5" fill="#FFF7C2" filter="url(#ship-light)"/>
+    <path d="M24 91c15-3 30-3 45 0s31 3 49-1" fill="none" stroke="url(#ship-water)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M17 99c18-3 35-3 51 0s34 3 51-2" fill="none" stroke="url(#ship-water)" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M31 105c14-2 27-2 39 0s25 2 39-1" fill="none" stroke="url(#ship-water)" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M24 61c7-5 17-8 29-9" fill="none" stroke="#F4FCFF" stroke-opacity=".84" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

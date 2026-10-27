@@ -3,6 +3,7 @@ import type { GlobeMethods } from 'react-globe.gl'
 import type { VehicleRoute } from '@/lib/vehicle'
 import { sampleVehicleRoute } from '@/lib/vehicle'
 import { screenPoint } from '@/components/globe/vehicleScreen'
+import { getTransportMode } from '@/lib/transportModes'
 
 const EFFECT_INTERVAL_MS = 1000 / 30
 
@@ -10,8 +11,11 @@ export function useVehicleMotionEffects(playbackKey?: number) {
   const trailRef = useRef<HTMLDivElement>(null)
   const frictionRef = useRef<HTMLDivElement>(null)
   const arrivalRef = useRef<HTMLDivElement>(null)
+  const stopRippleRef = useRef<HTMLDivElement>(null)
   const arrivalPlayedRef = useRef(false)
+  const stopRippledRef = useRef<string | null>(null)
   const arrivalTimerRef = useRef<number | null>(null)
+  const stopRippleTimerRef = useRef<number | null>(null)
   const lastEffectAtRef = useRef(-Infinity)
 
   useEffect(() => {
@@ -19,9 +23,15 @@ export function useVehicleMotionEffects(playbackKey?: number) {
       window.clearTimeout(arrivalTimerRef.current)
       arrivalTimerRef.current = null
     }
+    if (stopRippleTimerRef.current !== null) {
+      window.clearTimeout(stopRippleTimerRef.current)
+      stopRippleTimerRef.current = null
+    }
     arrivalPlayedRef.current = false
+    stopRippledRef.current = null
     lastEffectAtRef.current = -Infinity
     arrivalRef.current?.classList.remove('rg-vehicle-arrival-active')
+    stopRippleRef.current?.classList.remove('rg-waypoint-ripple-active')
     trailRef.current?.querySelectorAll<HTMLElement>('[data-vehicle-trail-dot]')
       .forEach((dot) => { dot.style.opacity = '0' })
     frictionRef.current?.querySelectorAll<HTMLElement>('[data-vehicle-friction-dot]')
@@ -31,6 +41,9 @@ export function useVehicleMotionEffects(playbackKey?: number) {
   useEffect(() => () => {
     if (arrivalTimerRef.current !== null) {
       window.clearTimeout(arrivalTimerRef.current)
+    }
+    if (stopRippleTimerRef.current !== null) {
+      window.clearTimeout(stopRippleTimerRef.current)
     }
   }, [])
 
@@ -46,6 +59,33 @@ export function useVehicleMotionEffects(playbackKey?: number) {
     arrivalTimerRef.current = window.setTimeout(() => {
       host.classList.remove('rg-vehicle-arrival-active')
     }, 950)
+  }
+
+  const markStop = (
+    globe: GlobeMethods,
+    route: VehicleRoute,
+    progress: number,
+    stopKey: string,
+  ) => {
+    if (stopRippledRef.current === stopKey) return
+    stopRippledRef.current = stopKey
+    const host = stopRippleRef.current
+    if (!host) return
+    const point = screenPoint(globe, sampleVehicleRoute(route, progress))
+    host.style.transform = `translate3d(${point.x}px, ${point.y}px, 0)`
+    host.style.setProperty(
+      '--rg-stop-color',
+      getTransportMode(route.type).route.colorHex,
+    )
+    host.classList.remove('rg-waypoint-ripple-active')
+    void host.offsetWidth
+    host.classList.add('rg-waypoint-ripple-active')
+    if (stopRippleTimerRef.current !== null) {
+      window.clearTimeout(stopRippleTimerRef.current)
+    }
+    stopRippleTimerRef.current = window.setTimeout(() => {
+      host.classList.remove('rg-waypoint-ripple-active')
+    }, 760)
   }
 
   const update = (
@@ -65,6 +105,7 @@ export function useVehicleMotionEffects(playbackKey?: number) {
       return
     }
     lastEffectAtRef.current = now
+    const mode = getTransportMode(route.type)
 
     const trailDots = trailRef.current?.querySelectorAll<HTMLElement>(
       '[data-vehicle-trail-dot]',
@@ -84,22 +125,30 @@ export function useVehicleMotionEffects(playbackKey?: number) {
       dot.style.opacity = String((1 - index / trailDots.length) * 0.65)
     })
 
-    const frictionDots = frictionRef.current?.querySelectorAll<HTMLElement>(
+    const surfaceDots = frictionRef.current?.querySelectorAll<HTMLElement>(
       '[data-vehicle-friction-dot]',
     ) ?? []
-    frictionDots.forEach((dot, index) => {
-      if (calm || !visible || route.type !== 'train' || rawProgress >= 1) {
+    surfaceDots.forEach((dot, index) => {
+      if (
+        calm
+        || !visible
+        || mode.vehicle.effect === 'contrail'
+        || rawProgress >= 1
+      ) {
         dot.style.opacity = '0'
         return
       }
-      const frictionProgress = Math.max(0, easedProgress - index * 0.006)
-      const frictionScreen = screenPoint(
+      const surfaceProgress = Math.max(0, easedProgress - index * 0.006)
+      const surfaceScreen = screenPoint(
         globe,
-        sampleVehicleRoute(route, frictionProgress),
+        sampleVehicleRoute(route, surfaceProgress),
       )
       const flicker = (Math.sin(now / 140 - index * 0.9) + 1) / 2
+      dot.style.background = `rgba(${mode.route.colorRgb}, .62)`
+      dot.style.boxShadow =
+        `0 0 4px rgba(${mode.route.colorRgb}, .42)`
       dot.style.transform =
-        `translate3d(${frictionScreen.x}px, ${frictionScreen.y}px, 0)`
+        `translate3d(${surfaceScreen.x}px, ${surfaceScreen.y}px, 0)`
       dot.style.opacity = String(0.08 + flicker * 0.22)
     })
   }
@@ -109,8 +158,10 @@ export function useVehicleMotionEffects(playbackKey?: number) {
       trailRef,
       frictionRef,
       arrivalRef,
+      stopRippleRef,
     },
     markArrival,
+    markStop,
     update,
   }
 }

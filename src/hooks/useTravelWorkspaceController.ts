@@ -19,7 +19,7 @@ import { pickRandomMemory } from '@/lib/travelDiscovery'
 import type { TravelSearchResult } from '@/lib/travelSearch'
 import type { TravelData } from '@/types'
 
-const EMPTY_TRACKS: Tracks = { routes: [], flights: [], trains: [] }
+const EMPTY_TRACKS: Tracks = { routes: [] }
 
 interface Options {
   data: TravelData
@@ -83,11 +83,11 @@ export function useTravelWorkspaceController({
   }, [activeJourneyId, data, showOtherJourneys])
   const focusPoint = useMemo(() => {
     if (!selectedTripId) return null
-    const track = [...tracks.flights, ...tracks.trains]
+    const track = tracks.routes
       .find((item) => item.trip.id === selectedTripId)
     return track ? {
-      lat: (track.fromLat + track.toLat) / 2,
-      lng: (track.fromLng + track.toLng) / 2,
+      lat: track.midLat,
+      lng: track.midLng,
     } : null
   }, [selectedTripId, tracks])
 

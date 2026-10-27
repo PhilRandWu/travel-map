@@ -37,76 +37,8 @@ export interface TransportRoute {
   toLng: number
 }
 
-/**
- * Task 4/5 完成迁移前，保留旧展示层所需的结构。
- * 新代码只能读取 routes，flights/trains 将在载具迁移后删除。
- */
-export interface FlightArc {
-  trip: Trip
-  startLat: number
-  startLng: number
-  endLat: number
-  endLng: number
-  altitude: number
-  midLat: number
-  midLng: number
-  label: string
-  fromLat: number
-  fromLng: number
-  toLat: number
-  toLng: number
-}
-
-export interface TrainPath {
-  trip: Trip
-  points: [number, number][]
-  midLat: number
-  midLng: number
-  label: string
-  fromLat: number
-  fromLng: number
-  toLat: number
-  toLng: number
-}
-
 export interface Tracks {
   routes: TransportRoute[]
-  /** @deprecated 旧轨迹图层兼容字段，Task 5 迁移后删除。 */
-  flights: FlightArc[]
-  /** @deprecated 旧地面轨迹兼容字段，Task 5 迁移后删除。 */
-  trains: TrainPath[]
-}
-
-function toFlightArc(route: TransportRoute): FlightArc {
-  return {
-    trip: route.trip,
-    startLat: route.fromLat,
-    startLng: route.fromLng,
-    endLat: route.toLat,
-    endLng: route.toLng,
-    altitude: route.altitude,
-    midLat: route.midLat,
-    midLng: route.midLng,
-    label: route.label,
-    fromLat: route.fromLat,
-    fromLng: route.fromLng,
-    toLat: route.toLat,
-    toLng: route.toLng,
-  }
-}
-
-function toSurfacePath(route: TransportRoute): TrainPath {
-  return {
-    trip: route.trip,
-    points: route.points,
-    midLat: route.midLat,
-    midLng: route.midLng,
-    label: route.label,
-    fromLat: route.fromLat,
-    fromLng: route.fromLng,
-    toLat: route.toLat,
-    toLng: route.toLng,
-  }
 }
 
 export function buildTracks(data: TravelData): Tracks {
@@ -178,13 +110,5 @@ export function buildTracks(data: TravelData): Tracks {
     })
   }
 
-  return {
-    routes,
-    flights: routes
-      .filter((route) => route.type === 'flight')
-      .map(toFlightArc),
-    trains: routes
-      .filter((route) => route.type !== 'flight')
-      .map(toSurfacePath),
-  }
+  return { routes }
 }

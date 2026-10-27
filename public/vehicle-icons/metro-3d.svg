@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="metro-body" x1="15" y1="37" x2="109" y2="77" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF7F8"/>
+      <stop offset=".28" stop-color="#FFD7DC"/>
+      <stop offset=".7" stop-color="#FDA4AF"/>
+      <stop offset="1" stop-color="#F06C82"/>
+    </linearGradient>
+    <linearGradient id="metro-skirt" x1="19" y1="76" x2="111" y2="91" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9F1239"/>
+      <stop offset=".55" stop-color="#7F1D2D"/>
+      <stop offset="1" stop-color="#3F0A16"/>
+    </linearGradient>
+    <linearGradient id="metro-glass" x1="87" y1="40" x2="115" y2="66" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DDFBFF"/>
+      <stop offset=".26" stop-color="#67D7EA"/>
+      <stop offset=".68" stop-color="#17647D"/>
+      <stop offset="1" stop-color="#082333"/>
+    </linearGradient>
+    <linearGradient id="metro-window" x1="30" y1="42" x2="70" y2="63" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A7F3FF"/>
+      <stop offset=".42" stop-color="#286A82"/>
+      <stop offset="1" stop-color="#071C2B"/>
+    </linearGradient>
+    <linearGradient id="metro-rail" x1="20" y1="99" x2="112" y2="102" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6B7280"/>
+      <stop offset=".5" stop-color="#D7DEE5"/>
+      <stop offset="1" stop-color="#5A626D"/>
+    </linearGradient>
+    <filter id="metro-shadow" x="-32%" y="-24%" width="164%" height="172%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+      <feOffset dy="5" result="offset"/>
+      <feColorMatrix in="offset" type="matrix" values="0 0 0 0 0.02 0 0 0 0 0.04 0 0 0 0 0.07 0 0 0 .52 0" result="shadow"/>
+      <feMerge>
+        <feMergeNode in="shadow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="metro-light" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="2" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#metro-shadow)">
+    <path d="M13 56c5-13 18-20 37-20h32c18 0 31 8 39 25l7 15-8 18H28c-12 0-19-8-19-19l4-19Z" fill="url(#metro-body)" stroke="#8D3348" stroke-opacity=".7" stroke-width="1.2"/>
+    <path d="M18 41c13-7 30-9 48-8 15 0 27 3 37 9-13 2-27 2-42 1-17-1-31 0-43 4Z" fill="#FFFFFF" fill-opacity=".58"/>
+    <path d="M23 58h65c10 0 19 3 26 8l5 8H20c-6 0-9-4-8-8 1-4 5-8 11-8Z" fill="#9F1239" fill-opacity=".35"/>
+
+    <g fill="url(#metro-window)" stroke="#BDF5FF" stroke-opacity=".48" stroke-width=".8">
+      <path d="M28 43h18c3 0 5 2 5 5v10c0 2-2 4-4 4H28c-2 0-4-2-4-4V48c0-3 2-5 4-5Z"/>
+      <path d="M56 42h18c3 0 5 3 5 6v9c0 2-2 4-4 4H56c-2 0-4-2-4-4v-9c0-3 2-6 4-6Z"/>
+      <path d="M84 43h15c3 0 5 3 5 6v8c0 2-2 4-4 4H84c-2 0-4-2-4-4v-8c0-3 2-6 4-6Z"/>
+    </g>
+    <g fill="#D8FBFF" fill-opacity=".4">
+      <path d="M30 47h11l-9 9h-2c-1 0-2-1-2-2v-4c0-1 1-3 2-3Z"/>
+      <path d="M58 46h10l-9 9h-3c-1 0-2-1-2-2v-4c0-1 1-3 4-3Z"/>
+      <path d="M86 47h9l-8 8h-3c-1 0-2-1-2-2v-3c0-1 2-3 4-3Z"/>
+    </g>
+
+    <path d="M94 39c12 2 24 12 33 27l7 11h-22c-3-14-9-27-18-38Z" fill="url(#metro-glass)" stroke="#E6FCFF" stroke-opacity=".8" stroke-width="1.2"/>
+    <path d="M101 43c8 5 15 13 21 23l-12-2c-3-8-6-15-9-21Z" fill="#E8FCFF" fill-opacity=".34"/>
+    <path d="M21 72h96l3 8H26c-7 0-11-2-13-6l2-1Z" fill="url(#metro-skirt)" stroke="#4D1B25" stroke-opacity=".5"/>
+    <path d="M24 72h95" stroke="#FFB3BF" stroke-opacity=".72" stroke-width="1.1"/>
+
+    <g fill="#131B24" stroke="#5D6975" stroke-width="1.1">
+      <circle cx="39" cy="85" r="6"/>
+      <circle cx="87" cy="85" r="6"/>
+      <circle cx="109" cy="85" r="5"/>
+    </g>
+    <g fill="#C2CBD3">
+      <circle cx="39" cy="85" r="2"/>
+      <circle cx="87" cy="85" r="2"/>
+      <circle cx="109" cy="85" r="1.6"/>
+    </g>
+
+    <path d="M19 99h100" stroke="url(#metro-rail)" stroke-linecap="round" stroke-width="3"/>
+    <path d="M25 107h88" stroke="#5E6875" stroke-linecap="round" stroke-width="2" stroke-opacity=".76"/>
+    <g stroke="#8C5362" stroke-width="2" stroke-linecap="round" opacity=".7">
+      <path d="m28 99 6-8M52 99l6-8M77 99l6-8M101 99l6-8"/>
+    </g>
+    <ellipse cx="119" cy="62" rx="3.1" ry="2" fill="#FFF2C9" filter="url(#metro-light)"/>
+    <path d="M13 51c3-6 9-10 18-13" fill="none" stroke="#FFF8FA" stroke-opacity=".8" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

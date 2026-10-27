@@ -34,7 +34,7 @@ export default function RouteFlowOverlay({
     const globe = globeRef.current
     if (!globe || !route || paused || effectiveLevel === 'calm') return
     const line = createSceneLine(globe, route, {
-      color: route.type === 'flight' ? 0xe0f7ff : 0xffe6ad,
+      color: route.color,
       opacity: 0.78,
     })
     const firstRunAt = performance.now() + FLOW_DELAY_MS
@@ -56,7 +56,7 @@ export default function RouteFlowOverlay({
     const globe = globeRef.current
     if (!globe || !breathRoute || paused || effectiveLevel === 'calm') return
     const line = createSceneLine(globe, breathRoute, {
-      color: breathRoute.type === 'flight' ? 0xa5f3fc : 0xfbbf24,
+      color: breathRoute.color,
       opacity: 0.55,
     })
     const startedAt = performance.now()

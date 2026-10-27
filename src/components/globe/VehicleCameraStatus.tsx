@@ -19,7 +19,8 @@ export default function VehicleCameraStatus({
   status,
 }: Props) {
   if (!active || !status) return null
-  const vehicle = getTransportMode(status.type).label
+  const mode = getTransportMode(status.type)
+  const vehicle = mode.label
   const [date, routeLabel, ...meta] = status.routeLabel.split(' · ')
   const [origin, destination] = routeLabel?.split(' → ') ?? []
   const detail = meta.join(' · ')
@@ -30,7 +31,11 @@ export default function VehicleCameraStatus({
       data-vehicle-camera-status
       data-vehicle-type={status.type}
       className="rg-vehicle-camera-status pointer-events-none absolute left-1/2 top-20 z-[3] -translate-x-1/2"
-      style={{ '--rg-route-progress': `${progress}%` } as CSSProperties}
+      style={{
+        '--rg-route-progress': `${progress}%`,
+        '--rg-vehicle-color': mode.route.colorHex,
+        '--rg-vehicle-color-rgb': mode.route.colorRgb,
+      } as CSSProperties}
     >
       <div className="rg-vehicle-camera-status-line">
         <span className="rg-vehicle-camera-status-dot" aria-hidden />

@@ -1,5 +1,6 @@
 import { useMemo, type RefObject } from 'react'
 import type { LitCity } from '@/lib/derive'
+import type { TransportRoute } from '@/lib/tracks'
 import type { City } from '@/types'
 import {
   toCityMarkerDatum,
@@ -18,6 +19,7 @@ interface Options {
   zoomedIn: boolean
   selectedCityId: string | null
   activeCityIds: ReadonlySet<string> | null
+  activeRoute: TransportRoute | null
   revealedCityIds: ReadonlySet<string> | null
   arrivalActive: boolean
   region: RegionPoint | null
@@ -34,6 +36,7 @@ export function useGlobeMarkers({
   zoomedIn,
   selectedCityId,
   activeCityIds,
+  activeRoute,
   revealedCityIds,
   arrivalActive,
   region,
@@ -65,12 +68,23 @@ export function useGlobeMarkers({
         labelVisible: zoomedIn,
       })
     }
+    for (const city of activeRoute?.stops.slice(1, -1) ?? []) {
+      list.push({
+        kind: 'waypoint',
+        id: city.id,
+        name: city.name,
+        lat: city.lat,
+        lng: city.lng,
+        type: activeRoute!.type,
+      })
+    }
     if (region) {
       list.push({ kind: 'region', lat: region.lat, lng: region.lng, ocean: region.ocean })
     }
     return list
   }, [
     activeCityIds,
+    activeRoute,
     arrivalActive,
     homeCity,
     litCities,

@@ -1,16 +1,30 @@
 import type { RefObject } from 'react'
+import type { TransportType } from '@/types'
+import { getTransportMode } from '@/lib/transportModes'
 
 interface Props {
   trailRef: RefObject<HTMLDivElement | null>
   frictionRef: RefObject<HTMLDivElement | null>
   arrivalRef: RefObject<HTMLDivElement | null>
+  stopRippleRef?: RefObject<HTMLDivElement | null>
+  type: TransportType
+  color: string
 }
 
 export default function VehicleTrailLayer({
   trailRef,
   frictionRef,
   arrivalRef,
+  stopRippleRef,
+  type,
+  color,
 }: Props) {
+  const effect = getTransportMode(type).vehicle.effect
+  const trailStyle = {
+    background: `rgba(${color}, .7)`,
+    boxShadow: `0 0 8px 2px rgba(${color}, .32)`,
+  }
+
   return (
     <>
       <div ref={trailRef} aria-hidden className="pointer-events-none absolute inset-0">
@@ -18,20 +32,35 @@ export default function VehicleTrailLayer({
           <span
             key={index}
             data-vehicle-trail-dot={index}
-            className="absolute h-1.5 w-1.5 rounded-full bg-cyan-100/70 shadow-[0_0_8px_2px_rgba(103,232,249,.32)]"
-            style={{ opacity: 0 }}
+            className="absolute h-1.5 w-1.5 rounded-full"
+            style={{ opacity: 0, ...trailStyle }}
           />
         ))}
       </div>
-      <div ref={frictionRef} aria-hidden className="pointer-events-none absolute inset-0">
+      <div
+        ref={frictionRef}
+        aria-hidden
+        data-vehicle-effect={effect}
+        className="pointer-events-none absolute inset-0"
+      >
         {Array.from({ length: 3 }, (_, index) => (
           <span
             key={index}
             data-vehicle-friction-dot={index}
-            className="rg-vehicle-friction-dot absolute h-px w-px rounded-full bg-amber-100/60"
-            style={{ opacity: 0 }}
+            className="rg-vehicle-friction-dot absolute h-px w-px rounded-full"
+            style={{
+              opacity: 0,
+              background: `rgba(${color}, .62)`,
+            }}
           />
         ))}
+      </div>
+      <div
+        ref={stopRippleRef}
+        aria-hidden
+        className="rg-waypoint-ripple pointer-events-none absolute inset-0"
+      >
+        <span />
       </div>
       <div
         ref={arrivalRef}

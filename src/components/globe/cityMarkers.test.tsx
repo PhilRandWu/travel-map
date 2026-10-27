@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
-import { buildCityMarker } from '@/components/globe/cityMarkers'
+import {
+  buildCityMarker,
+  buildWaypointMarker,
+} from '@/components/globe/cityMarkers'
 
 describe('buildCityMarker', () => {
   it('exposes an interactive city button that re-enables pointer events', () => {
@@ -52,5 +55,19 @@ describe('buildCityMarker', () => {
 
     button?.click()
     expect(onSelect).not.toHaveBeenCalled()
+  })
+
+  it('renders a non-interactive mode-colored waypoint marker', () => {
+    const element = buildWaypointMarker({
+      id: 'jiaxing',
+      name: '嘉兴',
+      lat: 30.75,
+      lng: 120.75,
+      type: 'train',
+    })
+
+    expect(element.dataset.waypointId).toBe('jiaxing')
+    expect(element.textContent).toContain('嘉兴')
+    expect(element.querySelector('button')).toBeNull()
   })
 })

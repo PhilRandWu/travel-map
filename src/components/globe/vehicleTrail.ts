@@ -10,6 +10,7 @@ import {
   vehicleAltitudeAt,
   type VehicleRoute,
 } from '@/lib/vehicle'
+import { getTransportMode } from '@/lib/transportModes'
 
 export interface VehicleTrail {
   update: (progress: number) => void
@@ -64,6 +65,7 @@ export function createVehicleTrail(
   globe: GlobeMethods,
   route: VehicleRoute,
 ): VehicleTrail {
+  const mode = getTransportMode(route.type)
   const positions = new Float32Array(route.points.length * 3)
   route.points.forEach(([lat, lng], index) => {
     const point = globe.getCoords(
@@ -78,23 +80,23 @@ export function createVehicleTrail(
 
   const geometry = new BufferGeometry()
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3))
-  const material = route.type === 'flight'
+  const material = mode.route.dashed
     ? new LineDashedMaterial({
-        color: 0xa5f3fc,
-        dashSize: 1.8,
-        gapSize: 1.1,
+        color: mode.trail.colorNumber,
+        dashSize: mode.trail.dashSize,
+        gapSize: mode.trail.gapSize,
         opacity: 0.92,
         transparent: true,
       })
     : new LineBasicMaterial({
-        color: 0xfbbf24,
+        color: mode.trail.colorNumber,
         opacity: 0.88,
         transparent: true,
       })
   const line = new Line(geometry, material)
   line.renderOrder = 5
   line.frustumCulled = false
-  if (route.type === 'flight') line.computeLineDistances()
+  if (mode.route.dashed) line.computeLineDistances()
   globe.scene().add(line)
 
   const guideCount = Math.max(2, Math.ceil(route.points.length * 0.08))
@@ -103,7 +105,7 @@ export function createVehicleTrail(
     route,
     0,
     guideCount,
-    0xfbbf24,
+    mode.trail.guideStartColor,
     0.72,
   )
   const endGuide = createGuide(
@@ -111,7 +113,7 @@ export function createVehicleTrail(
     route,
     Math.max(0, route.points.length - guideCount),
     route.points.length,
-    0xa5f3fc,
+    mode.trail.guideEndColor,
     0.4,
   )
 
@@ -122,7 +124,7 @@ export function createVehicleTrail(
         ? 0
         : Math.ceil(clamped * (route.points.length - 1)) + 1
       geometry.setDrawRange(0, count)
-      startGuide.material.opacity = route.type === 'flight'
+      startGuide.material.opacity = mode.route.shape === 'arc'
         ? Math.max(0.08, 0.72 * (1 - Math.min(1, clamped / 0.24)))
         : 0.58
       endGuide.material.opacity = Math.min(

@@ -1,9 +1,12 @@
 import type { LitCity } from '@/lib/derive'
+import type { TransportType } from '@/types'
+import { getTransportMode } from '@/lib/transportModes'
 
 /** htmlElementsData 的统一标记类型（城市点 + 反查定位点共用一个 html 层） */
 export type GlobeMarker =
   | ({ kind: 'city' } & CityMarkerDatum)
   | ({ kind: 'home' } & HomeMarkerDatum)
+  | ({ kind: 'waypoint' } & WaypointMarkerDatum)
   | ({ kind: 'region' } & RegionMarkerDatum)
 
 export interface CityMarkerDatum {
@@ -30,6 +33,14 @@ export interface HomeMarkerDatum {
   lat: number
   lng: number
   labelVisible: boolean
+}
+
+export interface WaypointMarkerDatum {
+  id: string
+  name: string
+  lat: number
+  lng: number
+  type: TransportType
 }
 
 interface CityHandlers {
@@ -141,6 +152,51 @@ export function buildHomeMarker(d: HomeMarkerDatum): HTMLElement {
       opacity:${d.labelVisible ? 1 : 0};"></span>
   `
   el.querySelector<HTMLElement>('.rg-home-label')!.textContent = `${d.name} · 常居`
+  return el
+}
+
+/** 当前路线经停点：只作空间锚点，不进入城市选择和到访点亮。 */
+export function buildWaypointMarker(d: WaypointMarkerDatum): HTMLElement {
+  const mode = getTransportMode(d.type)
+  const el = document.createElement('div')
+  el.dataset.waypointId = d.id
+  el.style.cssText = [
+    'position:relative',
+    'width:0',
+    'height:0',
+    'transform:translate(-50%,-50%)',
+    'pointer-events:none',
+  ].join(';')
+
+  const dot = document.createElement('span')
+  dot.style.cssText = [
+    'position:absolute',
+    'left:-6px',
+    'top:-6px',
+    'width:12px',
+    'height:12px',
+    `border:1.5px solid ${mode.route.colorHex}`,
+    'border-radius:999px',
+    `box-shadow:0 0 10px rgba(${mode.route.colorRgb},.45)`,
+  ].join(';')
+
+  const label = document.createElement('span')
+  label.textContent = d.name
+  label.style.cssText = [
+    'position:absolute',
+    'left:50%',
+    'bottom:12px',
+    'transform:translateX(-50%)',
+    'padding:2px 7px',
+    'border-radius:999px',
+    'white-space:nowrap',
+    'font-size:10px',
+    'color:rgba(255,255,255,.82)',
+    'background:rgba(5,8,17,.72)',
+    `border:1px solid rgba(${mode.route.colorRgb},.3)`,
+  ].join(';')
+
+  el.append(dot, label)
   return el
 }
 

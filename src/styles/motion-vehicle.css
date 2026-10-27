@@ -57,15 +57,10 @@ html[data-route-camera='true'] .rg-route-vignette {
 
 .rg-vehicle-camera-status-vehicle {
   padding: 1px 6px;
-  border: 1px solid rgb(165 243 252 / 0.18);
+  border: 1px solid rgba(var(--rg-vehicle-color-rgb), 0.24);
   border-radius: 999px;
-  color: rgb(207 250 254 / 0.72);
-}
-
-.rg-vehicle-camera-status[data-vehicle-type='train']
-  .rg-vehicle-camera-status-vehicle {
-  border-color: rgb(251 191 36 / 0.2);
-  color: rgb(254 243 199 / 0.76);
+  color: var(--rg-vehicle-color, #a5f3fc);
+  opacity: 0.78;
 }
 
 .rg-vehicle-camera-status-route {
@@ -86,7 +81,8 @@ html[data-route-camera='true'] .rg-route-vignette {
 }
 
 .rg-vehicle-camera-status-route span:nth-child(2) {
-  color: rgb(165 243 252 / 0.5);
+  color: var(--rg-vehicle-color, #a5f3fc);
+  opacity: 0.55;
 }
 
 .rg-vehicle-camera-status-meta {
@@ -116,23 +112,17 @@ html[data-route-camera='true'] .rg-route-vignette {
   display: block;
   width: var(--rg-route-progress, 0%);
   height: 100%;
-  background: linear-gradient(90deg, rgb(103 232 249 / 0.5), rgb(165 243 252));
-  box-shadow: 0 0 8px rgb(103 232 249 / 0.45);
+  background: var(--rg-vehicle-color, #a5f3fc);
+  box-shadow: 0 0 8px rgba(var(--rg-vehicle-color-rgb), 0.45);
   transition: width 140ms linear;
-}
-
-.rg-vehicle-camera-status[data-vehicle-type='train']
-  .rg-vehicle-camera-progress span {
-  background: linear-gradient(90deg, rgb(251 191 36 / 0.45), rgb(253 230 138));
-  box-shadow: 0 0 8px rgb(251 191 36 / 0.4);
 }
 
 .rg-vehicle-camera-status-dot {
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: #a5f3fc;
-  box-shadow: 0 0 10px rgb(103 232 249 / 0.7);
+  background: var(--rg-vehicle-color, #a5f3fc);
+  box-shadow: 0 0 10px rgba(var(--rg-vehicle-color-rgb), 0.7);
 }
 
 .rg-vehicle-marker[data-vehicle-mode='route'] .rg-vehicle-glyph {
