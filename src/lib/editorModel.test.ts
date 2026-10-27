@@ -132,7 +132,7 @@ describe('editor model', () => {
       .toEqual(['v001/01.svg', 'v002/01.svg'])
   })
 
-  it('clears flight waypoints and deduplicates train stops', () => {
+  it('keeps ordered unique waypoints for every transport type', () => {
     const data = clone()
     const journey = data.journeys[0]
     const draft = createTripDraft(data, journey)
@@ -140,26 +140,19 @@ describe('editor model', () => {
     const to = findBuiltinCity('shanghai')!
     const jiaxing = findBuiltinCity('jiaxing')!
 
-    const flight = saveTrip(data, {
-      ...draft,
-      type: 'flight',
-      from,
-      to,
-      waypoints: [jiaxing],
-      date: '2025-05-02',
-    })
-    expect(flight.trips.find((trip) => trip.id === draft.id)?.waypoints).toEqual([])
-
-    const train = saveTrip(flight, {
-      ...draft,
-      type: 'train',
-      from,
-      to,
-      waypoints: [jiaxing, from, jiaxing],
-      date: '2025-05-03',
-    })
-    expect(train.trips.find((trip) => trip.id === draft.id)?.waypoints)
-      .toEqual(['jiaxing'])
+    for (const type of ['flight', 'train', 'metro', 'ship', 'car'] as const) {
+      const next = saveTrip(data, {
+        ...draft,
+        type,
+        from,
+        to,
+        waypoints: [jiaxing, from, jiaxing],
+        date: '2025-05-02',
+      })
+      expect(next.trips.find((trip) => trip.id === draft.id)?.waypoints)
+        .toEqual(['jiaxing'])
+      expect(next.cities.some((city) => city.id === 'jiaxing')).toBe(true)
+    }
   })
 
   it('removes a visit and its cover references together', () => {

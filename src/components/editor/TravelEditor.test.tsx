@@ -26,8 +26,7 @@ describe('TravelEditor', () => {
       />,
     )
 
-    expect((screen.getByLabelText('当前旅程') as HTMLSelectElement).value)
-      .toBe('j002')
+    expect(screen.getByRole('button', { name: /当前旅程：成都慢夏/ })).toBeTruthy()
   })
 
   it('adds a visit through the drawer form', async () => {
@@ -107,6 +106,24 @@ describe('TravelEditor', () => {
     const next = onChange.mock.calls[0][0] as TravelData
     expect(next.journeys.find((journey) => journey.id === 'j002')?.title)
       .toBe('成都新夏')
+  })
+
+  it('closes the journey picker before closing the editor on Escape', async () => {
+    const user = userEvent.setup()
+    render(
+      <TravelEditor
+        data={clone()}
+        storageError={null}
+        onChange={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: /当前旅程：成都慢夏/ }))
+    await user.keyboard('{Escape}')
+
+    expect(screen.queryByRole('searchbox', { name: '搜索旅程' })).toBeNull()
+    expect(screen.getByRole('dialog', { name: '旅行档案编辑器' })).toBeTruthy()
   })
 
   it('keeps dirty form content when Escape is cancelled', async () => {
@@ -217,5 +234,41 @@ describe('TravelEditor', () => {
     expect(screen.getByText(/常居城市，不能创建旅行到访/)).toBeTruthy()
     expect(screen.getByRole('button', { name: '保存到访' })).toHaveProperty('disabled', true)
     expect(onChange).not.toHaveBeenCalled()
+  })
+
+  it('creates a ship trip with a waypoint and preserves it when changing modes', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn()
+    render(
+      <TravelEditor
+        data={clone()}
+        storageError={null}
+        initialJourneyId="j001"
+        onChange={onChange}
+        onClose={vi.fn()}
+      />,
+    )
+
+    await user.click(screen.getByRole('tab', { name: /行程/ }))
+    await user.click(screen.getByRole('button', { name: '+ 新增行程' }))
+    await user.click(screen.getByRole('button', { name: '轮船' }))
+    await user.click(screen.getByRole('button', { name: '+ 添加经停' }))
+    await user.type(screen.getByLabelText(/出发城市/), '北京')
+    await user.click(screen.getByRole('option', { name: /北京/ }))
+    await user.type(screen.getByRole('combobox', { name: '经停 1' }), '嘉兴')
+    await user.click(screen.getByRole('option', { name: /嘉兴/ }))
+    await user.type(screen.getByLabelText(/到达城市/), '杭州')
+    await user.click(screen.getByRole('option', { name: /杭州/ }))
+    await user.click(screen.getByRole('button', { name: '汽车' }))
+    await user.click(screen.getByRole('button', { name: '保存行程' }))
+
+    expect(onChange).toHaveBeenCalledOnce()
+    const next = onChange.mock.calls[0][0] as TravelData
+    expect(next.trips.find((trip) => trip.id === 't006')).toMatchObject({
+      type: 'car',
+      from: 'beijing',
+      to: 'hangzhou',
+      waypoints: ['jiaxing'],
+    })
   })
 })

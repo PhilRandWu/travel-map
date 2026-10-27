@@ -12,6 +12,7 @@ interface Props {
   value: City | null
   onChange: (city: City | null) => void
   excludeCityIds?: string[]
+  excludedMessage?: string
   hint?: string
   autoFocus?: boolean
 }
@@ -24,6 +25,7 @@ export default function CityCombobox({
   value,
   onChange,
   excludeCityIds = [],
+  excludedMessage,
   hint,
   autoFocus = false,
 }: Props) {
@@ -221,7 +223,8 @@ export default function CityCombobox({
           )}
           {excludedMatch && (
             <li className="px-2.5 py-2 text-[11px] leading-relaxed text-white/55">
-              「{excludedMatch.name}」是常居城市，不能创建旅行到访。
+              {excludedMessage
+                ?? `「${excludedMatch.name}」是常居城市，不能创建旅行到访。`}
             </li>
           )}
           {matches.length === 0 && !showCreate && !excludedMatch && (

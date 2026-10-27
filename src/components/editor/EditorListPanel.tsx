@@ -1,6 +1,7 @@
 import type { Journey, TravelData } from '@/types'
 import { resolveCity } from '@/lib/cities'
 import { getJourneyTrips, getJourneyVisits } from '@/lib/journeys'
+import { getTransportMode } from '@/lib/transportModes'
 
 export type EditorTab = 'visits' | 'trips'
 export type EditorDeleteTarget = { kind: 'visit' | 'trip'; id: string }
@@ -159,7 +160,7 @@ export default function EditorListPanel({
                       {from?.name ?? trip.from} → {to?.name ?? trip.to}
                     </h3>
                     <p className="mt-1 font-mono text-[10px] tracking-[0.06em] text-white/50">
-                      {formatDate(trip.date)} · {trip.type === 'flight' ? '飞机' : '高铁'}
+                      {formatDate(trip.date)} · {getTransportMode(trip.type).label}
                       {trip.waypoints.length > 0 ? ` · 经停 ${trip.waypoints.length}` : ''}
                     </p>
                   </div>

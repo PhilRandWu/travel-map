@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import type { City, Journey, TravelData } from '@/types'
 import type { CompleteTripDraft, TripDraft } from '@/lib/editorModel'
 import type { ValidationIssue } from '@/lib/validate'
+import { getTransportMode } from '@/lib/transportModes'
 import CityCombobox from '@/components/editor/CityCombobox'
+import TransportTypePicker from '@/components/editor/TransportTypePicker'
+import WaypointEditor from '@/components/editor/WaypointEditor'
 import {
   EditorErrors,
   EditorField,
@@ -36,23 +39,21 @@ export default function TripForm({
       !== JSON.stringify({ form: draft, waypoints: draft.waypoints })
   ), [draft, form, waypoints])
   useEffect(() => onDirtyChange(dirty), [dirty, onDirtyChange])
+  const selectedWaypoints = waypoints.filter((city): city is City => city !== null)
+  const routeIds = [
+    form.from?.id,
+    ...selectedWaypoints.map((city) => city.id),
+    form.to?.id,
+  ].filter((id): id is string => Boolean(id))
+  const routeUnique = new Set(routeIds).size === routeIds.length
   const canSave = form.from !== null
     && form.to !== null
     && form.from.id !== form.to.id
     && form.date !== ''
+    && routeUnique
 
   const changeType = (type: TripDraft['type']) => {
-    setForm({ ...form, type, waypoints: [] })
-    setWaypoints([])
-  }
-
-  const updateWaypoint = (index: number, city: City | null) => {
-    const next = waypoints.map((item, itemIndex) => (itemIndex === index ? city : item))
-    setWaypoints(next)
-    setForm({
-      ...form,
-      waypoints: next.filter((item): item is City => item !== null),
-    })
+    setForm((current) => ({ ...current, type }))
   }
 
   const submit = (event: React.FormEvent) => {
@@ -62,9 +63,11 @@ export default function TripForm({
       ...form,
       from: form.from,
       to: form.to,
-      waypoints: waypoints.filter((city): city is City => city !== null),
+      waypoints: selectedWaypoints,
     })
   }
+
+  const mode = getTransportMode(form.type)
 
   return (
     <form onSubmit={submit} className="space-y-4">
@@ -77,30 +80,7 @@ export default function TripForm({
 
       <div>
         <p className="mb-2 text-[11px] tracking-[0.12em] text-white/62">交通方式</p>
-        <div
-          role="group"
-          aria-label="交通方式"
-          className="grid grid-cols-2 gap-1 rounded-xl border border-white/10 bg-white/[.025] p-1"
-        >
-          {([
-            ['flight', '✈️ 飞机'],
-            ['train', '🚄 高铁'],
-          ] as const).map(([type, label]) => (
-            <button
-              key={type}
-              type="button"
-              aria-pressed={form.type === type}
-              onClick={() => changeType(type)}
-              className={`min-h-11 cursor-pointer rounded-lg px-3 text-xs transition ${
-                form.type === type
-                  ? 'bg-cyan-100/10 text-cyan-50'
-                  : 'text-white/55 hover:text-white/82'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        <TransportTypePicker value={form.type} onChange={changeType} />
       </div>
 
       <EditorField id="trip-date" label="出行日期" hint="必填">
@@ -128,61 +108,27 @@ export default function TripForm({
         onChange={(to) => setForm({ ...form, to })}
       />
 
-      {form.type === 'train' && (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <p className="text-[11px] tracking-[0.12em] text-white/62">经停城市</p>
-            <button
-              type="button"
-              disabled={waypoints.length >= 4}
-              onClick={() => setWaypoints([...waypoints, null])}
-              className="min-h-9 cursor-pointer rounded-full border border-white/12 px-3 text-[11px] text-white/60 transition hover:border-white/24 hover:text-white/84 disabled:cursor-not-allowed disabled:opacity-35"
-            >
-              + 添加经停
-            </button>
-          </div>
-          {waypoints.length === 0 && (
-            <p className="rounded-lg border border-white/9 bg-white/[.025] px-3 py-2.5 text-[11px] leading-relaxed text-white/46">
-              可留空；高铁会按出发 → 经停 → 到达绘制贴地折线。
-            </p>
-          )}
-          {waypoints.map((waypoint, index) => (
-            <div key={index} className="flex items-start gap-2">
-              <div className="min-w-0 flex-1">
-                <CityCombobox
-                  data={data}
-                  label={`经停 ${index + 1}`}
-                  value={waypoint}
-                  onChange={(city) => updateWaypoint(index, city)}
-                />
-              </div>
-              <button
-                type="button"
-                aria-label={`移除经停 ${index + 1}`}
-                onClick={() => {
-                  const next = waypoints.filter((_, itemIndex) => itemIndex !== index)
-                  setWaypoints(next)
-                  setForm({
-                    ...form,
-                    waypoints: next.filter((city): city is City => city !== null),
-                  })
-                }}
-                className="mt-7 grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-lg text-white/48 transition hover:bg-white/6 hover:text-white/82"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+      <WaypointEditor
+        data={data}
+        from={form.from}
+        to={form.to}
+        value={waypoints}
+        onChange={(next) => {
+          setWaypoints(next)
+          setForm((current) => ({
+            ...current,
+            waypoints: next.filter((city): city is City => city !== null),
+          }))
+        }}
+      />
 
-      <EditorField id="trip-note" label="交通备注" hint="航班号 / 车次">
+      <EditorField id="trip-note" label="交通备注" hint={mode.noteHint}>
         <input
           id="trip-note"
           type="text"
           maxLength={60}
           value={form.note}
-          placeholder={form.type === 'flight' ? '例如：CA1234' : '例如：G7558'}
+          placeholder={mode.notePlaceholder}
           onChange={(event) => setForm({ ...form, note: event.target.value })}
           className={editorInputClass}
         />
@@ -190,6 +136,11 @@ export default function TripForm({
 
       {form.from && form.to && form.from.id === form.to.id && (
         <p className="text-[11px] text-amber-100/72">出发与到达不能是同一座城市。</p>
+      )}
+      {!routeUnique && (
+        <p className="text-[11px] text-amber-100/72">
+          经停城市不能与出发、到达或其他经停城市重复。
+        </p>
       )}
       <EditorErrors issues={errors} />
       <EditorFormActions saveLabel="保存行程" disabled={!canSave} onCancel={onCancel} />

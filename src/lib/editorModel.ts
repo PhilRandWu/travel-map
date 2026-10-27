@@ -1,6 +1,7 @@
 import type { City, Journey, Photo, TravelData, Trip, TransportType, Visit } from '@/types'
 import { resolveCity } from '@/lib/cities'
 import { listCityOptions } from '@/lib/editorCityCatalog'
+import { TRANSPORT_WAYPOINT_LIMIT } from '@/lib/transportModes'
 import { validateTravelData, type ValidationIssue } from '@/lib/validate'
 
 export {
@@ -196,13 +197,13 @@ export function saveTrip(data: TravelData, draft: CompleteTripDraft): TravelData
   if (!journey) return data
 
   const seen = new Set<string>([draft.from.id, draft.to.id])
-  const waypoints = draft.type === 'train'
-    ? draft.waypoints.filter((city) => {
+  const waypoints = draft.waypoints
+    .filter((city) => {
       if (seen.has(city.id)) return false
       seen.add(city.id)
       return true
     })
-    : []
+    .slice(0, TRANSPORT_WAYPOINT_LIMIT)
   const trip: Trip = {
     id: draft.id,
     journeyId: draft.journeyId,
