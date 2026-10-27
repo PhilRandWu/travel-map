@@ -19,7 +19,7 @@ import { pickRandomMemory } from '@/lib/travelDiscovery'
 import type { TravelSearchResult } from '@/lib/travelSearch'
 import type { TravelData } from '@/types'
 
-const EMPTY_TRACKS: Tracks = { flights: [], trains: [] }
+const EMPTY_TRACKS: Tracks = { routes: [], flights: [], trains: [] }
 
 interface Options {
   data: TravelData

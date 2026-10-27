@@ -1,5 +1,6 @@
+import type { TransportType } from '@/types'
 import type { Tracks } from '@/lib/tracks'
-import { greatCirclePoints } from '@/lib/geo'
+import { getTransportMode } from '@/lib/transportModes'
 
 export interface SceneRoutePoint {
   lat: number
@@ -9,39 +10,34 @@ export interface SceneRoutePoint {
 
 export interface SceneRoute {
   id: string
-  type: 'flight' | 'train'
+  type: TransportType
+  color: number
+  dashed: boolean
   points: SceneRoutePoint[]
 }
 
-const GROUND_ALTITUDE = 0.004
-
 export function buildJourneySceneRoutes(tracks: Tracks): SceneRoute[] {
-  const flights = tracks.flights.map((track): SceneRoute => {
-    const points = greatCirclePoints(
-      { lat: track.startLat, lng: track.startLng },
-      { lat: track.endLat, lng: track.endLng },
-      64,
-    )
+  return tracks.routes.map((route) => {
+    const mode = getTransportMode(route.type)
+    const points = route.legs.flatMap((leg) => leg.points.map(
+      ([lat, lng], index) => {
+        const progress = index / Math.max(1, leg.points.length - 1)
+        return {
+          lat,
+          lng,
+          altitude: mode.route.shape === 'arc'
+            ? mode.route.baseAltitude
+              + Math.sin(progress * Math.PI) * leg.altitude
+            : mode.route.baseAltitude,
+        }
+      },
+    ))
     return {
-      id: track.trip.id,
-      type: 'flight',
-      points: points.map(([lat, lng], index) => ({
-        lat,
-        lng,
-        altitude: GROUND_ALTITUDE
-          + Math.sin((index / Math.max(1, points.length - 1)) * Math.PI)
-          * track.altitude,
-      })),
+      id: route.trip.id,
+      type: route.type,
+      color: mode.route.colorNumber,
+      dashed: mode.route.dashed,
+      points,
     }
   })
-  const trains = tracks.trains.map((track): SceneRoute => ({
-    id: track.trip.id,
-    type: 'train',
-    points: track.points.map(([lat, lng]) => ({
-      lat,
-      lng,
-      altitude: GROUND_ALTITUDE,
-    })),
-  }))
-  return [...flights, ...trains]
 }

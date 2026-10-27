@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { TravelData } from '@/types'
 import { buildTracks } from '@/lib/tracks'
+import { getTransportMode } from '@/lib/transportModes'
 
 const base: TravelData = {
   meta: { owner: 't', homeCity: 'beijing', version: 2 },
@@ -14,89 +15,116 @@ const base: TravelData = {
   visits: [],
 }
 
-const withTrips = (trips: TravelData['trips']): TravelData => ({ ...base, trips })
+const withTrips = (trips: TravelData['trips']): TravelData => ({
+  ...base,
+  trips,
+})
 
 describe('buildTracks', () => {
-  it('航班生成大圆弧：起终点正确，含 tooltip 文案', () => {
-    const { flights, trains } = buildTracks(
-      withTrips([
-        { id: 't1', journeyId: 'j-test', date: '2025-05-01', type: 'flight', from: 'beijing', to: 'shanghai', waypoints: [], note: 'CA1' },
-      ]),
-    )
-    expect(trains).toHaveLength(0)
-    expect(flights).toHaveLength(1)
-    const a = flights[0]
-    expect(a.startLat).toBeCloseTo(39.9042)
-    expect(a.endLng).toBeCloseTo(121.4737)
-    expect(a.altitude).toBeGreaterThan(0)
-    expect(a.label).toBe('2025-05-01 · 北京 → 上海 · CA1')
+  it('makes one route with full stops and ordered legs', () => {
+    const [route] = buildTracks(withTrips([
+      {
+        id: 't1',
+        journeyId: 'j-test',
+        date: '2025-05-01',
+        type: 'ship',
+        from: 'beijing',
+        to: 'shanghai',
+        waypoints: ['jiaxing'],
+        note: '夜航',
+      },
+    ])).routes
+
+    expect(route.type).toBe('ship')
+    expect(route.stops.map((city) => city.id))
+      .toEqual(['beijing', 'jiaxing', 'shanghai'])
+    expect(route.legs.map((leg) => [leg.from.id, leg.to.id]))
+      .toEqual([['beijing', 'jiaxing'], ['jiaxing', 'shanghai']])
+    expect(route.label).toBe('2025-05-01 · 北京 → 嘉兴 → 上海 · 夜航')
+    expect(route.points[0]).toEqual([39.9042, 116.4074])
+    expect(route.points.at(-1)).toEqual([31.2304, 121.4737])
+    expect(route.points).toContainEqual([30.7522, 120.7555])
   })
 
-  it('高铁折线经过所有 waypoint，且为贴地点串', () => {
-    const { trains } = buildTracks(
-      withTrips([
-        { id: 't2', journeyId: 'j-test', date: '2025-05-03', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'], note: 'G1' },
-      ]),
-    )
-    expect(trains).toHaveLength(1)
-    const pts = trains[0].points
-    expect(pts[0]).toEqual([39.9042, 116.4074])
-    expect(pts[pts.length - 1]).toEqual([31.2304, 121.4737])
-    // 必须真的经过嘉兴（两段拼接：首段终点 = 次段起点 = 嘉兴）
-    const jx: [number, number] = [30.7522, 120.7555]
-    expect(pts).toContainEqual(jx)
-    // 拼接处无重复点
-    for (let i = 1; i < pts.length; i++) {
-      expect(pts[i]).not.toEqual(pts[i - 1])
-    }
+  it.each(['flight', 'train', 'metro', 'ship', 'car'] as const)(
+    'uses registry styling for %s',
+    (type) => {
+      const [route] = buildTracks(withTrips([
+        {
+          id: 't1',
+          journeyId: 'j-test',
+          date: '2025-05-01',
+          type,
+          from: 'beijing',
+          to: 'shanghai',
+          waypoints: [],
+        },
+      ])).routes
+      const mode = getTransportMode(type)
+      expect(route.color).toBe(mode.route.colorHex)
+      expect(route.routeShape).toBe(mode.route.shape)
+    },
+  )
+
+  it('separates each flight leg and repeated surface corridors', () => {
+    const flights = buildTracks(withTrips([
+      {
+        id: 'f1',
+        journeyId: 'j-test',
+        date: '2025-05-01',
+        type: 'flight',
+        from: 'beijing',
+        to: 'shanghai',
+        waypoints: ['jiaxing'],
+      },
+      {
+        id: 'f2',
+        journeyId: 'j-test',
+        date: '2025-05-02',
+        type: 'flight',
+        from: 'shanghai',
+        to: 'beijing',
+        waypoints: ['jiaxing'],
+      },
+    ])).routes
+    expect(flights[0].legs).toHaveLength(2)
+    expect(flights[1].legs[0].altitude)
+      .toBeGreaterThan(flights[0].legs[1].altitude)
+
+    const surface = buildTracks(withTrips([
+      {
+        id: 's1',
+        journeyId: 'j-test',
+        date: '2025-05-01',
+        type: 'train',
+        from: 'beijing',
+        to: 'shanghai',
+        waypoints: [],
+      },
+      {
+        id: 's2',
+        journeyId: 'j-test',
+        date: '2025-05-02',
+        type: 'car',
+        from: 'shanghai',
+        to: 'beijing',
+        waypoints: [],
+      },
+    ])).routes
+    expect(surface[0].points[16]).not.toEqual(surface[1].points[16])
   })
 
-  it('同走廊多条航班弧顶逐次抬高（往返也算同走廊）', () => {
-    const { flights } = buildTracks(
-      withTrips([
-        { id: 't1', journeyId: 'j-test', date: '2025-05-01', type: 'flight', from: 'beijing', to: 'shanghai', waypoints: [] },
-        { id: 't2', journeyId: 'j-test', date: '2025-05-05', type: 'flight', from: 'shanghai', to: 'beijing', waypoints: [] },
-        { id: 't3', journeyId: 'j-test', date: '2025-06-01', type: 'flight', from: 'beijing', to: 'shanghai', waypoints: [] },
-      ]),
-    )
-    expect(flights).toHaveLength(3)
-    expect(flights[1].altitude).toBeCloseTo(flights[0].altitude * 1.18)
-    expect(flights[2].altitude).toBeCloseTo(flights[0].altitude * 1.36)
-  })
-
-  it('同走廊多条高铁折线侧向错开，同时保留端点与经停点', () => {
-    const { trains } = buildTracks(
-      withTrips([
-        { id: 't1', journeyId: 'j-test', date: '2025-05-03', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'] },
-        { id: 't2', journeyId: 'j-test', date: '2025-05-05', type: 'train', from: 'shanghai', to: 'beijing', waypoints: ['jiaxing'] },
-        { id: 't3', journeyId: 'j-test', date: '2025-06-01', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['jiaxing'] },
-      ]),
-    )
-    expect(trains).toHaveLength(3)
-
-    const sample = (track: (typeof trains)[number]) => track.points[16]
-    expect(sample(trains[1])).not.toEqual(sample(trains[0]))
-    expect(sample(trains[2])).not.toEqual(sample(trains[0]))
-    expect(sample(trains[2])).not.toEqual(sample(trains[1]))
-
-    const jiaxing: [number, number] = [30.7522, 120.7555]
-    for (const track of trains) {
-      const from = base.cities.find((city) => city.id === track.trip.from)!
-      const to = base.cities.find((city) => city.id === track.trip.to)!
-      expect(track.points[0]).toEqual([from.lat, from.lng])
-      expect(track.points.at(-1)).toEqual([to.lat, to.lng])
-      expect(track.points).toContainEqual(jiaxing)
-    }
-  })
-
-  it('引用缺失城市的行程被跳过', () => {
-    const { flights, trains } = buildTracks(
-      withTrips([
-        { id: 't1', journeyId: 'j-test', date: '2025-05-01', type: 'flight', from: 'beijing', to: 'nowhere', waypoints: [] },
-        { id: 't2', journeyId: 'j-test', date: '2025-05-03', type: 'train', from: 'beijing', to: 'shanghai', waypoints: ['nowhere'] },
-      ]),
-    )
-    expect(flights).toHaveLength(0)
-    expect(trains).toHaveLength(0)
+  it('skips routes with any missing city', () => {
+    expect(buildTracks(withTrips([
+      {
+        id: 't1',
+        journeyId: 'j-test',
+        date: '2025-05-01',
+        type: 'car',
+        from: 'beijing',
+        to: 'nowhere',
+        waypoints: [],
+      },
+    ])).routes).toEqual([])
   })
 })

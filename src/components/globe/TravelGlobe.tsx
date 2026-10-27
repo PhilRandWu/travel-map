@@ -27,7 +27,7 @@ import {
 import { buildJourneySceneRoutes } from '@/lib/journeyScene'
 import type { Tracks } from '@/lib/tracks'
 
-const EMPTY_TRACKS: Tracks = { flights: [], trains: [] }
+const EMPTY_TRACKS: Tracks = { routes: [], flights: [], trains: [] }
 const TEXTURE_BASE = `${import.meta.env.BASE_URL}textures/`
 
 export default function TravelGlobe({
